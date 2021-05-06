@@ -99,7 +99,7 @@
       function deleteData(id) {
         $.ajax({
           method: "GET",
-          url:origin +  "/Route.php",
+          url:origin +  "/Route.php?action=delete&page=hoc-bong",
           success: function(response) {
             console.log(response);
             let result = JSON.parse(response);
@@ -121,7 +121,7 @@
           method: "GET",
           url: origin + "/Route.php?controller=HocBongController&action=getAll&page=hoc-bong",
           success: function(response) {
-            console.log(response);
+          
             let result = JSON.parse(response);
 
             let data = result.data;
@@ -129,12 +129,12 @@
             showList(data, config);
 
             $('.btn-primary').click(function() {
-              window.open(config.origin + '/hoc-bong/form_hoc_bong?mode=view&id=' + $(this).attr('id'), 'width:1000',
+              window.open( '?p=internal.quan_li_file.view.hoc-bong.form_hoc_bong/0/guest&mode=view&id=' + $(this).attr('id'), 'width:1000',
                 'height:1000')
             });
 
             $('.btn-warning').click(function() {
-              window.open(config.origin + '/hoc-bong/form_hoc_bong?mode=edit&id=' + $(this).attr('id'), 'width:1000',
+              window.open('?p=internal.quan_li_file.view.hoc-bong.form_hoc_bong/0/guest&mode=edit&id=' + $(this).attr('id'), 'width:1000',
                 'height:1000')
             });
             $('.btn-danger').click(function() {
@@ -234,10 +234,10 @@
           $('#row-id').append(out);
         }
         $('#btn-6').click(function() {
-          window.open(config.origin + '/hoc-bong/form_hoc_bong?mode=create&lop=6', 'width:1000', 'height:1000')
+          window.open('?p=internal.quan_li_file.view.hoc-bong.form_hoc_bong/0/guest&mode=create&lop=6', 'width:1000', 'height:1000')
         });
         $('#btn-10').click(function() {
-          window.open(config.origin + '/hoc-bong/form_hoc_bong?mode=create&lop=10', 'width:1000', 'height:1000')
+          window.open( '?p=internal.quan_li_file.view.hoc-bong.form_hoc_bong/0/guest&mode=create&lop=10', 'width:1000', 'height:1000')
         });
       };
 
@@ -247,12 +247,12 @@
 
         $.ajax({
           method: "POST",
-          url: origin + "/hoc-bong/du-tuyen-admin/export",
+          url: origin + "/Route.php?page=hoc-bong&action=export",
           data: {},
 
           success: function(response) {
             // console.log(response);
-            window.open(origin + "/hoc-bong/du-tuyen-admin/export", '_blank');
+            window.open(origin + "/Route.php?page=hoc-bong&action=export", '_blank');
 
           },
           error: function(response) {

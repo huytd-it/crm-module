@@ -252,9 +252,9 @@ class HocBongController extends BaseController
         
           if ($file['error'] == 0 || $file['error'] == 1) {
             $file_name = "{$key}" . "+" . $file['name'];
-          
-            // $file_name =  iconv("utf-8", "cp936", $file_name);
-           
+            // setlocale(LC_CTYPE, 'cs_CZ');
+            // $file_name = iconv("UTF-8", "ASCII//TRANSLIT", $file_name);
+
             $sql .= "{$key} = '$file_dir/{$id_next}/$file_name',";
 
             if (!file_exists("$file_dir/{$id_next}/")) {

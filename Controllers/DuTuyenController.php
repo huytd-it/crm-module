@@ -73,7 +73,7 @@ class DuTuyenController extends BaseController
   {
 
     try {
-      var_dump($this->router);
+     
       if (isset($this->router->id)) {
         $id = $this->router->id;
         $date = date("Y-m-d H:i:s");
@@ -136,8 +136,11 @@ class DuTuyenController extends BaseController
         if (!file_exists($uploads_dir)) {
           mkdir($uploads_dir, 0700, true);
         }
-        move_uploaded_file($file['tmp_name'], $uploads_dir . $file['name']);
-        $this->request_post[$key] = $uploads_dir . $file['name'];
+        
+        $filename = iconv("utf-8","cp1258",$file['name']);
+    
+        move_uploaded_file($file['tmp_name'], $uploads_dir .$filename);
+        $this->request_post[$key] = $uploads_dir . $filename;
       } else {
         $this->request_post[$key] = '';
       }

@@ -32,7 +32,7 @@
     body {
       margin: 0;
       padding: 0;
-      font-size: 16px;
+      font-size: 14px !important;
       line-height: 22.3px;
       background-color: gainsboro;
     }
@@ -48,6 +48,7 @@
 
     .tieu_ngu_boder {
       float: right;
+      padding-right: 87px;
     }
 
     .tieu_ngu {
@@ -61,7 +62,7 @@
       font-size: 16px;
       font-weight: bold;
       text-align: center;
-      padding: 0;
+      padding: 5px;
     }
 
     .text__boder {
@@ -79,8 +80,8 @@
     }
 
     .text_header {
-      margin-top: -37px;
-      margin-bottom: 15px;
+      margin-top: -25px;
+      /* margin-bottom: 15px; */
       font-size: 18px;
       font-weight: bold;
     }
@@ -130,7 +131,7 @@
     }
 
     .form-floating input {
-      border-bottom: 1px dotted black;
+      border-bottom: 1px dotted black !important;
       text-align: left;
       padding-left: 15px;
     }
@@ -153,6 +154,36 @@
       width: 95%;
       border: none;
       font-family: 'Times New Roman', Times, serif, sans-serif;
+
+    }
+
+    p input,
+    td input,
+    td select {
+      border: none !important;
+      border-radius: 0px !important;
+      font-size: 14px !important;
+
+    }
+
+    p input,
+    td input,
+    td select,
+    strong,
+    td {
+      font-size: 14px !important;
+
+    }
+
+    #header,
+    #div_chat {
+      display: none;
+    }
+
+    h3,
+    .h3 {
+      font-size: 24px;
+      font-weight: bold !important;
     }
 
     input[type=mail] {
@@ -163,6 +194,9 @@
     input[type=mail]:focus {
       border-bottom: 3px solid #1296ba;
       transition: border .3s ease-in-out;
+    }
+    input[type="file"] {
+      width: 100%;
     }
   </style>
 
@@ -181,7 +215,7 @@
       text-align: center;
       background-color: rgba(0, 0, 0, 0.534);
       color: #17a2b8;
-      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+      /* font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; */
 
     }
 
@@ -451,7 +485,7 @@
           </div>
           <div class="ma_so" style="margin-right:10px">
             <p style="text-align: right;font-size: 13px;" class="text__boder">Số:
-              <input type="text" style=" width: 36px;font-size: 13px;" name="so_thu_tu">Năm học: <input type="text" name="nam_hoc" style=" width: 60px; font-size: 13px;" value="2020-2021">
+              <input type="text" style=" width: 36px;font-size: 13px " name="so_thu_tu">Năm học: <input type="text" name="nam_hoc" style=" width: 60px; font-size: 13px !important;" value="2020-2021">
             </p>
             <p style="text-align: right;font-size: 13px;" class="text__boder" id="khoi">Lớp <input type="text" style=" width: 20px;border: none;font-size: 13px;" name="lop"></p>
 
@@ -468,7 +502,7 @@
               <input type="file" id="imgInp" style="display: none;" name="avatar">
 
 
-              <img id="img_avatar" src="../View/publish/images/anh_3_4.png" style="margin-top: -95px;max-width:126px;max-height: 150px;">
+              <img id="img_avatar" src="../View/publish/images/anh_3_4.png" style="margin-top: -95px;max-width:123px;max-height: 150px;">
             </div>
 
             <div>
@@ -1290,7 +1324,7 @@
       $('#send').click(function() {
         $(".modal-mail").toggleClass("hide");
       });
-      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1];
+      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/internal/quan_li_file";
 
       function validate(text, number, file) {
 
@@ -1378,7 +1412,7 @@
         if (mode == 'create') {
           $.ajax({
             method: "POST",
-            url: origin + "/hoc-bong/hoc-bong-form/store",
+            url: origin + "/Route.php?page=hoc-bong&action=store",
             data: data,
             contentType: false,
             mimeType: "multipart/form-data",
@@ -1386,15 +1420,15 @@
             cache: false,
             success: function(response) {
 
-              console.log(response);
+              
               var result = JSON.parse(response);
-           
+
               $('.alert h3').text(result.msg);
               $('#close').removeClass('hide');
               if (result.status != 200) {
                 $('.alert').css("color", "red");
                 $('.alert i').removeClass('far fa-check-circle').addClass('fas fa-exclamation-circle');
-              
+
                 status = 1;
                 var text = result.errors.text;
                 var number = result.errors.number;
@@ -1424,7 +1458,7 @@
 
           $.ajax({
             method: "POST",
-            url: origin + "/hoc-bong/hoc-bong-form/update/" + id,
+            url: origin + "/Route.php?page=hoc-bong&action=update&id=" + id,
             data: data,
             contentType: false,
             mimeType: "multipart/form-data",
@@ -1475,9 +1509,9 @@
         var data = new FormData($("#hoc_bong_form")[0]);
         $.ajax({
           method: "GET",
-          url: origin + "/hoc-bong/fom_hoc_bong/get/" + id,
+          url: origin + "/Route.php?page=hoc-bong&action=get&id=" + id,
           success: function(response) {
-            console.log(response);
+          
             var result = JSON.parse(response);
 
             var data = result.data;
@@ -1486,12 +1520,7 @@
             $('#gioi_tinh').val(data.gioi_tinh);
             for (const [key, value] of Object.entries(data)) {
 
-              // if ($('input').attr('class')=='form-check-input' && value == 1) {
-
-              //   $('input[name=' + key + ']').prop('checked', true);
-
-
-              // } else 
+         
               if ($('input[name=' + key + ']').prop('type') == 'file') {
                 $('input[name=' + key + ']').val('');
               } else {

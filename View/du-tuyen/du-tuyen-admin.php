@@ -110,7 +110,7 @@
        
         $.ajax({
           method: "GET",
-          url: origin + "/Route.php?action=delete&controller=DuTuyenController&id=" +id,
+          url: origin + "/Route.php?action=delete&controller=DuTuyenController&page=du-tuyen&id=" +id,
           success: function(response) {
             console.log(response);
             let result = JSON.parse(response);
@@ -130,7 +130,7 @@
       function setMail() {
         $.ajax({
           method: "POST",
-          url: origin + "/du-tuyen/admin_list/setMail",
+          url: origin + "/Route.php?action=setMail&page=du-tuyen",
           data: {
             'email': $('#email').val()
           },

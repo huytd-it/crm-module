@@ -68,7 +68,7 @@
 
     input[type="checkbox"] {
 
-      width: 15px;
+      width: 15px !important;
 
       text-align: right;
 
@@ -109,14 +109,14 @@
       outline: none;
       border: none;
       border-bottom: 1px dotted black;
-      width: 100%;
+      width: 100% !important;
       text-align: left;
       font-weight: bold;
       font-family: 'Times New Roman', Times, serif;
       font-size: 15px;
 
     }
-
+    
     .btn {
       bottom: 40%;
       left: 14px;
@@ -195,7 +195,7 @@
         width: 21cm;
         height: 29.7cm;
         box-shadow: none;
-        padding: 25px;
+        padding:0 20px 0px 5px;
 
       }
 
@@ -362,11 +362,13 @@
   <div style="background-color: white;width: 1000px;" id="body">
     <form id="du-tuyen-form" enctype="multipart/form-data">
       <div style="text-align: right;margin-top: 7px;margin-bottom:7px;float:right">
-        <p style="border: 2px solid black;display: inline;padding: 4px;">From No :.
-          <input style="width:70px;text-align: center;" type="text" name="ma_du_tuyen" value="HR.001B">
+        <p style="border: 2px solid black;display: inline;padding: 4px; ">From No :.
+          <input style="width: 70px !important;
+    text-align: center;
+    border: none !important;" type="text" name="ma_du_tuyen" value="HR.001B">
         </p>
       </div>
-      <h3 style="text-align: center;margin:0" id="title">
+      <h3 style="text-align: center;margin:0px 150px" id="title">
         PHIẾU ĐĂNG KÝ DỰ TUYỂN-GIÁO VIÊN CƠ HỮU
         <br> APPLICATION FORM-FULL TIME TEACHERS
       </h3>
@@ -383,7 +385,7 @@
             <td style="padding:2px;margin:0" rowspan="4" id="chon_anh">
               <p>Nơi dán ảnh <br> Picture</p>
               <input type="file" id="avatar" name="avatar" style="display: none;width:100%">
-              <img id="img_avatar" width="100" src="../View/publish/images/anh_3_4.png">
+              <img id="img_avatar" width="100" src="/View/publish/images/anh_3_4.png">
             </td>
           </tr>
           <tr>
@@ -630,8 +632,8 @@
 
 
         <tr>
-          <td colspan="4">Ngày/Date: <input type="text" name="now_ngay" style="width:50px">tháng <input type="text" name="now_thang" style="width:50px">năm
-            <input type="text" name="now_nam" style="width:50px">
+          <td colspan="4">Ngày/Date: <input type="text" name="now_ngay" style="width:50px !important">tháng <input type="text" name="now_thang" style="width:50px !important">năm
+            <input type="text" name="now_nam" style="width:50px !important">
           </td>
           <td style="height: 80px; text-align: left;vertical-align: top;" colspan="5">Người đăng ký ký tên/Applicant's
             signature:
@@ -876,12 +878,12 @@
           url: origin + "/Route.php?page=du-tuyen&action=get&id=" + id,
           success: function(response) {
             var result = JSON.parse(response);
-            // console.log(response);
+            
             var data = result.data;
             printTitle(data.type);
             $("#chon_anh p").hide();
             $("textarea[name=thanh_tich").val(data.thanh_tich);
-            $('#img_avatar').attr('src', "../" + data.avatar);
+            $('#img_avatar').attr('src', data.avatar);
 
             for (const [key, value] of Object.entries(data)) {
               if ($('input[name=' + key + ']').prop('type') == 'file') {
@@ -933,7 +935,36 @@
 
     });
   </script>
+<script>
+    getConfig();
+    let config = 0;
 
+    function getConfig() {
+        var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/internal/quan_li_file";
+        $.ajax({
+            method: "GET",
+            url: origin + "/Route.php?controller=BaseController&action=getConfig&page=base",
+            success: function(response) {
+                config = response;
+             
+                result = JSON.parse(response);
+                let img_src = $("img").attr("src");
+             
+                $("img").attr("src", result.origin + "/" + img_src);
+
+                var hrefArray = document.getElementsByTagName("a");
+                for (var i = 0; i < hrefArray.length; i++) {
+                   if (hrefArray[i].getAttribute("href") != '#')
+                      hrefArray[i].setAttribute("href", result.origin + hrefArray[i].getAttribute("href"));
+                }
+            },
+
+            error: function(response) {
+                console.log(response);
+            }
+        });
+    }
+</script>
 </body>
 
 </html>

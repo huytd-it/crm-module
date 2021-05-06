@@ -112,7 +112,7 @@
           method: "GET",
           url: origin + "/Route.php?action=delete&controller=DuTuyenController&page=du-tuyen&id=" +id,
           success: function(response) {
-            console.log(response);
+        
             let result = JSON.parse(response);
             $('.card').prepend("<p class='alert alert-danger text-center'>" + result.msg + "</p>")
 
@@ -135,10 +135,10 @@
             'email': $('#email').val()
           },
           success: function(response) {
-            console.log(response);
+           
             let result = JSON.parse(response);
             $('.modal-body').children('.alert').remove();
-            console.log($('#btn-mail').text('Email: ' + result.data));
+      
             if (result.status != 200)
               $('.modal-body').append("<p class='alert alert-danger text-center'>" + result.msg + "</p>")
             else
@@ -164,9 +164,9 @@
             'email': $('#email').val()
           },
           success: function(response) {
-            console.log(response);
+      
             let result = JSON.parse(response);
-            console.log($('#btn-mail').text('Email: ' + result.data));
+     
            
 
 
@@ -184,11 +184,11 @@
        
         $.ajax({
           method: "POST",
-          url: origin + "/Route.php?page=du-tuyen&action=archive&controller=DuTuyenController" + id,
+          url: origin + "/Route.php?page=du-tuyen&action=archive&controller=DuTuyenController&id=" + id,
           data: {},
           success: function(response) {
-
-            window.open( origin + "/Route.php?page=du-tuyen&action=archive&controller=DuTuyenController" + id, '_blank');
+           
+            window.open( origin + "/Route.php?page=du-tuyen&action=archive&controller=DuTuyenController&id=" + id);
 
 
 
@@ -219,13 +219,13 @@
             showList(data, config);
 
             $('.btn-primary').click(function() {
-              window.open('?p=internal.quan_li_file.view.du-tuyen.du-tuyen-form/0/guest&mode=view&type=1&id=' + $(this).attr('id'), 'width:1000',
+              window.open('?p=internal.quan_li_file.view.du-tuyen.du-tuyen-form/0/view&mode=view&type=1&id=' + $(this).attr('id'), 'width:1000',
                 'height:1000')
             });
 
             $('.btn-warning').click(function() {
 
-              window.open('?p=internal.quan_li_file.view.du-tuyen.du-tuyen-form/0/guest&mode=edit&type=1&id=' + $(this).attr('id'), 'width:1000',
+              window.open('?p=internal.quan_li_file.view.du-tuyen.du-tuyen-form/0/view&mode=edit&type=1&id=' + $(this).attr('id'), 'width:1000',
                 'height:1000')
             });
 
@@ -234,7 +234,7 @@
               $(this).parent().parent().remove();
             });
             $('.btn-outline-info').click(function() {
-              console.log($(this).attr('id'));
+             
               downloadFiles($(this).attr('id'));
             });
             $('table a').click(function() {
@@ -327,12 +327,12 @@
           data: {},
 
           success: function(response) {
-            // console.log(response);
+           
             window.open(origin + "/Route.php?action=export&page=du-tuyen", '_blank');
 
           },
           error: function(response) {
-            console.log(response);
+           
           }
         });
       });

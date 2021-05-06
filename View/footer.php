@@ -12,7 +12,7 @@
    getConfig();
 
    function getConfig() {
-      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1];
+      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/internal/quan_li_file";
       $.ajax({
          method: "GET",
          url: origin + "/base/api/getConfig",

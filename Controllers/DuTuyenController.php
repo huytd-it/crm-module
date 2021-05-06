@@ -285,7 +285,9 @@ class DuTuyenController extends BaseController
   }
   public function archive()
   {
+    
     $data = $this->db->fetchAll('nguoi_ung_tuyen', 'ho_ten, bo_mon, sdt, file_1, file_2, file_3, file_4, file_5', "id={$this->router->id}")[0];
+
     $file_names = [];
     foreach ($data as $key => $file) {
       if (!empty($file) && ($key != 'ho_ten' && $key != 'bo_mon' && $key != 'sdt')) {

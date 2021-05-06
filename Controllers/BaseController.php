@@ -31,7 +31,7 @@ class BaseController
     $this->request_post = $_POST;
     $this->db = new DBConnect();
     $this->router = new Route();
-    $this->config  = new WebConfig('pages/internal/quan-li-file');
+    $this->config  = new WebConfig('pages/internal/quan_li_file');
   }
   /**
    * Tạo file Excel từ array
@@ -42,8 +42,8 @@ class BaseController
    */
   public function exportExcel($data, $col_names = null)
   {
-   
-    require_once dirname(__DIR__) ."../PHPExcel/Classes/PHPExcel.php";
+
+    require_once dirname(__DIR__) . "../PHPExcel/Classes/PHPExcel.php";
 
 
     $excel = new PHPExcel();
@@ -58,7 +58,7 @@ class BaseController
     $j = 0;
     $k = 0;
 
-    if ($col_names == null){
+    if ($col_names == null) {
       foreach ($array as $key => $value) {
         if (!is_numeric($key)) {
           if ($i < 26) {
@@ -79,7 +79,7 @@ class BaseController
           $i++;
         }
       }
-    }else {
+    } else {
       foreach ($col_names as $key) {
         if (!is_numeric($key)) {
           if ($i < 26) {
@@ -101,7 +101,7 @@ class BaseController
         }
       }
     }
-     
+
     //Set style
     $excel->getActiveSheet()->getStyle('A1:DD1')->getFont()->setBold(true);
     $excel->getActiveSheet()->getStyle("A1:$col_last")->getFill()
@@ -300,7 +300,7 @@ class BaseController
         $response = $this->update($this->Id);
         break;
       case 'DELETE':
-        
+
         break;
       default:
         $response = $this->notFoundResponse();
@@ -324,9 +324,11 @@ class BaseController
   public function archiveFiles($archive_file_name, $archive_path, $file_names, $path_name)
   {
 
-    var_dump($file_names);
-    $path = $this->config->getRoot();
+
+    $path = $this->config->getRoot(). "/";
+
     $zip_path = $path . $archive_path . $archive_file_name;
+   
     if (!file_exists($path . $archive_path)) {
       mkdir($path . $archive_path, 0700, true);
     }
@@ -334,9 +336,10 @@ class BaseController
     if ($zip->open($zip_path, ZIPARCHIVE::CREATE) !== TRUE) {
       exit("Cannot open <$archive_file_name>\n");
     }
-
+   
     foreach ($file_names as $files) {
-      $zip->addFile($path . $path_name . $files, $files);
+      $zip->addFile($path. $path_name . $files, $files);
+      
     }
 
     ob_end_clean();

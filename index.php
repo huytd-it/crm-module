@@ -77,7 +77,7 @@ try {
             url: origin + "/Route.php?controller=BaseController&action=getConfig&page=base",
             success: function(response) {
                 config = response;
-
+                console.log(config);
                 // result = JSON.parse(response);
                 // let img_src = $("img").attr("src");
                 // $("img").attr("src", result.origin + "/" + img_src);

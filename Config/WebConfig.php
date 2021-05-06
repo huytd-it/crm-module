@@ -22,7 +22,7 @@ class WebConfig
    
     $uri_array = explode("/", "$_SERVER[REQUEST_URI]");
     $this->origin = "{$this->siteURL()}{$uri_array[1]}/".trim($path);
-    $this->root = dirname(__FILE__)."/".$path;
+    $this->root = $_SERVER['DOCUMENT_ROOT']."/"."{$uri_array[1]}/".trim($path);
     $this->method_url = !empty($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
   }
   public function getOrigin()

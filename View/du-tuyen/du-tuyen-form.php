@@ -173,7 +173,7 @@
       p,
       textarea {
 
-        font-size: 10.5px;
+        font-size: 11.5px;
       }
 
       input {
@@ -188,14 +188,14 @@
 
       h3 {
 
-        font-size: 17px;
+        font-size: 18px !important;
       }
 
       #body {
         width: 21cm;
         height: 29.7cm;
         box-shadow: none;
-        padding:0 20px 0px 5px;
+        margin:0px 25px 0px 0px !important;
 
       }
 

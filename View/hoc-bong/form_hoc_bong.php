@@ -131,14 +131,10 @@
     }
 
     .form-floating input {
-      border-bottom: 1px dotted black !important;
+      /* border-bottom: 1px dotted black !important; */
       text-align: left;
       padding-left: 15px;
-    }
-
-    .table-no-border input {
-      text-align: left;
-      padding-left: 5px;
+      width: 95%;
     }
 
     .ma_so input {
@@ -151,7 +147,7 @@
       font-weight: bold;
       font-size: 16px;
       text-align: center;
-      width: 95%;
+      width: 100%;
       border: none;
       font-family: 'Times New Roman', Times, serif, sans-serif;
 
@@ -195,17 +191,15 @@
       border-bottom: 3px solid #1296ba;
       transition: border .3s ease-in-out;
     }
+
     input[type="file"] {
       width: 100%;
     }
-  </style>
 
-
-
-  <style>
     #divBodyContent {
       display: flex;
       justify-content: center;
+      width: 100%;
     }
 
     .alert {
@@ -230,7 +224,7 @@
       text-align: center;
       background-color: rgba(0, 0, 0, 0.534);
       color: #17a2b8;
-      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    
 
     }
 
@@ -303,58 +297,8 @@
 
       to {}
     }
-  </style>
 
-  <style type="text/css">
-    @page {
-      size: A4;
-      margin: 0;
-
-    }
-
-    @media print {
-      body {
-        margin-top: 5px;
-        margin-left: 5px;
-        margin-right: 2px;
-        margin-bottom: 5px;
-
-      }
-
-      input,
-      td,
-      strong,
-      th {
-        font-size: 17px;
-
-      }
-
-      td {
-        font-size: 17px;
-      }
-
-      #body {
-        width: 21cm;
-        height: 29.7cm;
-        box-shadow: none;
-
-
-      }
-
-      .save {
-        display: none !important;
-      }
-
-      .alert,
-      .hiden_div {
-        display: none !important;
-      }
-
-
-
-
-    }
-
+   
     .save {
       position: fixed;
       bottom: 20px;
@@ -399,11 +343,16 @@
 
     }
 
+    table th {
+      text-align: center;
+    }
+
     body {
       background-color: white;
     }
 
     .form-floating input[type="file"] {
+      
       border: none;
     }
 
@@ -433,15 +382,71 @@
       animation: lds-dual-ring 1.2s linear infinite;
     }
 
-    @keyframes lds-dual-ring {
-      0% {
-        transform: rotate(0deg);
+
+    .table-no-border td input[type="text"],
+    td select {
+      text-align: left;
+      /* padding-left: 5px; */
+      padding: 0 !important;
+      border-bottom: 1px dotted black !important;
+      margin: 0 !important;
+    }
+    .thanh_tich_hoc_tap_2 td input[type="text"] {
+      border-bottom: 1px dotted black !important;
+    }
+    @page {
+      size: A4;
+      margin: 0;
+
+    }
+
+    @media print {
+      body {
+        margin-top: 5px;
+        margin-left: 5px;
+        margin-right: 2px;
+        margin-bottom: 5px;
+
       }
 
-      100% {
-        transform: rotate(360deg);
+      input,
+      td,
+      strong,
+      th,
+      p {
+        font-size: 16px !important;
+       
+        /* font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; */
       }
+
+      td input {
+        padding: 0 !important;
+        font-size: 16px !important;
+        /* border-bottom: none  !important; */
+      }
+
+      #body {
+        width: 21cm;
+        height: 29.7cm;
+        box-shadow: none;
+
+
+      }
+
+      .save {
+        display: none !important;
+      }
+
+      .alert,
+      .hiden_div {
+        display: none !important;
+      }
+
+
+
+
     }
+
   </style>
 </head>
 
@@ -483,7 +488,7 @@
 
             </div>
           </div>
-          <div class="ma_so" style="margin-right:10px">
+          <div class="ma_so" style="margin-right:20px">
             <p style="text-align: right;font-size: 13px;" class="text__boder">Số:
               <input type="text" style=" width: 36px;font-size: 13px " name="so_thu_tu">Năm học: <input type="text" name="nam_hoc" style=" width: 60px; font-size: 13px !important;" value="2020-2021">
             </p>
@@ -524,13 +529,13 @@
               <tr>
                 <td style="border: none !important;width: 140px;" id="ho_ten_hs"> <strong>Họ và tên học sinh: </strong>
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important">
+                <td style="">
                   <input type="text" value="" name="ho_ten_hs">
                 </td>
 
                 <td style="border: none !important;width: 73px;"> <strong>Giới tính: </strong>
                 </td>
-                <td style="width: 99px;border: none !important;border-bottom: 1px dotted black !important;">
+                <td style="width: 99px;;">
                   <select name="gioi_tinh" id="gioi_tinh">
                     <option value="Nam">Nam</option>
                     <option value="Nữ">Nữ</option>
@@ -539,7 +544,7 @@
 
                 <td style="border: none !important;width: 62px;" id="dan_toc"> <strong>Dân tộc: </strong>
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important">
+                <td style="">
                   <input type="text" value="" name="dan_toc">
                 </td>
 
@@ -554,12 +559,12 @@
               <tr>
                 <td style="border: none !important;width: 144px;" id="nam_sinh_hs">Ngày tháng năm sinh
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important">
+                <td style="">
                   <input type="text" class="datepicker" value="" name="nam_sinh_hs">
                 </td>
                 <td style="border: none !important;width: 62px;" id="noi_sinh_hs">Nơi sinh:
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important">
+                <td style="">
                   <input type="text" value="Việt Nam" name="noi_sinh_hs">
                 </td>
               </tr>
@@ -572,7 +577,7 @@
               <tr>
 
                 <td style="border: none !important;width: auto;" id="dia_chi_thuong_tru_hs">Địa chỉ thường trú:</td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" colspan="3">
+                <td style="" colspan="3">
                   <input type="text" value="" name="dia_chi_thuong_tru_hs">
                 </td>
               </tr>
@@ -580,7 +585,7 @@
               <tr>
 
                 <td style="border: none !important;width: 132px;" id="dia_chi_cu_tru_hs">Nơi cư trú hiện nay:</td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" colspan="3">
+                <td style="" colspan="3">
                   <input type="text" value="" name="dia_chi_cu_tru_hs">
                 </td>
               </tr>
@@ -592,20 +597,20 @@
               <tr>
                 <td style="border: none !important;width: 106px;" id="ho_ten_cha"> <strong>Họ và tên cha: </strong>
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important; width: 150px;">
+                <td style="width: 150px;">
                   <input type="text" value="" name="ho_ten_cha">
                 </td>
 
                 <td style="border: none !important;width: 70px;" id="nam_sinh_cha"> <strong>Sinh năm</strong>
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important; width: 96px;">
+                <td style="width: 96px;">
                   <input type="text" value="" name="nam_sinh_cha">
                 </td>
 
                 <td style="border: none !important;width: 126px;" id="trinh_do_hoc_van_cha"> <strong>Trình độ học
                     vấn</strong>
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important"><input type="text" value="" name="trinh_do_hoc_van_cha">
+                <td style=""><input type="text" value="" name="trinh_do_hoc_van_cha">
                 </td>
 
 
@@ -620,7 +625,7 @@
               <tr>
 
                 <td style="border: none !important;width: 128px;">Địa chỉ thường trú:</td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" colspan="3"> <input type="text" value="" name="dia_chi_thuong_tru_cha">
+                <td style="" colspan="3"> <input type="text" value="" name="dia_chi_thuong_tru_cha">
                 </td>
               </tr>
 
@@ -632,11 +637,11 @@
               <tr>
 
                 <td style="border: none !important;width: 132px;">Nơi cư trú hiện nay:</td>
-                <td style="width: 501px;border: none !important;border-bottom: 1px dotted black !important;" id="dia_chi_cu_tru_cha" colspan="3">
+                <td style="width: 501px;;" id="dia_chi_cu_tru_cha" colspan="3">
                   <input type="text" value="" name="dia_chi_cu_tru_cha">
                 </td>
                 <td style="border: none !important;width: 73px;">Điện thoại:</td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="sdt_cha" colspan="3">
+                <td style="" id="sdt_cha" colspan="3">
                   <input type="text" value="" name="std_cha">
                 </td>
               </tr>
@@ -649,12 +654,12 @@
               <tr>
                 <td style="border: none !important;width: 86px;">Nghề nghiệp
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="nghe_nghiep_cha">
+                <td style="" id="nghe_nghiep_cha">
                   <input type="text" value="" name="nghe_nghiep_cha">
                 </td>
                 <td style="border: none !important;width: 90px;">Nơi công tác:
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="noi_cong_tac_cha">
+                <td style="" id="noi_cong_tac_cha">
                   <input type="text" value="" name="noi_cong_tac_cha">
                 </td>
               </tr>
@@ -665,19 +670,19 @@
               <tr>
                 <td style="border: none !important;width: 104px;"> <strong>Họ và tên mẹ: </strong>
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important;width: 156px;" id="ho_va_ten_me">
+                <td style=";width: 156px;" id="ho_va_ten_me">
                   <input type="text" value="" name="ho_ten_me">
                 </td>
 
                 <td style="border: none !important;width: 70px;" id="nam_sinh_me"> <strong>Sinh năm</strong>
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important; width: 96px;">
+                <td style="width: 96px;">
                   <input type="text" value="" name="nam_sinh_me">
                 </td>
 
                 <td style="border: none !important;width: 126px;" id="trinh_do_hoc_van_me"> <strong>Trình độ học vấn</strong>
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important">
+                <td style="">
                   <input type="text" value="" name="trinh_do_hoc_van_me">
                 </td>
 
@@ -693,7 +698,7 @@
               <tr>
 
                 <td style="border: none !important;width: 125px;">Địa chỉ thường trú:</td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="dia_chi_thuong_tru_me" colspan="3"> <input type="text" value="" name="dia_chi_thuong_tru_me"></td>
+                <td style="" id="dia_chi_thuong_tru_me" colspan="3"> <input type="text" value="" name="dia_chi_thuong_tru_me"></td>
               </tr>
 
             </tbody>
@@ -704,9 +709,9 @@
               <tr>
 
                 <td style="border: none !important;width: 132px;">Nơi cư trú hiện nay:</td>
-                <td style="width: 501px;border: none !important;border-bottom: 1px dotted black !important;" id="dia_chi_cu_tru_me" colspan="3"> <input type="text" value="" name="dia_chi_cu_tru_me"></td>
+                <td style="width: 501px;;" id="dia_chi_cu_tru_me" colspan="3"> <input type="text" value="" name="dia_chi_cu_tru_me"></td>
                 <td style="border: none !important;width: 80px;">Điện thoại:</td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="sdt_me" colspan="3">
+                <td style="" id="sdt_me" colspan="3">
                   <input type="text" value="" name="sdt_me">
                 </td>
               </tr>
@@ -719,12 +724,12 @@
               <tr>
                 <td style="border: none !important;width: 89px;">Nghề nghiệp
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="nghe_nghiep_me">
+                <td style="" id="nghe_nghiep_me">
                   <input type="text" value="" name="nghe_nghiep_me">
                 </td>
                 <td style="border: none !important;width: 91px;">Nơi công tác:
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="noi_cong_tac_me">
+                <td style="" id="noi_cong_tac_me">
                   <input type="text" value="" name="noi_cong_tac_me">
                 </td>
               </tr>
@@ -742,47 +747,47 @@
 
               <tr>
                 <td style="border: none !important;width: 76px;">Họ và tên: </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="anh_chi_1">
+                <td style="" id="anh_chi_1">
                   <input type="text" value="" name="anh_chi_1">
                 </td>
                 <td style="border: none !important;width: 70px;">Sinh năm: </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="anh_chi_nam_sinh_1">
+                <td style="" id="anh_chi_nam_sinh_1">
                   <input type="text" value="" class="datepicker" name="anh_chi_nam_sinh_1">
                 </td>
                 <td style="border: none !important;width: 94px;">Nơi công tác:
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="anh_chi_noi_cong_tac_1">
+                <td style="" id="anh_chi_noi_cong_tac_1">
                   <input type="text" value="" name="anh_chi_noi_cong_tac_1">
                 </td>
               </tr>
 
               <tr>
                 <td style="border: none !important;width: 64px;">Họ và tên: </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="anh_chi_2">
+                <td style="" id="anh_chi_2">
                   <input type="text" value="" name="anh_chi_2">
                 </td>
                 <td style="border: none !important;width: 59px;">Sinh năm: </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="anh_chi_nam_sinh_2">
+                <td style="" id="anh_chi_nam_sinh_2">
                   <input type="text" value="" class="datepicker" name="anh_chi_nam_sinh_2">
                 </td>
                 <td style="border: none !important;width: 80px;">Nơi công tác:
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="anh_chi_noi_cong_tac_2">
+                <td style="" id="anh_chi_noi_cong_tac_2">
                   <input type="text" value="" name="anh_chi_noi_cong_tac_2">
                 </td>
               </tr>
               <tr>
                 <td style="border: none !important;width: 64px;">Họ và tên: </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important">
+                <td style="">
                   <input type="text" value="" name="anh_chi_3">
                 </td>
                 <td style="border: none !important;width: 59px;">Sinh năm: </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="anh_chi_nam_sinh_3">
+                <td style="" id="anh_chi_nam_sinh_3">
                   <input type="text" value="" name="anh_chi_nam_sinh_3" class="datepicker">
                 </td>
                 <td style="border: none !important;width: 80px;">Nơi công tác:
                 </td>
-                <td style="border: none !important;border-bottom: 1px dotted black !important" id="anh_chi_noi_cong_tac_3">
+                <td style="" id="anh_chi_noi_cong_tac_3">
                   <input type="text" value="" name="anh_chi_noi_cong_tac_3">
                 </td>
               </tr>
@@ -799,19 +804,19 @@
                 <tr>
                   <td style="border: none !important;width: 250px;"> <strong>Họ và tên người giám hộ (Nếu có): </strong>
                   </td>
-                  <td style="border: none !important;border-bottom: 1px dotted black !important" id="nguoi_giam_ho">
+                  <td style="" id="nguoi_giam_ho">
                     <input type="text" value="" name="nguoi_giam_ho">
                   </td>
 
                   <td style="border: none !important;width: 70px;"> <strong>Sinh năm</strong>
                   </td>
-                  <td style="border: none !important;border-bottom: 1px dotted black !important" id="nam_sinh_nguoi_giam_ho">
+                  <td style="" id="nam_sinh_nguoi_giam_ho">
                     <input type="text" value="" name="nam_sinh_nguoi_giam_ho" class="datepicker">
                   </td>
 
                   <td style="border: none !important;width: 130px;" id="trinh_do_hoc_van_nguoi_giam_ho"> <strong>Trình độ học vấn</strong>
                   </td>
-                  <td style="border: none !important;border-bottom: 1px dotted black !important">
+                  <td style="">
                     <input type="text" value="" name="trinh_do_hoc_van_nguoi_giam_ho">
                   </td>
 
@@ -827,7 +832,7 @@
                 <tr>
 
                   <td style="border: none !important;width: 125px;">Địa chỉ thường trú:</td>
-                  <td style="border: none !important;border-bottom: 1px dotted black !important" id="dia_chi_thuong_tru_nguoi_giam_ho" colspan="3"> <input name="dia_chi_thuong_tru_nguoi_giam_ho" type="text" value=""></td>
+                  <td style="" id="dia_chi_thuong_tru_nguoi_giam_ho" colspan="3"> <input name="dia_chi_thuong_tru_nguoi_giam_ho" type="text" value=""></td>
                 </tr>
 
               </tbody>
@@ -838,9 +843,9 @@
                 <tr>
 
                   <td style="border: none !important;width: 132px;">Nơi cư trú hiện nay:</td>
-                  <td style="width: 501px;border: none !important;border-bottom: 1px dotted black !important;" id="student_addr" colspan="3"> <input type="text" value="" name="dia_chi_cu_tru_nguoi_giam_ho"></td>
+                  <td style="width: 501px;;" id="student_addr" colspan="3"> <input type="text" value="" name="dia_chi_cu_tru_nguoi_giam_ho"></td>
                   <td style="border: none !important;width: 81px;">Điện thoại:</td>
-                  <td style="border: none !important;border-bottom: 1px dotted black !important" id="dia_chi_cu_tru_nguoi_giam_ho" colspan="3">
+                  <td style="" id="dia_chi_cu_tru_nguoi_giam_ho" colspan="3">
                     <input type="text" value="" name="sdt_nguoi_giam_ho">
                   </td>
                 </tr>
@@ -853,12 +858,12 @@
                 <tr>
                   <td style="border: none !important;width: 89px;">Nghề nghiệp
                   </td>
-                  <td style="border: none !important;border-bottom: 1px dotted black !important" id="nghe_nghiep_nguoi_giam_ho">
+                  <td style="" id="nghe_nghiep_nguoi_giam_ho">
                     <input type="text" value="" name="nghe_nghiep_nguoi_giam_ho">
                   </td>
                   <td style="border: none !important;width: 92px;">Nơi công tác:
                   </td>
-                  <td style="border: none !important;border-bottom: 1px dotted black !important" id="noi_cong_tac_nguoi_giam_ho"> <input type="text" value="" name="noi_cong_tac_nguoi_giam_ho">
+                  <td style="" id="noi_cong_tac_nguoi_giam_ho"> <input type="text" value="" name="noi_cong_tac_nguoi_giam_ho">
                   </td>
                 </tr>
               </tbody>
@@ -1153,7 +1158,7 @@
 ">Trân trọng,</p>
             </div>
 
-            <table class="ky_ten">
+            <table class="ky_ten table-no-border">
               <tbody>
                 <tr style="font-weight: bold;">
                   <td id="chu_ky_nguoi_nuoi_duong">Người nuôi dưỡng (**)</td>
@@ -1183,7 +1188,7 @@
             <u class="title__big" style="
     margin: 38px;
 ">Hồ sơ đính kèm:</u>
-            <table class="table table-bordered ">
+            <table class="thanh_tich_hoc_tap_2">
               <thead>
                 <tr class="text-center">
 
@@ -1420,7 +1425,7 @@
             cache: false,
             success: function(response) {
 
-              
+
               var result = JSON.parse(response);
 
               $('.alert h3').text(result.msg);
@@ -1511,16 +1516,16 @@
           method: "GET",
           url: origin + "/Route.php?page=hoc-bong&action=get&id=" + id,
           success: function(response) {
-          
+
             var result = JSON.parse(response);
 
             var data = result.data;
 
-            $('#img_avatar').attr('src', "../" + data.avatar);
+            $('#img_avatar').attr('src',  data.avatar);
             $('#gioi_tinh').val(data.gioi_tinh);
             for (const [key, value] of Object.entries(data)) {
 
-         
+
               if ($('input[name=' + key + ']').prop('type') == 'file') {
                 $('input[name=' + key + ']').val('');
               } else {
@@ -1652,4 +1657,32 @@
 
 
     });
+    getConfig();
+    let config = 0;
+
+    function getConfig() {
+        var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/internal/quan_li_file";
+        $.ajax({
+            method: "GET",
+            url: origin + "/Route.php?controller=BaseController&action=getConfig&page=base",
+            success: function(response) {
+                config = response;
+             
+                result = JSON.parse(response);
+                let img_src = $("#img_avatar").attr("src");
+             
+                $("#img_avatar").attr("src", result.origin + "/" + img_src);
+
+                var hrefArray = document.getElementsByTagName("a");
+                for (var i = 0; i < hrefArray.length; i++) {
+                   if (hrefArray[i].getAttribute("href") != '#')
+                      hrefArray[i].setAttribute("href", result.origin + hrefArray[i].getAttribute("href"));
+                }
+            },
+
+            error: function(response) {
+                console.log(response);
+            }
+        });
+    }
   </script>

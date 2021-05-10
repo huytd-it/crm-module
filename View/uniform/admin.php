@@ -4,7 +4,7 @@
 <head>
 
 
-  <title>Quản lý file</title>
+  <title>Đồng phục</title>
   <style>
     .card {
       margin-top: 50px;
@@ -24,6 +24,17 @@
       * {
         font-size: 11px;
       }
+    }
+
+    select,
+    input {
+      border: 1px solid gainsboro !important;
+      padding: 5px !important;
+      min-width: 50px;
+      font-size: 15px !important;
+    }
+    table.dataTable thead th, table.dataTable thead td {
+      padding: 10px 18px !important;
     }
   </style>
 </head>
@@ -49,12 +60,9 @@
 
           </div>
           <div class="card-body table-responsive-lg">
-            <div class="form-group">
-              <label for="search_table">Search</label>
-              <input class="form-control" id="search_table">
-            </div>
+
             <br>
-            <div class="table-responsive " style="overflow-x: scroll;min-width:800px">
+            <div class="table-responsive " style="overflow-x: scroll;min-width:800px; width:100%">
               <table class="table table-hover table-bordered" id="table" style="overflow:scroll;height:100px">
                 <thead class="text-center">
                   <tr>
@@ -69,8 +77,8 @@
                     <th scope="col">Lớp</th>
                     <th scope="col">Files</th>
                     <th scope="col">Edit - Print - Delete</th>
-               
-                   
+
+
                   </tr>
                 </thead>
                 <tbody id="row-id">
@@ -86,24 +94,20 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
-  </script>
-
   <!-- Optional JavaScript; choose one of the two! -->
   <script>
     $(document).ready(function() {
-
       var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/internal/quan_li_file";
       fetchAll();
 
       function deleteData(id) {
         $.ajax({
           method: "GET",
-          url:origin +  "/Route.php?action=delete&page=hoc-bong",
+          url: origin + "/Route.php?action=delete&page=hoc-bong",
           success: function(response) {
             console.log(response);
             let result = JSON.parse(response);
-            $('.card').prepend("<p class='alert alert-danger text-center'>"+result.msg+"</p>")
+            $('.card').prepend("<p class='alert alert-danger text-center'>" + result.msg + "</p>")
 
 
           },
@@ -121,7 +125,7 @@
           method: "GET",
           url: origin + "/Route.php?controller=HocBongController&action=getAll&page=hoc-bong",
           success: function(response) {
-          
+
             let result = JSON.parse(response);
 
             let data = result.data;
@@ -129,7 +133,7 @@
             showList(data, config);
 
             $('.btn-primary').click(function() {
-              window.open( '?p=internal.quan_li_file.view.hoc-bong.form_hoc_bong/0/view&mode=view&id=' + $(this).attr('id'), 'width:1000',
+              window.open('?p=internal.quan_li_file.view.hoc-bong.form_hoc_bong/0/view&mode=view&id=' + $(this).attr('id'), 'width:1000',
                 'height:1000')
             });
 
@@ -232,12 +236,15 @@
 
           }
           $('#row-id').append(out);
+          $('#table').DataTable();
+          // $('select').select2();
+
         }
         $('#btn-6').click(function() {
           window.open('?p=internal.quan_li_file.view.hoc-bong.form_hoc_bong/0/view&mode=create&lop=6', 'width:1000', 'height:1000')
         });
         $('#btn-10').click(function() {
-          window.open( '?p=internal.quan_li_file.view.hoc-bong.form_hoc_bong/0/view&mode=create&lop=10', 'width:1000', 'height:1000')
+          window.open('?p=internal.quan_li_file.view.hoc-bong.form_hoc_bong/0/view&mode=create&lop=10', 'width:1000', 'height:1000')
         });
       };
 

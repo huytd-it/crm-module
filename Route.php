@@ -6,6 +6,7 @@ use Config\WebConfig;
 use Controllers\BaseController;
 use Controllers\DuTuyenController;
 use Controllers\HocBongController;
+use Controllers\UniformController;
 use \Exception;
 
 class Route
@@ -118,6 +119,17 @@ switch ($route->page) {
         return $con->index();
       }
     }
+  case 'uniform': {
+   
+      $con = new UniformController();
+      if ($route->action) {
+        return $con->{$route->action}();
+      } else if ($route->page) {
+        return $route->view($link);
+      } else {
+        return $con->index();
+      }
+    }
   case 'base': {
       if ($route->action) {
         return $con->{$route->action}();
@@ -125,6 +137,7 @@ switch ($route->page) {
         return $route->view($link);
       }
     }
+ 
   default: {
       return $route->view();
     }

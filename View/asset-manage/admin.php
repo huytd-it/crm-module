@@ -36,6 +36,11 @@
     table.dataTable thead th, table.dataTable thead td {
       padding: 10px 18px !important;
     }
+    table td, table th {
+      text-align: center;
+    }
+    
+    
   </style>
 </head>
 
@@ -67,21 +72,17 @@
                 <thead class="text-center">
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Ảnh</th>
+                   
                     <th scope="col">Họ và tên</th>
-                    <th scope="col">Giới tính</th>
-                    <th scope="col">Nơi sinh</th>
-                    <th scope="col">Năm sinh</th>
-                    <th scope="col">Họ tên cha</th>
-                    <th scope="col">Họ tên mẹ</th>
+                    <th scope="col">Số điện thoại</th>
+                    <th scope="col">Giới tính</th>        
                     <th scope="col">Lớp</th>
-                    <th scope="col">Files</th>
                     <th scope="col">Edit - Print - Delete</th>
 
 
                   </tr>
                 </thead>
-                <tbody id="row-id">
+                <tbody id="row-id" >
 
                 </tbody>
               </table>
@@ -123,9 +124,9 @@
       function fetchAll() {
         $.ajax({
           method: "GET",
-          url: origin + "/Route.php?controller=HocBongController&action=getAll&page=hoc-bong",
+          url: origin + "/Route.php?controller=HocBongController&action=getAll&page=uniform",
           success: function(response) {
-
+           
             let result = JSON.parse(response);
 
             let data = result.data;
@@ -133,12 +134,12 @@
             showList(data, config);
 
             $('.btn-primary').click(function() {
-              window.open('?p=internal.quan_li_file.view.hoc-bong.form_hoc_bong/0/view&mode=view&id=' + $(this).attr('id'), 'width:1000',
+              window.open('?p=internal.quan_li_file.view.asset-manage.form-print/0/view&mode=view&id=' + $(this).attr('id'), 'width:1000',
                 'height:1000')
             });
 
             $('.btn-warning').click(function() {
-              window.open('?p=internal.quan_li_file.view.hoc-bong.form_hoc_bong/0/view&mode=edit&id=' + $(this).attr('id'), 'width:1000',
+              window.open('?p=internal.quan_li_file.view.asset-manage.form-print/0/view&mode=edit&id=' + $(this).attr('id'), 'width:1000',
                 'height:1000')
             });
             $('.btn-danger').click(function() {
@@ -170,48 +171,28 @@
         if (data) {
           let out = "";
           for (var i = 0; i < data.length; i++) {
-            out += ' <tr><th scope="row">' + (i + 1) + '</th>' +
-              ' <td><img src="' + config.origin + "/" + data[i].avatar + ' " width="50" height="50"></td>' +
-              ' <td>' + data[i].ho_ten_hs + ' </td>' + ' <td>' + data[i].gioi_tinh + '</td>' +
-              ' <td>' + data[i].dia_chi_cu_tru_hs + '</td>' +
-              ' <td>' + data[i].nam_sinh_hs + ' </td>' + ' <td>' + data[i].ho_ten_cha + '<br>' + data[i]
-              .nam_sinh_cha + '</td>' +
-              ' <td>' + data[i].ho_ten_me + '<br>' + data[i].nam_sinh_me + ' </td>' +
-              ' <td>' + data[i].lop + '</td>';
+            out += ' <tr ><th scope="row">' + (i + 1) + '</th>' +
+              ' <td> ' + data[i].student_fullname +'</td>' +
+              ' <td>' + data[i].number_phone + ' </td>' + ' <td>' + data[i].student_sex + '</td>' +
+              // ' <td>' + data[i].dia_chi_cu_tru_hs + '</td>' +
+              // ' <td>' + data[i].nam_sinh_hs + ' </td>' + ' <td>' + data[i].ho_ten_cha + '<br>' + data[i]
+              // .nam_sinh_cha + '</td>' +
+              // ' <td>' + data[i].ho_ten_me + '<br>' + data[i].nam_sinh_me + ' </td>' +
+              ' <td>' + data[i].class_id + '</td>';
 
-            out += ' <td><a href="javascript:void(0)" id="' + data[i].dinh_kem_giay_khen + '">1. Giấy khen</a></br>' +
-              ' <a href="javascript:void(0)" id="' + data[i].dinh_kem_tieng_anh + '">2. Chứng chỉ tiếng anh</a></br>' +
-              ' <a href="javascript:void(0)" id="' + data[i].dinh_kem_khuyet_tat +
-              '">3. Chứng nhận khuyết tật</a></br>' +
-              ' <a href="javascript:void(0)" id="' + data[i].dinh_kem_thcs + '">4. Học bạ</a></br>' +
-              ' <a href="javascript:void(0)" id="' + data[i].dinh_kem_ho_ngheo + '">5. Chứng nhận hộ nghèo</a></br>' +
-              ' <a href="javascript:void(0)" id="' + data[i].dinh_kem_ho_so_cm_thu_nhap +
-              '">6. Chứng nhận thu nhập</a></br>';
-            if (data[i].giay_to_khac_1 != "") {
-              out += ' <a href="javascript:void(0)" id="' + data[i].file_giay_to_khac_1 + '">7. ' + data[i]
-                .giay_to_khac_1 + '</a></br>';
-            }
-            if (data[i].giay_to_khac_2 !== "") {
-              out += ' <a href="javascript:void(0)" id="' + data[i].file_giay_to_khac_2 + '">8. ' + data[i]
-                .giay_to_khac_2 + '</a></br>';
-
-            }
-
-            if (data[i].giay_to_khac_3 != "") {
-              out += ' <a href="javascript:void(0)" id="' + data[i].file_giay_to_khac_3 + '">9. ' + data[i]
-                .giay_to_khac_3 + '</a></br>';
-
-            }
-
-            if (data[i].giay_to_khac_4 != "") {
-              out += ' <a href="javascript:void(0)" id="' + data[i].file_giay_to_khac_4 + '">10. ' + data[i]
-                .giay_to_khac_4 + '</a></br>';
-
-            }
+            // out += ' <td><a href="javascript:void(0)" id="' + data[i].dinh_kem_giay_khen + '">1. Giấy khen</a></br>' +
+            //   ' <a href="javascript:void(0)" id="' + data[i].dinh_kem_tieng_anh + '">2. Chứng chỉ tiếng anh</a></br>' +
+            //   ' <a href="javascript:void(0)" id="' + data[i].dinh_kem_khuyet_tat +
+            //   '">3. Chứng nhận khuyết tật</a></br>' +
+            //   ' <a href="javascript:void(0)" id="' + data[i].dinh_kem_thcs + '">4. Học bạ</a></br>' +
+            //   ' <a href="javascript:void(0)" id="' + data[i].dinh_kem_ho_ngheo + '">5. Chứng nhận hộ nghèo</a></br>' +
+            //   ' <a href="javascript:void(0)" id="' + data[i].dinh_kem_ho_so_cm_thu_nhap +
+            //   '">6. Chứng nhận thu nhập</a></br>';
+      
 
             out += '</td>';
 
-            out += ' <td class="text-center"> <button type="button" class="btn btn-warning"  id="' + data[i].code +
+            out += ' <td class="text-center"> <button type="button" class="btn btn-warning"  id="' + data[i].id +
               '"><svg ' +
               'xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"' +
               ' class="bi bi-pencil-square" viewBox="0 0 16 16">' +
@@ -220,7 +201,7 @@
               '  <path fill-rule="evenodd"' +
               ' d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />' +
               ' </svg> </button> ' +
-              '  <button type="button" class="btn btn-primary" style="margin:5px" id="' + data[i].code +
+              '  <button type="button" class="btn btn-primary" style="margin:5px" id="' + data[i].id +
               '"> <svg xmlns="http://www.w3.org/2000/svg"' +
               'width="16" height="16" fill="currentColor"class="bi bi-arrows-fullscreen" viewBox="0 0 16 16"><path fill-rule="evenodd"' +
               'd="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" /> </svg>'
@@ -241,10 +222,10 @@
 
         }
         $('#btn-6').click(function() {
-          window.open('?p=internal.quan_li_file.view.hoc-bong.form_hoc_bong/0/view&mode=create&lop=6', 'width:1000', 'height:1000')
+          window.open('?p=internal.quan_li_file.view.asset-manage.form/0/view&mode=create&lop=6', 'width:1000', 'height:1000')
         });
         $('#btn-10').click(function() {
-          window.open('?p=internal.quan_li_file.view.hoc-bong.form_hoc_bong/0/view&mode=create&lop=10', 'width:1000', 'height:1000')
+          window.open('?p=internal.quan_li_file.view.asset-manage.form-print/0/student_id=100004', 'width:1000', 'height:1000')
         });
       };
 

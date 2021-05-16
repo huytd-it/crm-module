@@ -1470,7 +1470,7 @@
             processData: false,
             cache: false,
             success: function(response) {
-              console.log(response);
+             
               var result = JSON.parse(response);
               $('.alert h3').text(result.msg);
               $('#close').removeClass('hide');
@@ -1561,7 +1561,6 @@
 
         }
         if (Number.parseInt($('input[name=lop]').val()) == 10) {
-
           $('#ket_qua_hoc_tap_table_2').hide();
           $('#ket_qua_hoc_tap_table').show();
         } else {
@@ -1592,7 +1591,7 @@
       var lop = getUrlParameter('lop');
       //LOP 10 va LOP 6
 
-      $('input[name=lop]').change(addRow);
+      $('input[name=lop]').on('input', addRow);
 
 
       var id = getUrlParameter('id');
@@ -1601,7 +1600,6 @@
 
 
       $('#img_avatar').click(function() {
-
         $("#imgInp").click();
         $("#imgInp").change(function() {
           readURL(this);

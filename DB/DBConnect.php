@@ -37,7 +37,7 @@ class DBConnect extends Dbconfig
         } else {
             $sql = "SELECT $select FROM $table WHERE $where";
         }
-
+      
         $stmt = $this->connectString->prepare($sql);
         $stmt->execute();
 
@@ -50,6 +50,18 @@ class DBConnect extends Dbconfig
 
         $stmt = $this->connectString->prepare($sql);
 
+        return  $stmt->execute();
+    }
+    public function insertMultipleDB($table_name, $cols, $values_array)
+    {
+        $list = "";
+        foreach($values_array as $values) {
+            $list .= "({$values}),";
+        }
+        $sql = "INSERT INTO {$table_name} ({$cols}) VALUES {$list}";
+        $sql = trim($sql,',');
+     
+        $stmt = $this->connectString->prepare($sql);
         return  $stmt->execute();
     }
     public function updateDB($table_name, $array_cols, $where =  null)
@@ -68,6 +80,12 @@ class DBConnect extends Dbconfig
     public function excuteSql($sql)
     {
         return $this->connectString->exec($sql);
+    }
+    public function getDataFromQuery($query_string)
+    {
+        $stmt = $this->connectString->prepare($query_string);
+       $stmt->execute();
+       return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     public function createTable($table_name, $array_cols)
     {

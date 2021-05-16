@@ -26,7 +26,7 @@ try {
     <div class="inner">
       <ul class="no-bullets menuTab" id=ulList_2>
         <li class="active" id="li_online">
-          <a href="#" class=lang vi="Kê khai hàng ngày(tại trường)" onclick="_loadPageContentURL('pages/internal/quan_li_file/View/asset-manage/uniform-form.php');">
+          <a href="#" class=lang vi="Kê khai hàng ngày(tại trường)" onclick="_loadPageContentURL('pages/internal/quan_li_file/View/asset-manage/admin.php');">
             Đồng phục
           </a>
         </li>
@@ -85,5 +85,5 @@ try {
 </script>
 <script type="text/javascript">
   setupMenuTab();
-  _loadPageContentURL('pages/internal/quan_li_file/View/asset-manage/uniform-form.php');
+  _loadPageContentURL('pages/internal/quan_li_file/View/asset-manage/admin.php');
 </script>

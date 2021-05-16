@@ -212,9 +212,9 @@ class BaseController
 
     return $array;
   }
-  protected static function validateEmpty($indispensables, $request)
+  protected static function validateEmpty($indispensables, $request, $string = ' bị bỏ trống')
   {
-
+    $errors = [];
     foreach ($request as $key => $value) {
       if (empty($value)) {
         $errors[] = $key;
@@ -229,13 +229,25 @@ class BaseController
 
         if ($error == $key_indis) {
 
-          $array[$key_indis] = $item . " bị bỏ trống";
+          $array[$key_indis] = $item . $string;
         }
       }
     }
 
     return $array;
   }
+ 
+  public function response($msg, $status, $error = [], $data = [])
+  {
+    $response = ['msg' => $msg, 'status' => $status];
+    if (count($error) > 0)
+      $response['error'] = $error;
+    if (count($data) > 0)
+      $response['data'] = $data;
+    echo json_encode($response);
+    exit();
+  }
+  
   protected static function validateFileEmpty($indispensables)
   {
     foreach ($_FILES as $key => $value) {
@@ -325,10 +337,10 @@ class BaseController
   {
 
 
-    $path = $this->config->getRoot(). "/";
+    $path = $this->config->getRoot() . "/";
 
     $zip_path = $path . $archive_path . $archive_file_name;
-   
+
     if (!file_exists($path . $archive_path)) {
       mkdir($path . $archive_path, 0700, true);
     }
@@ -336,10 +348,9 @@ class BaseController
     if ($zip->open($zip_path, ZIPARCHIVE::CREATE) !== TRUE) {
       exit("Cannot open <$archive_file_name>\n");
     }
-   
+
     foreach ($file_names as $files) {
-      $zip->addFile($path. $path_name . $files, $files);
-      
+      $zip->addFile($path . $path_name . $files, $files);
     }
 
     ob_end_clean();

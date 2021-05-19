@@ -142,13 +142,13 @@ class BaseController
     header('Cache-Control: max-age=0');
     PHPExcel_IOFactory::createWriter($excel, 'Excel2007')->save('php://output');
   }
-  public function unsetKeyFromArray($data, $unset_keys)
+  public function unsetKeyFromArray($data = [], $unset_keys = [])
   {
+    if (is_array($data) || is_object($data))
     foreach ($data as $index => $array) {
-      foreach ($array as $key => $row) {
+      foreach ($array as $key) {
         foreach ($unset_keys as $key_delete) {
           if ($key == $key_delete) {
-
             unset($data[$index][$key]);
           }
         }
@@ -237,7 +237,7 @@ class BaseController
     return $array;
   }
  
-  public function response($msg, $status, $error = [], $data = [])
+  public function response($msg, $status = 200, $error = [], $data = [])
   {
     $response = ['msg' => $msg, 'status' => $status];
     if (count($error) > 0)

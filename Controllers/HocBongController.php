@@ -157,7 +157,7 @@ class HocBongController extends BaseController
       $file = $this->validate_file_hb($file_errors);
 
 
-      $this->response($text, $number, $file);
+      $this->responseText($text, $number, $file);
       //File
       $code = md5($id_next);
       $sql .= "'{$code}',";
@@ -252,9 +252,7 @@ class HocBongController extends BaseController
         
           if ($file['error'] == 0 || $file['error'] == 1) {
             $file_name = "{$key}" . "+" . $file['name'];
-          
-            // $file_name =  iconv("utf-8", "cp936", $file_name);
-           
+
             $sql .= "{$key} = '$file_dir/{$id_next}/$file_name',";
 
             if (!file_exists("$file_dir/{$id_next}/")) {
@@ -320,7 +318,7 @@ class HocBongController extends BaseController
       die();
     }
   }
-  public function response($text, $number, $file)
+  public function responseText($text, $number, $file)
   {
     if (count($number) > 0 || count($text) > 0 || count($file) > 0) {
       $myJson = json_encode(

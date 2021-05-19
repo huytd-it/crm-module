@@ -176,10 +176,7 @@
       font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     }
 
-    input[type=mail]:focus {
-      border-bottom: 3px solid #1296ba;
-      transition: border .3s ease-in-out;
-    }
+
 
     input[type="file"] {
       width: 100%;
@@ -202,48 +199,9 @@
 
     }
 
-    .modal-mail {
-      position: fixed;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      left: 50%;
-      transform: translate(-50%);
-      height: 100%;
-      text-align: center;
-      background-color: rgba(0, 0, 0, 0.534);
-      color: #17a2b8;
 
 
-    }
-
-    .hiden {
-      display: none;
-    }
-
-    .alert-body {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 25px;
-      border-radius: 15px;
-      background-color: #ffffff;
-      width: 500px;
-
-      -webkit-box-shadow: -2px 11px 38px 0px rgba(0, 0, 0, 1);
-      -moz-box-shadow: -2px 11px 38px 0px rgba(0, 0, 0, 1);
-      box-shadow: -2px 11px 38px 0px rgba(0, 0, 0, 1);
-
-
-    }
-
-    .alert-body {
-      animation-name: fade;
-      animation-duration: .5s;
-
-    }
-
+  
     .list {
 
       text-align: left;
@@ -510,10 +468,10 @@
                 <td style="border: none !important;width: 82px;" id="student_fullname"> <strong>Họ và tên <br> Full name: </strong>
                 </td>
                 <td style="">
-                  <input type="text" value="" name="student_fullname">
+                  <input style="width:200px" type="text" value="" name="student_fullname">
                 </td>
 
-                <td style="border: none !important;width: 85px;"> <strong>Mã học sinh <br> Std. Code: </strong>
+                <td style="border: none !important;width: 90px;"> <strong>Mã học sinh <br> Std. Code: </strong>
                 </td>
                 <td style="width: 200px;">
                   <input type="text" value="" name="student_id">
@@ -549,163 +507,34 @@
                 <th style="width:74px">Ghi chú<br>Remarks</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Áo thể dục<br>
-                  Sport shirt
-                </td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Quần thể dục <br>
-                  Sport short
-                </td>
+            <tbody id="hoa_don_tbody">
 
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Áo nam cấp 2<br>
-                  Male’s shirt for junior
-                </td>
 
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-              </tr>
+            </tbody>
+            <tfoot>
               <tr>
-                <td>4</td>
-                <td>Quần nam cấp 2 <br>
-                  Male’s short for junior
-                </td>
+                <td colspan="4" id="total">
+                  <b> Tổng cộng/Total: </b>
 
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td>Áo nữ cấp 2 <br>
-                  Female’s shirt for junior
                 </td>
-
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-              </tr>
-              <tr>
-                <td> 6</td>
-                <td>Váy nữ cấp 2 <br>
-                  Female’s skirt for junior
-                </td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td>Áo nam cấp 3 <br>
-                  Male’s shirt for highschool
-                </td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>Áo nữ cấp 3 <br>
-                  Female’s shirt for highschool
-                </td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-              </tr>
-              <tr>
-                <td>9</td>
-                <td>Áo nữ cấp 3 <br>
-                  Female’s shirt for highschool
-                </td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-              </tr>
-              <tr>
-                <td>10</td>
-
-                <td>Áo blouse phòng thí nghiệm <br>
-                  Blouse
-                </td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-              </tr>
-              <tr>
-                <td>11</td>
-                <td>Tập 52 trang <br>
-                  Notebook 52 page
-                </td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-              </tr>
-              <tr>
-                <td>12</td>
-                <td>Tập 80 trang <br>
-                  Notebook 80 page
-                </td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-                <td>hello</td>
-              </tr>
-              <tr>
-                <td colspan="4"></td>
                 <td colspan="3">
                   <input type="checkbox" name="" id="">Cash/Tiền mặt<br>
                   <input type="checkbox" name="" id="">Bank/Chuyển khoản
                 </td>
 
               </tr>
+            </tfoot>
+           
 
-            </tbody>
           </table>
         </div>
-        <div style="float: right;margin-right: 15px;">
+        <div style="float: right;margin-right: 25px;">
           <div style="text-align:center">
             Ngày phát phiếu <input type="text" name="" id="" style="width:auto;border:none !important;padding:0;font-size:15px !important;text-align:left;
           border-bottom:1px dotted black !important; border-radius:0 !important">
             <p style="font-weight:bold">NGƯỜI PHÁT PHIẾU / FORM DELIVER </p>
             <p>(Ký và ghi rõ họ tên / Signed and write full name)</p>
-            <input type="text" name="" id="" style="margin-top:70px;width:auto;border:none !important;padding:0;font-size:15px !important;text-align:left;
+            <input type="text" name="from_deliver" id="" style="margin-top:70px;width:auto;border:none !important;padding:0;font-size:15px !important;text-align:left;
           border-bottom:1px dotted black !important; border-radius:0 !important; text-align:center">
           </div>
         </div>
@@ -720,23 +549,23 @@
           <thead>
             <tr>
               <td style=" text-align: center;">
-              <b>NGƯỜI GIAO / DELIVER</b><br>
+                <b>NGƯỜI GIAO / DELIVER</b><br>
                 (Ký và ghi rõ họ tên )<br>
                 (Signed and write full name)<br>
-              </th>
+                </th>
               <td style="text-align: center;">
-              <b>  NGƯỜI NHẬN/ RECEIVER</b>
-              <br>
+                <b> NGƯỜI NHẬN/ RECEIVER</b>
+                <br>
                 (Ký và ghi rõ họ tên )<br>
                 (Signed and write full name)<br>
 
-              </th>
+                </th>
             </tr>
           </thead>
           <tbody>
             <tr class="input-sign">
-              <td style="text-align: center;"><input style="text-align: center;  width:60%" type="text" name="" id=""></td>
-              <td style="text-align: center;"><input style="text-align: center; width:60%" type="text" name="" id=""></td>
+              <td style="text-align: center;"><input style="text-align: center;  width:60%" type="text" name="deliver" id=""></td>
+              <td style="text-align: center;"><input style="text-align: center; width:60%" type="text" name="receiver" id=""></td>
             </tr>
           </tbody>
         </table>
@@ -770,9 +599,7 @@
 
       });
       let status = 0;
-      // $('.alert').click(function() {
-      //   $(".alert").toggleClass("hide");
-      // });
+
       $('#close').click(function() {
         $('.alert').toggleClass("hide");
         if (status == 1) {
@@ -795,7 +622,7 @@
         data.append('ho_ngheo', $("input[name=ho_ngheo]").is(':checked') ? 1 : 0);
         data.append('khuyet_tat', $("input[name=khuyet_tat]").is(':checked') ? 1 : 0);
 
-     
+
 
         if (mode == 'create') {
           $.ajax({
@@ -899,14 +726,12 @@
           method: "GET",
           url: origin + "/Route.php?page=uniform&action=get&id=" + id,
           success: function(response) {
-            console.log(response);
+            
             var result = JSON.parse(response);
 
             var data = result.data;
+            getBill(data.student_id);
 
-            // $('#img_avatar').attr('src', data.avatar);
-            // $('#gioi_tinh').val(data.gioi_tinh);
-            console.log(data);
             for (const [key, value] of Object.entries(data)) {
 
 
@@ -937,7 +762,65 @@
 
       }
 
+      function getBill(id) {
+        $.ajax({
+          method: "GET",
+          url: origin + "/Route.php?page=uniform&action=getBill&id=" + id,
+          success: function(response) {
+            console.log(response);
+            var result = JSON.parse(response).data;
+            addBill(result);
 
+          },
+          error: function(response) {
+            $('.alert h3').text("Errors");
+            $('.alert').css("color", "red");
+            $('.alert i').removeClass('far fa-check-circle').addClass('fas fa-exclamation-circle');
+            $('.alert').toggleClass("hide");
+          }
+
+
+        });
+
+      }
+
+ 
+      function formatPrice(price) {
+        return Intl.NumberFormat('vn-VN').format(price);
+      }
+      function calculateAmount(quantity, price) {
+        return quantity * price;
+      }
+
+      function addBill(data) {
+       
+        var total = 0;
+        if (data) {
+          let out = "";
+          for (var i = 0; i < data.length; i++) {
+            total += calculateAmount(data[i].quantity, data[i].price);
+            out += ' <tr ><th scope="row">' + (i + 1) + '</th>' +
+              ' <td> ' + data[i].name + '<br>' + data[i].en_name + '</td>' +
+              ' <td>' + data[i].quantity + ' </td>' + ' <td>' +formatPrice(data[i].price) + '</td>' +
+              ' <td>' + formatPrice(calculateAmount(data[i].quantity, data[i].price)) + '</td>';
+
+
+
+            out += '<td>' + data[i].size_name + '</td>';
+            out += '<td>' + data[i].note + '</td>';
+
+
+            out += "</tr>";
+
+
+
+          }
+          $('#total').append(formatPrice(total));
+          $('#hoa_don_tbody').append(out);
+          // $('select').select2();
+
+        }
+      }
 
       function addRow() {
         if (lop != undefined) {

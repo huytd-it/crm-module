@@ -12,9 +12,7 @@ try {
   echo $e->getMessage();
 }
 ?>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 
 
 <br>
@@ -30,11 +28,11 @@ try {
             Đồng phục
           </a>
         </li>
-        <!-- <li id="li_hoc_bong">
-          <a href="#" class=lang vi="Kê khai hàng ngày(tại trường)" onclick="_loadPageContentURL('pages/internal/quan_li_file/View/hoc-bong/admin_list.php');">
-            Học bổng
+        <li id="li_hoc_bong">
+          <a href="#" class=lang vi="Kê khai hàng ngày(tại trường)" onclick="_loadPageContentURL('pages/internal/quan_li_file/View/asset-manage/update-form.php');">
+            Kiểm tra
           </a>
-        </li> -->
+        </li>
 
 
       </ul>
@@ -44,13 +42,6 @@ try {
 <div id="divPageContent" style="padding: 0px;background-image: url('images/2019-hinh-toan.jpg');background-size: cover;min-height: 1000px;background-attachment: fixed;">
 
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-<script src="pages/internal/quan_li_file/view/publish/plugin/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-
-<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
 
 
 <script>

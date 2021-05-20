@@ -31,7 +31,7 @@ class BaseController
     $this->request_post = $_POST;
     $this->db = new DBConnect();
     $this->router = new Route();
-    $this->config  = new WebConfig('pages/internal/quan_li_file');
+    $this->config  = new WebConfig('pages/MVC');
   }
   /**
    * Tạo file Excel từ array

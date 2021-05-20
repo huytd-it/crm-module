@@ -27,12 +27,12 @@ try {
         <div class="inner">
             <ul class="no-bullets menuTab" id=ulList_2>
                 <li class="active" id="li_online">
-                    <a href="#" class=lang vi="Kê khai hàng ngày(tại trường)" onclick="_loadPageContentURL('pages/internal/quan_li_file/View/du-tuyen/du-tuyen-admin.php');">
+                    <a href="#" class=lang vi="Kê khai hàng ngày(tại trường)" onclick="_loadPageContentURL('pages/MVC/View/du-tuyen/du-tuyen-admin.php');">
                         Dự tuyển
                     </a>
                 </li>
                 <li id="li_hoc_bong">
-                    <a href="#" class=lang vi="Kê khai hàng ngày(tại trường)" onclick="_loadPageContentURL('pages/internal/quan_li_file/View/hoc-bong/admin_list.php');">
+                    <a href="#" class=lang vi="Kê khai hàng ngày(tại trường)" onclick="_loadPageContentURL('pages/MVC/View/hoc-bong/admin_list.php');">
                         Học bổng
                     </a>
                 </li>
@@ -71,7 +71,7 @@ try {
     let config = 0;
 
     function getConfig() {
-        var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/internal/quan_li_file";
+        var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
         $.ajax({
             method: "GET",
             url: origin + "/Route.php?controller=BaseController&action=getConfig&page=base",
@@ -97,5 +97,5 @@ try {
 </script>
 <script type="text/javascript">
     setupMenuTab();
-    _loadPageContentURL('pages/internal/quan_li_file/View/du-tuyen/du-tuyen-admin.php');
+    _loadPageContentURL('pages/MVC/View/du-tuyen/du-tuyen-admin.php');
 </script>

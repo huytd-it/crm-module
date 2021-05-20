@@ -103,7 +103,7 @@
   <script>
     $(document).ready(function() {
 
-      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/internal/quan_li_file" ;
+      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC" ;
       fetchAll();
       
       function deleteData(id) {

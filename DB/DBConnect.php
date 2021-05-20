@@ -17,8 +17,8 @@ class DBConnect extends Dbconfig
     {
         $this->host = 'localhost';
         $this->user = 'root';
-        $this->pass = '';
-        $this->dbname = 'lsts_2021_sandbox';
+        $this->pass = 'lsts@123';
+        $this->dbname = 'lsts_2021';
         $this->connectString = $this->connectDB();
     }
 

@@ -1329,7 +1329,7 @@
       $('#send').click(function() {
         $(".modal-mail").toggleClass("hide");
       });
-      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/internal/quan_li_file";
+      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
 
       function validate(text, number, file) {
 
@@ -1659,7 +1659,7 @@
     let config = 0;
 
     function getConfig() {
-        var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/internal/quan_li_file";
+        var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
         $.ajax({
             method: "GET",
             url: origin + "/Route.php?controller=BaseController&action=getConfig&page=base",

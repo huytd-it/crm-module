@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-  <link rel="stylesheet" href="pages/internal/quan_li_file/view/publish/plugin/switchery/dist/switchery.css" />
+  <link rel="stylesheet" href="pages/MVC/view/publish/plugin/switchery/dist/switchery.css" />
   <style>
     /* body {
       background-color: #e9ecef;
@@ -182,8 +182,8 @@
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <!-- <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">
   </script> -->
-  <script src="pages/internal/quan_li_file/view/publish/plugin/switchery/dist/switchery.js"></script>
-  <script src="pages/internal/quan_li_file/view/publish/plugin/jquery-3.5.1.js"></script>
+  <script src="pages/MVC/view/publish/plugin/switchery/dist/switchery.js"></script>
+  <script src="pages/MVC/view/publish/plugin/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
@@ -215,7 +215,7 @@
       var formData = new FormData(document.getElementById('form'));
 
 
-      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/internal/quan_li_file";
+      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
       $.ajax({
         method: "POST",
         url: origin + "/Route.php?controller=UniformController&action=create&page=uniform&student_id=" + window.localStorage.getItem('_student_id'),
@@ -262,7 +262,7 @@
     getConfig();
 
     function getConfig() {
-      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/internal/quan_li_file";
+      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
       $.ajax({
         method: "GET",
         url: origin + "/Route.php?controller=UniformController&action=studentInformation&page=uniform&student_id=" + window.localStorage.getItem('_student_id'),

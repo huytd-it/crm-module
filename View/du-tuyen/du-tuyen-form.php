@@ -736,7 +736,7 @@
 
       })
 
-      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/internal/quan_li_file";
+      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
       var mode = getUrlParameter("mode");
       var type = getUrlParameter('type');
 
@@ -940,7 +940,7 @@
     let config = 0;
 
     function getConfig() {
-        var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/internal/quan_li_file";
+        var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
         $.ajax({
             method: "GET",
             url: origin + "/Route.php?controller=BaseController&action=getConfig&page=base",

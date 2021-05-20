@@ -39,7 +39,7 @@ try {
     </div>
   </div>
 </div>
-<div id="divPageContent" style="padding: 0px;background-image: url('images/2019-hinh-toan.jpg');background-size: cover;min-height: 1000px;background-attachment: fixed;">
+<div id="divPageContent" >
 
 </div>
 

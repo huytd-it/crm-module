@@ -20,7 +20,7 @@
 
 
 <body>
-  <div class="container-fluid" style="background-color:gray">
+  <div class="container-fluid">
     <form id="form">
       <div class="row" style="display:flex;justify-content:center; margin-top:40px">
 
@@ -169,7 +169,7 @@
           </div>
         </div>
         <div class="col-lg-10">
-          <div class="card-footer text-center">
+          <div class=" text-center">
             <button type="button" class="btn btn-primary" id="submit"> <sub><i class="las la-2x la-check-circle"></i></sub> Submit</button>
           </div>
         </div>

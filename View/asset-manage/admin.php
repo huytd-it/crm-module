@@ -138,7 +138,7 @@
 
 
   <div class="container-fluid">
-    <div class="row bg-secondary justify-content-center">
+    <div class="row justify-content-center">
       <div class="col-sm-12 ">
 
         <div class="card">

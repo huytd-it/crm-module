@@ -47,7 +47,7 @@
   </style>
 
 <body>
-  <div class="container-fluid" style="background-color:gray">
+  <div class="container-fluid" >
 
   <table class="table table-border">
               <thead>

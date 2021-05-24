@@ -58,10 +58,10 @@
                 </div>
                 <div class="form-group col-lg-12 ">
                   <hr>
-                  <div class="custom-control custom-checkbox">
+                  <!-- <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" id="buy_check" name="dong_y_mua">
                     <label class="custom-control-label" for="buy_check"><b> Đồng ý mua đồng phục cho năm học mới ?</b></label>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -225,23 +225,28 @@
         processData: false,
         cache: false,
         success: function(response) {
-          console.log(response);
+         
+          
           var data = JSON.parse(response);
+          var out_html = data.error.number_phone;
+          
           if (data.status == 200)
             Swal.fire({
               position: 'center',
               icon: 'success',
               title: data.msg,
+             
               showConfirmButton: false,
-              timer: 2000
+              
             });
           else {
             Swal.fire({
               position: 'center',
               icon: 'error',
               title: data.msg,
+              html:out_html,
               showConfirmButton: false,
-              timer: 2000
+              
             });
           }
 

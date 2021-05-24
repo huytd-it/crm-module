@@ -81,7 +81,7 @@
             </tfoot>
           </table>
           <form id="student_bills">
-          <hr>
+            <hr>
             <div class="row">
               <div class="col-lg-6" style="margin:0 auto" id="student_bills_hell">
 
@@ -149,7 +149,12 @@
                 <path d="M5.884 6.68a.5.5 0 1 0-.768.64L7.349 10l-2.233 2.68a.5.5 0 0 0 .768.64L8 10.781l2.116 2.54a.5.5 0 0 0 .768-.641L8.651 10l2.233-2.68a.5.5 0 0 0-.768-.64L8 9.219l-2.116-2.54z" />
                 <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
               </svg> Export Excel</button>
-            <form id="student_bills_main">
+            <!-- <button class="btn btn-outline-info " id="import_excel"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-excel" viewBox="0 0 16 16">
+                <path d="M5.884 6.68a.5.5 0 1 0-.768.64L7.349 10l-2.233 2.68a.5.5 0 0 0 .768.64L8 10.781l2.116 2.54a.5.5 0 0 0 .768-.641L8.651 10l2.233-2.68a.5.5 0 0 0-.768-.64L8 9.219l-2.116-2.54z" />
+                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+              </svg> Import Excel</button> -->
+            <!-- <input type="file" id="input_excel" style="width:100%"> -->
+            <!-- <form id="student_bills_main">
               <div class="row">
                 <div class="form-group col-sm-3">
                   <label for="usr">From Deliver:</label>
@@ -163,7 +168,7 @@
               </div>
 
             </form>
-
+ -->
 
           </div>
           <div class="card-body table-responsive-lg">
@@ -209,6 +214,7 @@
   <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.7/dist/sweetalert2.all.min.js"></script>
   <script src="pages/MVC/view/publish/plugin/switchery/dist/switchery.js"></script>
+  <script src="https://unpkg.com/read-excel-file@4.x/bundle/read-excel-file.min.js"></script>
   <script>
     $(document).ready(function() {
       var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
@@ -226,7 +232,50 @@
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
       });
+      var input = document.getElementById('input_excel')
+    
+      input.addEventListener('change', function() {
+       
+        readXlsxFile(input.files[0]).then(function(rows) {
+          const data = Object.assign({}, rows);
+          console.log({data: Object.assign({}, rows[0])});
+          
+          $.ajax({
+          method: "POST",
+          url: origin + "/Route.php?page=uniform&action=import",
+          data: {h:1222},
+          contentType: false,
+          mimeType: "multipart/form-data",
+          processData: false,
+          cache: false,
+          success: function(response) {
+            console.log(response);
+            var data = JSON.parse(response);
+            if (data.status == 200)
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: data.msg,
+                showConfirmButton: false,
+                timer: 3000
+              });
+            else {
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: data.msg,
+                showConfirmButton: false,
+                timer: 3000
+              });
+            }
 
+          },
+          error: function(response) {
+
+          }
+        });
+        })
+      })
 
 
       $('#duyet-btn').click(function() {
@@ -272,11 +321,11 @@
       function deleteData(id) {
         $.ajax({
           method: "GET",
-          url: origin + "/Route.php?action=delete&page=hoc-bong",
+          url: origin + "/Route.php?action=delete&page=uniform",
           success: function(response) {
 
             let result = JSON.parse(response);
-            $('.card').prepend("<p class='alert alert-danger text-center'>" + result.msg + "</p>")
+           
 
 
           },
@@ -302,12 +351,12 @@
             showList(data, config);
 
             $('.btn-print').click(function() {
-              window.open('?p=internal.quan_li_file.view.asset-manage.form-print/0/view&mode=view&id=' + $(this).attr('id'), 'width:1000',
+              window.open('?p=MVC.view.asset-manage.form-print/0/view&mode=view&id=' + $(this).attr('id'), 'width:1000',
                 'height:1000')
             });
 
             $('.btn-warning').click(function() {
-              // window.open('?p=internal.quan_li_file.view.asset-manage.update-form/0/view&mode=view&id=' + $(this).attr('id'), 'width:1000',
+              // window.open('?p=MVC.view.asset-manage.update-form/0/view&mode=view&id=' + $(this).attr('id'), 'width:1000',
               //   'height:1000')
 
               $('#hoa_don').modal('show');
@@ -408,11 +457,11 @@
         var total = 0;
         var button_data = $('button[data-id=' + id + ']');
         var payment = button_data.attr('data-payment');
-     
+
         if (payment == 1) {
           $('#payment').trigger('click');
-        }else {
-          if($('#payment').is(':checked')){
+        } else {
+          if ($('#payment').is(':checked')) {
             $('#payment').trigger('click');
           }
         }
@@ -459,9 +508,11 @@
             var data = {
               'quantity': uniform.children('input[name="quantity"]').val(),
               'size': uniform.children('select').val(),
-              'id': $(this).attr('data-id')
+              'id': $(this).attr('data-id'),
+              'update_by' :window.localStorage.getItem('_user_name'),
+              'updated_at': (new Date()).toISOString(),
             };
-
+            console.log(data);
             $.ajax({
               method: "POST",
               url: origin + "/Route.php?page=uniform&action=updateUniform",

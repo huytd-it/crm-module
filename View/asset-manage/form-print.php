@@ -69,7 +69,7 @@
 
     .text_header {
 
-
+      text-align: center;
       /* margin-bottom: 15px; */
       font-size: 26px;
       font-weight: bold;
@@ -201,7 +201,7 @@
 
 
 
-  
+
     .list {
 
       text-align: left;
@@ -390,6 +390,7 @@
       }
 
       .text_header {
+
         font-size: 16pt !important;
       }
 
@@ -451,7 +452,9 @@
 
 
             <div style="margin: 20px auto;">
-              <p class="text_header">ĐƠN XIN CẤP HỌC BỔNG HIẾU HỌC LAWRENCE S. TING</p>
+              <p class="text_header">PHIẾU NHẬN ĐỒNG PHỤC VÀ VỞ TẬP <br>
+                UNIFORM AND NOTERBOOK RECEIPT FORM
+              </p>
 
 
             </div>
@@ -524,7 +527,7 @@
 
               </tr>
             </tfoot>
-           
+
 
           </table>
         </div>
@@ -726,7 +729,7 @@
           method: "GET",
           url: origin + "/Route.php?page=uniform&action=get&id=" + id,
           success: function(response) {
-            
+
             var result = JSON.parse(response);
 
             var data = result.data;
@@ -784,16 +787,17 @@
 
       }
 
- 
+
       function formatPrice(price) {
         return Intl.NumberFormat('vn-VN').format(price);
       }
+
       function calculateAmount(quantity, price) {
         return quantity * price;
       }
 
       function addBill(data) {
-       
+
         var total = 0;
         if (data) {
           let out = "";
@@ -801,7 +805,7 @@
             total += calculateAmount(data[i].quantity, data[i].price);
             out += ' <tr ><th scope="row">' + (i + 1) + '</th>' +
               ' <td> ' + data[i].name + '<br>' + data[i].en_name + '</td>' +
-              ' <td>' + data[i].quantity + ' </td>' + ' <td>' +formatPrice(data[i].price) + '</td>' +
+              ' <td>' + data[i].quantity + ' </td>' + ' <td>' + formatPrice(data[i].price) + '</td>' +
               ' <td>' + formatPrice(calculateAmount(data[i].quantity, data[i].price)) + '</td>';
 
 

@@ -3,7 +3,7 @@
 namespace Controllers;
 
 use Controllers\BaseController;
-
+use Models\Excel;
 use PDOException;
 
 
@@ -32,7 +32,8 @@ class HocBongController extends BaseController
       'dinh_kem_thcs', 'dinh_kem_khuyet_tat', 'dinh_kem_ho_so_benh_an'
     ];
     $data = parent::unsetKeyFromArray($data, $keys);
-    parent::exportExcel($data);
+    $excel = new Excel();
+    $excel->export($data);
   }
 
   public function get()

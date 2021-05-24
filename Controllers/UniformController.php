@@ -4,12 +4,13 @@ namespace Controllers;
 
 use Controllers\BaseController;
 use DateTime;
+use Models\Excel;
 
 class UniformController extends BaseController
 {
   public function updateStudentBill()
   {
-    
+
     $id = $_POST['id'];
     $result = $this->db->updateDB('student_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
     if ($result > 0) {
@@ -23,6 +24,10 @@ class UniformController extends BaseController
     $result = $this->db->fetchAll('uniform_size');
     $this->response("data", 200, [], $result);
   }
+  public function import()
+  {
+    var_dump($_POST);
+  }
   public function studentInformation()
   {
 
@@ -33,6 +38,7 @@ class UniformController extends BaseController
   public function updateUniform()
   {
     $id = $_POST['id'];
+    $this->request_post['update_by'] =  
     $result = $this->db->updateDB('uniform_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
 
     if ($result > 0) {
@@ -84,20 +90,20 @@ class UniformController extends BaseController
     ];
 
     preg_match_all('!\d+!', $_POST['class'], $grade); //get grade form class_id
-
-    if ((int)$grade[0][0] < 9) {
-      // $delete = [
-      //   "7, {$_POST['uniform_number']},0,'',{$_POST['student_id']}" . $create_info,
-      //   "8, {$_POST['uniform_number']},0,'',{$_POST['student_id']}" . $create_info,
-      //   "9, {$_POST['uniform_number']},0,'',{$_POST['student_id']}" . $create_info,
-      //   "10, {$_POST['uniform_number']},0,'',{$_POST['student_id']}" . $create_info,
-      // ];
-      // $values  =  array_diff($values, $delete);
-      $values[6] = "7, 0,0,'',{$_POST['student_id']}" . $create_info;
-      $values[7] = "8, 0,0,'',{$_POST['student_id']}" . $create_info;
-      $values[8] = "9,0,0,'',{$_POST['student_id']}" . $create_info;
-      $values[9] = "10, 0,0,'',{$_POST['student_id']}" . $create_info;
+    if (isset($grade[0][0])) {
+      if ((int)$grade[0][0] < 9) {
+        $values[6] = "7, 0,0,'',{$_POST['student_id']}" . $create_info;
+        $values[7] = "8, 0,0,'',{$_POST['student_id']}" . $create_info;
+        $values[8] = "9,0,0,'',{$_POST['student_id']}" . $create_info;
+        $values[9] = "10, 0,0,'',{$_POST['student_id']}" . $create_info;
+      } else {
+        $values[2] = "3, 0,0,'',{$_POST['student_id']}" . $create_info;
+        $values[3] = "4, 0,0,'',{$_POST['student_id']}" . $create_info;
+        $values[4] = "5,0,0,'',{$_POST['student_id']}" . $create_info;
+        $values[5] = "6, 0,0,'',{$_POST['student_id']}" . $create_info;
+      }
     }
+
     $error = $this->validateEmpty(['number_phone' => 'Số điện thoại'], $_POST);
     if (count($error) > 0)
       $this->response('Thiếu thông tin', 400, $error);
@@ -118,7 +124,8 @@ class UniformController extends BaseController
   {
     $query = "SELECT  lsts_hr_student.student_fullname, lsts_hr_student.student_sex, student_bills.*";
     $query .= "FROM student_bills INNER JOIN lsts_hr_student ON student_bills.student_id=lsts_hr_student.student_id";
-    parent::exportExcel($this->db->getDataFromQuery($query));
+    $excel = new Excel();
+    $excel->export($this->db->getDataFromQuery($query));
     die();
   }
 }

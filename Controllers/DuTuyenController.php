@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Controllers\BaseController;
 use Exception;
+use Models\Excel;
 
 class DuTuyenController extends BaseController
 {
@@ -66,7 +67,8 @@ class DuTuyenController extends BaseController
 
       
     ];
-    parent::exportExcel($data, $col_names);
+    $excel = new Excel();
+    $excel->export($data, $col_names);
   }
 
   public function delete()

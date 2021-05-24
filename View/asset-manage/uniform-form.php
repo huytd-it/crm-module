@@ -42,9 +42,20 @@
                   <input type="text" class="form-control" id="std_code" name="student_id" placeholder="">
                 </div>
 
-                <div class="form-group col-lg-12">
+                <div class="form-group col-lg-6">
                   <label for="inputAddress">Lớp/Class</label>
                   <input type="text" class="form-control" id="class" name="class" placeholder="">
+                </div>
+                <div class="form-group col-sm-6 ">
+                  <label for="">Năm học</label>
+                  <select class="custom-select" name="school_year">
+
+                    <option value="2020-2021">2020-2021</option>
+                    <option value="2021-2022">2021-2022</option>
+                    <option value="2022-2023">2022-2023</option>
+                    <option value="2023-2024">2023-2024</option>
+                   
+                  </select>
                 </div>
                 <div class="form-group col-lg-12">
                   <label for="inputAddress">Số điện thoại liên lạc/Number phone</label>
@@ -56,18 +67,12 @@
                   <input type="checkbox" id="switch1" name="gender">
                   Nam
                 </div>
-                <div class="form-group col-lg-12 ">
-                  <hr>
-                  <!-- <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="buy_check" name="dong_y_mua">
-                    <label class="custom-control-label" for="buy_check"><b> Đồng ý mua đồng phục cho năm học mới ?</b></label>
-                  </div> -->
-                </div>
+        
               </div>
             </div>
           </div>
         </div>
-        <div class="col-lg-5" id="uniform_card" style="display: none;">
+        <div class="col-lg-5" id="uniform_card">
           <div class="card">
 
             <div class="card-body">
@@ -202,15 +207,15 @@
       color: '#007bff',
       secondaryColor: '#e83e8c'
     });
-    document.getElementById('class').addEventListener('input', function() {
-      var uniform_card = document.getElementById('uniform_card');
+    // document.getElementById('class').addEventListener('input', function() {
+    //   var uniform_card = document.getElementById('uniform_card');
 
-      if (document.getElementById('class').value.indexOf('9') != -1)
-        uniform_card.style.display = "block";
-      else
-        uniform_card.style.display = "none";
+    //   if (document.getElementById('class').value.indexOf('9') != -1)
+    //     uniform_card.style.display = "block";
+    //   else
+    //     uniform_card.style.display = "none";
 
-    });
+    // });
     document.getElementById('submit').addEventListener('click', function() {
       var formData = new FormData(document.getElementById('form'));
 
@@ -284,10 +289,10 @@
 
           }
 
-          if (document.getElementById('class').value.indexOf('9') != -1)
-            uniform_card.style.display = "block";
-          else
-            uniform_card.style.display = "none";
+          // if (document.getElementById('class').value.indexOf('9') != -1)
+          //   uniform_card.style.display = "block";
+          // else
+          //   uniform_card.style.display = "none";
 
 
         },

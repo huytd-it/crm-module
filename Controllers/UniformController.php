@@ -38,8 +38,8 @@ class UniformController extends BaseController
   public function updateUniform()
   {
     $id = $_POST['id'];
-    $this->request_post['update_by'] =  
-    $result = $this->db->updateDB('uniform_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
+    $this->request_post['update_by'] =
+      $result = $this->db->updateDB('uniform_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
 
     if ($result > 0) {
       $this->response('Cập nhật thành công');
@@ -50,7 +50,7 @@ class UniformController extends BaseController
   public function getAll()
   {
     $query = "SELECT student_bills.*, lsts_hr_student.student_fullname, lsts_hr_student.student_sex ";
-    $query .= "FROM student_bills INNER JOIN lsts_hr_student ON student_bills.student_id=lsts_hr_student.student_id";
+    $query .= "FROM student_bills INNER JOIN lsts_hr_student ON student_bills.student_id=lsts_hr_student.student_id WHERE student_bills.deleted_at is NULL";
     $this->response("data", 200, [], $this->db->getDataFromQuery($query));
   }
   public function get()
@@ -113,7 +113,14 @@ class UniformController extends BaseController
     $search = $this->db->fetchAll('student_bills', 'student_id', "student_id = {$_POST['student_id']}");
     if (count($search) == 0) {
       $this->db->insertMultipleDB('uniform_bills', "uniform_type_id,quantity,size,note, student_id, create_by, created_at", $values);
-      $this->db->insertDB('student_bills', 'student_id, number_phone,class_id ,create_by, created_at', "{$_POST['student_id']}, '{$_POST['number_phone']}','{$_POST['class']}'" . $create_info);
+      $this->db->insertDB(
+        'student_bills',
+        'school_year,student_id, number_phone,class_id ,create_by, created_at',
+        "{$_POST['school_year']}{$_POST['student_id']}, '{$_POST['number_phone']}','{$_POST['class']}'" . $create_info
+      );
+    }else {
+      $array = ['deleted_at' => 'NULL'];
+      $this->db->updateDB('student_bills', $array, "WHERE student_id = {$_POST['student_id']}");
     }
 
 
@@ -127,5 +134,16 @@ class UniformController extends BaseController
     $excel = new Excel();
     $excel->export($this->db->getDataFromQuery($query));
     die();
+  }
+  public function delete()
+  {
+    $id = $_POST['id'];
+    $result = $this->db->updateDB('student_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
+
+    if ($result > 0) {
+      $this->response('Xóa thành công');
+    } else {
+      $this->response('Xóa thất bại', 400);
+    }
   }
 }

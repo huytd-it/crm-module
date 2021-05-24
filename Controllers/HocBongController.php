@@ -70,7 +70,7 @@ class HocBongController extends BaseController
         echo $myJson;
         die();
       }
-      var_dump($sql);
+   
       $result = $this->db->connectDB()->exec($sql);
       if ($result > 0) {
         $myJson = json_encode(["msg" => "XÓA THÀNH CÔNG", "status" => 200]);

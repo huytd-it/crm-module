@@ -184,7 +184,9 @@
                     <th scope="col">Giới tính</th>
                     <th scope="col">Lớp</th>
                     <th scope="col">Thanh toán</th>
+                    <th scope="col">Trạng thái</th>
                     <th scope="col">Edit - Print - Delete</th>
+                    <th scope="col">Xác nhận</th>
 
 
                   </tr>
@@ -217,6 +219,7 @@
   <script src="https://unpkg.com/read-excel-file@4.x/bundle/read-excel-file.min.js"></script>
   <script>
     $(document).ready(function() {
+      $.fn.modal.Constructor.prototype._enforceFocus = function() {};
       var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
       fetchAll();
       var elem = document.querySelector('input[type=checkbox]');
@@ -233,47 +236,49 @@
         $('.modal-backdrop').remove();
       });
       var input = document.getElementById('input_excel')
-    
+
       input.addEventListener('change', function() {
-       
+
         readXlsxFile(input.files[0]).then(function(rows) {
           const data = Object.assign({}, rows);
-          console.log({data: Object.assign({}, rows[0])});
-          
+
+
           $.ajax({
-          method: "POST",
-          url: origin + "/Route.php?page=uniform&action=import",
-          data: {h:1222},
-          contentType: false,
-          mimeType: "multipart/form-data",
-          processData: false,
-          cache: false,
-          success: function(response) {
-            console.log(response);
-            var data = JSON.parse(response);
-            if (data.status == 200)
-              Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: data.msg,
-                showConfirmButton: false,
-                timer: 3000
-              });
-            else {
-              Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: data.msg,
-                showConfirmButton: false,
-                timer: 3000
-              });
+            method: "POST",
+            url: origin + "/Route.php?page=uniform&action=import",
+            data: {
+              h: 1222
+            },
+            contentType: false,
+            mimeType: "multipart/form-data",
+            processData: false,
+            cache: false,
+            success: function(response) {
+
+              var data = JSON.parse(response);
+              if (data.status == 200)
+                Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: data.msg,
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+              else {
+                Swal.fire({
+                  position: 'center',
+                  icon: 'error',
+                  title: data.msg,
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+              }
+
+            },
+            error: function(response) {
+
             }
-
-          },
-          error: function(response) {
-
-          }
-        });
+          });
         })
       })
 
@@ -318,24 +323,42 @@
         });
       });
 
-      function deleteData(id) {
+      function deleteData(data) {
+        var id = data.id;
         $.ajax({
-          method: "GET",
-          url: origin + "/Route.php?action=delete&page=uniform",
+          method: "POST",
+          url: origin + "/Route.php?page=uniform&action=delete",
+          data: data,
           success: function(response) {
 
-            let result = JSON.parse(response);
-           
-
+            var data = JSON.parse(response);
+            if (data.status == 200) {
+              Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Đã xóa',
+                text: data.msg,
+                showConfirmButton: false,
+                timer: 3000
+              });
+              $("#student-" + id).remove();
+            } else {
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Lỗi',
+                text: data.msg,
+                showConfirmButton: false,
+                timer: 3000
+              });
+            }
 
           },
           error: function(response) {
-            $('.alert h3').text("Errors");
-            $('.alert').css("color", "red");
-            $('.alert i').removeClass('far fa-check-circle').addClass('fas fa-exclamation-circle');
-            $('.alert').toggleClass("hide");
+
           }
         });
+
       }
 
       function fetchAll() {
@@ -364,9 +387,28 @@
 
 
             });
-            $('.btn-danger').click(function() {
-              deleteData($(this).attr('id'));
-              $(this).parent().parent().remove();
+            $('.btn-delete').click(function() {
+
+              Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  var data = {
+                    'id': $(this).attr('data-id'),
+                    'update_by': window.localStorage.getItem('_user_name'),
+                    'deleted_at': (new Date()).toISOString(),
+                  };
+                  deleteData(data);
+                }
+              })
+
+
             });
             $('table a').click(function() {
               if ($(this).attr('id') != " ")
@@ -453,7 +495,7 @@
       $('#student_bills_main input[name=deliver]').val(window.localStorage.getItem('_user_name'))
 
       function addBill(data, id) {
-        console.log(data);
+
         var total = 0;
         var button_data = $('button[data-id=' + id + ']');
         var payment = button_data.attr('data-payment');
@@ -472,7 +514,7 @@
         $('#student_bills_hell input[name=receiver]').val(button_data.attr('data-receiver'));
         $('#student_bills_hell input[name=id]').val(id);
 
-        // console.log($('#payment'));
+
 
         // $('#payment')
 
@@ -509,10 +551,10 @@
               'quantity': uniform.children('input[name="quantity"]').val(),
               'size': uniform.children('select').val(),
               'id': $(this).attr('data-id'),
-              'update_by' :window.localStorage.getItem('_user_name'),
+              'update_by': window.localStorage.getItem('_user_name'),
               'updated_at': (new Date()).toISOString(),
             };
-            console.log(data);
+
             $.ajax({
               method: "POST",
               url: origin + "/Route.php?page=uniform&action=updateUniform",
@@ -544,23 +586,24 @@
             });
           });
 
+
+
         }
       }
-
-
       function showList(data, config) {
 
         if (data) {
           let out = "";
           for (var i = 0; i < data.length; i++) {
-            out += ' <tr ><th scope="row">' + (i + 1) + '</th>' +
-              ' <td> ' + data[i].student_fullname + '</td>' +
+            out += ' <tr id="student-' + data[i].id + '"><th scope="row">' + (i + 1) + '</th>' +
+              ' <td> ' + data[i].student_fullname + '<br>' + printStatus(data[i].status) + '</td>' +
               ' <td>' + data[i].number_phone + ' </td>' + ' <td>' + data[i].student_sex + '</td>' +
               ' <td>' + data[i].class_id + '</td>';
 
 
             var payment = data[i].payment == 1 ? "Cash" : "Bank";
             out += '<td>' + payment + '</td>';
+            out += '<td>' + printStatus(data[i].status) + '</td>';
 
             out += ' <td class="text-center"> <button type="button"  data-payment="' +
               data[i].payment + '" class="btn btn-warning" data-receiver="' + data[i].receiver +
@@ -580,24 +623,60 @@
               'width="16" height="16" fill="currentColor"class="bi bi-arrows-fullscreen" viewBox="0 0 16 16"><path fill-rule="evenodd"' +
               'd="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z" /> </svg>'
             '</button> ';
-            out += ' <button type="button" class="btn btn-danger" id="' + data[i].id +
+            out += ' <button type="button" class="btn btn-danger btn-delete" data-id="' + data[i].id +
               '"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">' +
               '<path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>' +
               '<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>' +
               '</svg> </button> </td>';
+            out += '<td><button type="button" class="btn btn-info btn-status" data-id="' + data[i].id +
+              '"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">' +
+              '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>' +
+              '<path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>' +
+              '</svg></button> </td>';
             out += "</tr>";
 
 
 
           }
           $('#row-id').append(out);
-          $('#table').DataTable();
+          $('#table').DataTable({
+            initComplete: function() {
+              this.api().columns().every(function() {
+                var column = this;
+                var select = $('<select><option value="">All</option></select>')
+                  .appendTo($(column.header()).empty())
+                  .on('change', function() {
+                    var val = $.fn.dataTable.util.escapeRegex(
+                      $(this).val()
+                    );
+
+                    column
+                      .search(val ? '^' + val + '$' : '', true, false)
+                      .draw();
+                  });
+
+                column.data().unique().sort().each(function(d, j) {
+                  select.append('<option value="' + d + '">' + d +
+                    '</option>')
+                });
+              });
+            }
+          });
 
 
         }
 
       };
 
+      function printStatus(status) {
+        if (status == 0) {
+          return '<span class="badge badge-secondary">Đã đăng ký</span>';
+        } else if (status == 1) {
+          return '<span class="badge badge-info">Đã thanh toán</span>';
+        } else {
+          return '<span class="badge badge-success">Đã nhận</span>';
+        }
+      }
 
 
       $('#btn_excel').click(function() {
@@ -617,11 +696,11 @@
           }
         });
       });
-      $("#search_table").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#table tr").filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-      });
+      // $("#search_table").on("keyup", function() {
+      //   var value = $(this).val().toLowerCase();
+      //   $("#table tr").filter(function() {
+      //     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      //   });
+      // });
     });
   </script>

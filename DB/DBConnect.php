@@ -74,7 +74,7 @@ class DBConnect extends Dbconfig
         if ($where != null)
             $sql .= " WHERE {$where}";
 
-        
+     
         return $this->connectString->exec($sql);
     }
     public function excuteSql($sql)
@@ -84,6 +84,7 @@ class DBConnect extends Dbconfig
     public function getDataFromQuery($query_string)
     {
         $stmt = $this->connectString->prepare($query_string);
+       
        $stmt->execute();
        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

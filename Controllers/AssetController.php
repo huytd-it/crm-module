@@ -2,20 +2,15 @@
 
 namespace Controllers;
 
-use Controllers\BaseController;
 use DateTime;
 use Models\Excel;
 
-class UniformController extends BaseController
+class AssetController extends BaseController
 {
-  public function getUniformType()
-  {
-    $result = $this->db->fetchAll('uniform_types');
-    $this->response("data", 200, [], $result);
-  }
+
   public function updateStudentBill()
   {
-   
+
     $id = $_POST['id'];
     $result = $this->db->updateDB('student_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
     if ($result > 0) {
@@ -27,6 +22,11 @@ class UniformController extends BaseController
   public function getSize()
   {
     $result = $this->db->fetchAll('uniform_size');
+    $this->response("data", 200, [], $result);
+  }
+  public function getUniformType()
+  {
+    $result = $this->db->fetchAll('uniform_types');
     $this->response("data", 200, [], $result);
   }
   public function import()
@@ -43,8 +43,8 @@ class UniformController extends BaseController
   public function updateUniform()
   {
     $id = $_POST['id'];
-    $this->request_post['update_by'] =
-      $result = $this->db->updateDB('uniform_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
+    // $this->request_post['update_by'] =
+    $result = $this->db->updateDB('uniform_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
 
     if ($result > 0) {
       $this->response('Cập nhật thành công');
@@ -123,7 +123,7 @@ class UniformController extends BaseController
         'school_year,student_id, number_phone,class_id ,create_by, created_at',
         "{$_POST['school_year']}{$_POST['student_id']}, '{$_POST['number_phone']}','{$_POST['class']}'" . $create_info
       );
-    }else {
+    } else {
       $array = ['deleted_at' => 'NULL'];
       $this->db->updateDB('student_bills', $array, "WHERE student_id = {$_POST['student_id']}");
     }
@@ -151,5 +151,4 @@ class UniformController extends BaseController
       $this->response('Xóa thất bại', 400);
     }
   }
-  
 }

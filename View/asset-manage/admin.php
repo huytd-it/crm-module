@@ -176,10 +176,28 @@
             <br>
             <div class="table-responsive " style="overflow-x: scroll;min-width:800px; width:100%">
               <table class="table table-hover table-bordered" id="table" style="overflow:scroll;height:100px">
+                <tfoot class="text-center">
+                  <tr>
+                    <th scope="col" style="visibility:hidden;">#</th>
+                    <th scope="col" style="visibility:hidden; width:100px">Họ và tên</th>
+
+                    <th scope="col" style="visibility:hidden;">Số điện thoại</th>
+                    <th scope="col">Giới tính</th>
+                    <th scope="col">Lớp</th>
+                    <th scope="col">Thanh toán</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col" style="visibility:hidden;">Edit - Print - Delete</th>
+                    <th scope="col" style="visibility:hidden;">Xác nhận</th>
+
+
+                  </tr>
+
+                </tfoot>
                 <thead class="text-center">
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Họ và tên</th>
+
                     <th scope="col">Số điện thoại</th>
                     <th scope="col">Giới tính</th>
                     <th scope="col">Lớp</th>
@@ -217,6 +235,8 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.7/dist/sweetalert2.all.min.js"></script>
   <script src="pages/MVC/view/publish/plugin/switchery/dist/switchery.js"></script>
   <script src="https://unpkg.com/read-excel-file@4.x/bundle/read-excel-file.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script>
     $(document).ready(function() {
       $.fn.modal.Constructor.prototype._enforceFocus = function() {};
@@ -284,43 +304,10 @@
 
 
       $('#duyet-btn').click(function() {
-
         var data = new FormData($('#student_bills')[0]);
         data.append('payment', $('#payment').prop('checked') ? 1 : 0);
-        $.ajax({
-          method: "POST",
-          url: origin + "/Route.php?page=uniform&action=updateStudentBill",
-          data: data,
-          contentType: false,
-          mimeType: "multipart/form-data",
-          processData: false,
-          cache: false,
-          success: function(response) {
+        updateData(data);
 
-            var data = JSON.parse(response);
-            if (data.status == 200)
-              Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: data.msg,
-                showConfirmButton: false,
-                timer: 3000
-              });
-            else {
-              Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: data.msg,
-                showConfirmButton: false,
-                timer: 3000
-              });
-            }
-
-          },
-          error: function(response) {
-
-          }
-        });
       });
 
       function deleteData(data) {
@@ -361,6 +348,44 @@
 
       }
 
+      function updateData(data) {
+        
+        $.ajax({
+          type: "POST",
+          url: origin + "/Route.php?page=uniform&action=updateStudentBill",
+          data: data,
+       
+          success: function(response) {
+           console.log(response);
+            var data = JSON.parse(response);
+            if (data.status == 200){
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: data.msg,
+                showConfirmButton: false,
+                timer: 3000
+              });
+              fetchAll();
+            }
+              
+            else {
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: data.msg,
+                showConfirmButton: false,
+                timer: 3000
+              });
+            }
+
+          },
+          error: function(response) {
+
+          }
+        });
+      }
+
       function fetchAll() {
         $.ajax({
           method: "GET",
@@ -374,11 +399,11 @@
             showList(data, config);
 
             $('.btn-print').click(function() {
-              window.open('?p=MVC.view.asset-manage.form-print/0/view&mode=view&id=' + $(this).attr('id'), 'width:1000',
+              window.open('pages/MVC/View/asset-manage/form-print.php?view&mode=view&id=' + $(this).attr('id'), 'width:1000',
                 'height:1000')
             });
 
-            $('.btn-warning').click(function() {
+            $('.btn-warning').on('click', function() {
               // window.open('?p=MVC.view.asset-manage.update-form/0/view&mode=view&id=' + $(this).attr('id'), 'width:1000',
               //   'height:1000')
 
@@ -387,16 +412,16 @@
 
 
             });
-            $('.btn-delete').click(function() {
+            $('.btn-delete').on('click', function() {
 
               Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Bạn chắc chứ?',
+                text: "Khi bạn xóa sẽ ko khôi phục lại được dữ liệu",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Đồng ý, xóa đi!'
               }).then((result) => {
                 if (result.isConfirmed) {
                   var data = {
@@ -410,6 +435,18 @@
 
 
             });
+            $('.btn-status').on('click', function() {
+             
+              var data = {
+                id: $(this).attr('data-id'),
+                status: parseInt($(this).attr('data-status')) + 1,
+                update_by:window.localStorage.getItem('_user_name'),
+                updated_at: (new Date()).toISOString(),
+
+              }
+              updateData(data);
+
+            })
             $('table a').click(function() {
               if ($(this).attr('id') != " ")
                 window.open(config.origin + "/" + $(this).attr('id'), 'width:1000', 'height:1000');
@@ -590,20 +627,21 @@
 
         }
       }
+
       function showList(data, config) {
 
         if (data) {
           let out = "";
           for (var i = 0; i < data.length; i++) {
             out += ' <tr id="student-' + data[i].id + '"><th scope="row">' + (i + 1) + '</th>' +
-              ' <td> ' + data[i].student_fullname + '<br>' + printStatus(data[i].status) + '</td>' +
+              ' <td> ' + data[i].student_fullname + '<br>' + data[i].student_id + '<br>' + printStatusSpan(data[i].status) + '</td>' +
               ' <td>' + data[i].number_phone + ' </td>' + ' <td>' + data[i].student_sex + '</td>' +
               ' <td>' + data[i].class_id + '</td>';
 
 
             var payment = data[i].payment == 1 ? "Cash" : "Bank";
             out += '<td>' + payment + '</td>';
-            out += '<td>' + printStatus(data[i].status) + '</td>';
+            out += '<td >' + printStatusText(data[i].status) + '</td>';
 
             out += ' <td class="text-center"> <button type="button"  data-payment="' +
               data[i].payment + '" class="btn btn-warning" data-receiver="' + data[i].receiver +
@@ -628,23 +666,30 @@
               '<path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>' +
               '<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>' +
               '</svg> </button> </td>';
-            out += '<td><button type="button" class="btn btn-info btn-status" data-id="' + data[i].id +
-              '"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">' +
+
+            out += '<td>';
+            if (data[i].status < 2)
+              out += '<button type="button" class="btn ' + btnStatusClass(data[i].status) +' btn-status" data-id="' + data[i].id +
+              '"  data-status="' + data[i].status + '"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">' +
               '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>' +
               '<path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>' +
-              '</svg></button> </td>';
+              '</svg> <br>' + btnStatus(data[i].status) + '</button> ';
+            out += '</td>';
             out += "</tr>";
 
 
 
           }
+          $('#row-id').empty();
           $('#row-id').append(out);
           $('#table').DataTable({
+            retrieve: true,
             initComplete: function() {
+           
               this.api().columns().every(function() {
                 var column = this;
                 var select = $('<select><option value="">All</option></select>')
-                  .appendTo($(column.header()).empty())
+                  .appendTo($(column.footer()).empty())
                   .on('change', function() {
                     var val = $.fn.dataTable.util.escapeRegex(
                       $(this).val()
@@ -656,6 +701,7 @@
                   });
 
                 column.data().unique().sort().each(function(d, j) {
+
                   select.append('<option value="' + d + '">' + d +
                     '</option>')
                 });
@@ -663,18 +709,49 @@
             }
           });
 
+          $('th > select').select2();
+
 
         }
 
       };
 
-      function printStatus(status) {
+      function printStatusSpan(status) {
         if (status == 0) {
           return '<span class="badge badge-secondary">Đã đăng ký</span>';
         } else if (status == 1) {
           return '<span class="badge badge-info">Đã thanh toán</span>';
         } else {
-          return '<span class="badge badge-success">Đã nhận</span>';
+          return '<span class="badge badge-success">Đã nhận đồng phục</span>';
+        }
+      }
+
+      function printStatusText(status) {
+        if (status == 0) {
+          return 'Đã đăng ký';
+        } else if (status == 1) {
+          return 'Đã thanh toán';
+        } else {
+          return 'Đã nhận đồng phục';
+        }
+      }
+
+      function btnStatus(status) {
+        if (status == 0) {
+          return 'Thanh toán';
+        } else if (status == 1) {
+          return 'Giao';
+        } else {
+          return 'Đã nhận đồng phục';
+        }
+      }
+      function btnStatusClass(status) {
+        if (status == 0) {
+          return 'btn-info';
+        } else if (status == 1) {
+          return 'btn-success';
+        } else {
+          return 'Đã nhận đồng phục';
         }
       }
 

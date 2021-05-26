@@ -1,35 +1,35 @@
 <!DOCTYPE html>
-<!-- saved from url=(0047)http://127.0.0.1:5500/LSTS%20CRM.html?mode=view -->
+
 <html>
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-
-
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta property="og:locale" content="vi_VN">
-
-  <link rel="stylesheet" href="/jquery-ui-1.12.1/jquery-ui.css">
-
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
   <link rel="icon" type="image/png" href="https://172.16.0.99:8008/crm/images/lsts_icon/lsts_icon_48.png" sizes="48x48">
-  <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
 
   <title>
     Đơn xin học bổng hiếu học 2
   </title>
-
-  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-  <meta name="theme-color" content="#cd1818">
+  <!--  -->
 
 
   <style>
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600');
+
     .gia_canh_hoc_sinh_tb td {
       padding: 11px !important;
     }
 
+    * {
+      font-family: "Roboto Condensed", Helvetica, Arial, sans-serif !important;
+    }
+
     body {
+
       margin: 0;
       padding: 0;
       font-size: 14px !important;
@@ -73,6 +73,7 @@
       /* margin-bottom: 15px; */
       font-size: 26px;
       font-weight: bold;
+      line-height: 1.5;
     }
 
     .table-no-border td {
@@ -337,7 +338,7 @@
 
     .table-no-border td input[type="text"],
     td select {
-      text-align: left;
+      text-align: center;
       /* padding-left: 5px; */
       padding: 0 !important;
       border-bottom: 1px dotted black !important;
@@ -363,35 +364,28 @@
     @media print {
 
 
-      /* body {
-        margin-top: 5px;
-        margin-left: 5px;
-        margin-right: 2px;
-        margin-bottom: 5px;
-
-      } */
-
       input,
       td,
       strong,
       label,
       th,
       p {
-        font-size: 13pt !important;
-
-        /* font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; */
+        font-size: 11pt !important;
+        line-height: 1.3;
       }
 
-      td input {
+      input td {
         padding: 0 !important;
-        font-size: 13pt !important;
-        /* border-bottom: none  !important; */
-        text-align: center;
+        font-size: 11pt !important;
+    
+        /* text-align: center; */
       }
-
+      p {
+        line-height:0.6;
+      }
       .text_header {
-
-        font-size: 16pt !important;
+        text-align: center !important;
+        font-size: 13pt !important;
       }
 
       #body {
@@ -419,44 +413,33 @@
 
 
     }
+ 
   </style>
+
 </head>
 
 <body>
 
-  <div class="alert hide">
-    <div class="alert-body">
-      <i class="fas fa-check-circle fa-10x"></i>
-      <h3>Thành công</h3>
-      <div class="list_wrapper">
-        <ol class="list">
 
-        </ol>
-      </div>
-      <button type="button" style="width:50px;height:50px;border-radius:50%;position:absolute;top:10px;right:10px;background-color:transparent;border:1px solid black;border-color:inherit; color:inherit;font-size:30px;padding:5px 15px;cursor:pointer;outline:none" id="close">&times;</button>
-    </div>
-  </div>
 
   <button type="button" id="print" class="save">Print <i class="fas fa-print"></i></button>
   <button type="button" class="save" id="save" style="background-color: red;">Save <i class="far fa-save"></i></button>
   <div id="divBodyContent" style="background-color: gainsboro;">
+
     <form id="hoc_bong_form" enctype="multipart/form-data" method="POST">
 
       <div id="body" style="width: 840px; background-color: #ffffff; margin-right:2px !important">
 
-
-
-
         <div class="image_boder">
+          <div style="margin-left: 50px;"> <svg id="barcode"></svg></div>
+
           <div class="img_boder_in" style="display: flex;">
 
-
-            <div style="margin: 20px auto;">
-              <p class="text_header">PHIẾU NHẬN ĐỒNG PHỤC VÀ VỞ TẬP <br>
+            <div style="margin: 0 auto;">
+              <div class="text_header">
+                PHIẾU NHẬN ĐỒNG PHỤC VÀ VỞ TẬP <br>
                 UNIFORM AND NOTERBOOK RECEIPT FORM
-              </p>
-
-
+  </div>
             </div>
           </div>
 
@@ -495,7 +478,7 @@
 
         </div>
 
-        <div class="ho_so_dinh_kem" style="margin:0 25px">
+        <div class="ho_so_dinh_kem" style="margin:5px 50px">
           <!-- <u class="title__big" style="margin: 38px;">Hồ sơ đính kèm:</u> -->
           <table class="thanh_tich_hoc_tap_2" id="hoa_don">
             <thead>
@@ -521,8 +504,8 @@
 
                 </td>
                 <td colspan="3">
-                  <input type="checkbox" name="" id="">Cash/Tiền mặt<br>
-                  <input type="checkbox" name="" id="">Bank/Chuyển khoản
+                  <input style="width:20px" type="checkbox" name="" id="">Cash/Tiền mặt<br>
+                  <input style="width:20px" type="checkbox" name="" id="">Bank/Chuyển khoản
                 </td>
 
               </tr>
@@ -531,7 +514,7 @@
 
           </table>
         </div>
-        <div style="float: right;margin-right: 25px;">
+        <!-- <div style="float: right;margin-right: 50px;margin-top: 50px;">
           <div style="text-align:center">
             Ngày phát phiếu <input type="text" name="" id="" style="width:auto;border:none !important;padding:0;font-size:15px !important;text-align:left;
           border-bottom:1px dotted black !important; border-radius:0 !important">
@@ -540,9 +523,9 @@
             <input type="text" name="from_deliver" id="" style="margin-top:70px;width:auto;border:none !important;padding:0;font-size:15px !important;text-align:left;
           border-bottom:1px dotted black !important; border-radius:0 !important; text-align:center">
           </div>
-        </div>
+        </div> -->
 
-        <div style="text-align: center;display:inline-block; width:100%; margin-top: 50px;">
+        <div style="text-align: center;display:inline-block; width:100%;">
           <p>PHẦN GIAO VÀ NHẬN ĐỒNG PHỤC, VỞ TẬP / DELIVERED AND RECEIVED UNIFORM AND NOTEBOOK</p>
           <p>Chúng tôi xác nhận đồng phục và vở tập đã được giao và nhận theo đúng số lượng, size hoặc quy cách nêu trên </p>
           <p>We here by confirm uniform and notebook that were be delivered and received as above size and specification</p>
@@ -581,20 +564,13 @@
   </div>
 
 
-
-  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.4/dist/JsBarcode.all.min.js"></script>
 
   <script type="text/javascript">
-    $(function() {
-      $(".datepicker").datepicker({
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd-mm-yy',
-        showAnim: "slide"
-      });
-    });
-
     $(document).ready(function() {
+
+
 
       $('#print').click(function() {
         window.print();
@@ -614,113 +590,9 @@
       $('#send').click(function() {
         $(".modal-mail").toggleClass("hide");
       });
-      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
+      var origin = window.location.origin + "/pages/MVC";
 
-      function getFormData($form) {
-        var file_data = $('#imgInp').prop('files')[0];
-        var data = new FormData($form[0]);
-
-        data.append('avatar', file_data);
-        //Checkbox
-        data.append('ho_ngheo', $("input[name=ho_ngheo]").is(':checked') ? 1 : 0);
-        data.append('khuyet_tat', $("input[name=khuyet_tat]").is(':checked') ? 1 : 0);
-
-
-
-        if (mode == 'create') {
-          $.ajax({
-            method: "POST",
-            url: origin + "/Route.php?page=hoc-bong&action=store",
-            data: data,
-            contentType: false,
-            mimeType: "multipart/form-data",
-            processData: false,
-            cache: false,
-            success: function(response) {
-
-
-              var result = JSON.parse(response);
-
-              $('.alert h3').text(result.msg);
-              $('#close').removeClass('hide');
-              if (result.status != 200) {
-                $('.alert').css("color", "red");
-                $('.alert i').removeClass('far fa-check-circle').addClass('fas fa-exclamation-circle');
-
-                status = 1;
-                var text = result.errors.text;
-                var number = result.errors.number;
-                var file = result.errors.file;
-                validate(text, number, file);
-
-              } else {
-                status = 0;
-                $('.alert').css("color", "green");
-                $('.alert i').removeClass('far fa-exclamation-circle').addClass('fas fa-check-circle');
-              }
-
-
-            },
-            error: function(response) {
-              //  console.log(response);
-              $('.alert h3').text("LỖI");
-              $('.alert').css("color", "red");
-              $('.alert i').removeClass('far fa-check-circle').addClass('fas fa-exclamation-circle');
-              $('.alert').toggleClass("hide");
-            }
-
-
-          });
-
-        } else if (mode == 'edit') {
-
-          $.ajax({
-            method: "POST",
-            url: origin + "/Route.php?page=hoc-bong&action=update&id=" + id,
-            data: data,
-            contentType: false,
-            mimeType: "multipart/form-data",
-            processData: false,
-            cache: false,
-            success: function(response) {
-              console.log(response);
-              var result = JSON.parse(response);
-              $('.alert h3').text(result.msg);
-              $('#close').removeClass('hide');
-
-
-              $('.list').empty();
-              if (result.status != 200) {
-                $('.alert').css("color", "red");
-                $('.alert i').removeClass('far fa-check-circle').addClass('fas fa-exclamation-circle');
-                status = 1;
-                var text = result.errors.text;
-                var number = result.errors.number;
-                var file = result.errors.file;
-                validate(text, number, file);
-
-              } else {
-                status = 0;
-                $('.alert').css("color", "green");
-                $('.alert i').removeClass('far fa-exclamation-circle').addClass('fas fa-check-circle');
-
-              }
-
-
-            },
-            error: function(response) {
-              $('.alert h3').text("Errors");
-              $('.alert').css("color", "red");
-              $('.alert i').removeClass('far fa-check-circle').addClass('fas fa-exclamation-circle');
-              $('.alert').toggleClass("hide");
-            }
-
-
-          });
-
-        }
-
-      };
+  
 
       function getData(id) {
 
@@ -734,7 +606,7 @@
 
             var data = result.data;
             getBill(data.student_id);
-
+            createBarCode(data.student_id);
             for (const [key, value] of Object.entries(data)) {
 
 
@@ -770,7 +642,7 @@
           method: "GET",
           url: origin + "/Route.php?page=uniform&action=getBill&id=" + id,
           success: function(response) {
-            console.log(response);
+
             var result = JSON.parse(response).data;
             addBill(result);
 
@@ -926,34 +798,49 @@
         $('#print').hide();
       }
 
+      getConfig();
+      let config = 0;
 
-    });
-    getConfig();
-    let config = 0;
+      function getConfig() {
+        var origin = window.location.origin + "/pages/MVC";
+        $.ajax({
+          method: "GET",
+          url: origin + "/Route.php?controller=BaseController&action=getConfig&page=base",
+          success: function(response) {
+            console.log(response);
+            config = response;
 
-    function getConfig() {
-      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
-      $.ajax({
-        method: "GET",
-        url: origin + "/Route.php?controller=BaseController&action=getConfig&page=base",
-        success: function(response) {
-          config = response;
+            result = JSON.parse(response);
+            let img_src = $("#img_avatar").attr("src");
 
-          result = JSON.parse(response);
-          let img_src = $("#img_avatar").attr("src");
+            $("#img_avatar").attr("src", result.origin + "/" + img_src);
 
-          $("#img_avatar").attr("src", result.origin + "/" + img_src);
+            var hrefArray = document.getElementsByTagName("a");
+            for (var i = 0; i < hrefArray.length; i++) {
+              if (hrefArray[i].getAttribute("href") != '#')
+                hrefArray[i].setAttribute("href", result.origin + hrefArray[i].getAttribute("href"));
+            }
+          },
 
-          var hrefArray = document.getElementsByTagName("a");
-          for (var i = 0; i < hrefArray.length; i++) {
-            if (hrefArray[i].getAttribute("href") != '#')
-              hrefArray[i].setAttribute("href", result.origin + hrefArray[i].getAttribute("href"));
+          error: function(response) {
+            console.log(response);
           }
-        },
+        });
+      }
+    });
+  </script>
 
-        error: function(response) {
-          console.log(response);
-        }
-      });
+  <script>
+    function createBarCode(id) {
+      JsBarcode("#barcode")
+        .options({
+          font: "OCR-B"
+        })
+        .CODE128(id, {
+          fontSize: 14,
+          textMargin: 0,
+          height: 40
+        })
+        .render();
     }
   </script>

@@ -29,19 +29,27 @@ try {
           <a href="#" class=lang vi="Kê khai hàng ngày(tại trường)" onclick="_loadPageContentURL('pages/MVC/View/asset-manage/admin.php');">
             Đồng phục
           </a>
-        </li>
-        <!-- <li id="li_hoc_bong">
-          <a href="#" class=lang vi="Kê khai hàng ngày(tại trường)" onclick="_loadPageContentURL('pages/MVC/View/hoc-bong/admin_list.php');">
-            Học bổng
-          </a>
-        </li> -->
+          <!-- <ul>
+            <li id=li_report_1><a href="#" onclick="check_access('pages/internal/online_medical/report_1.php');" class=lang vi="Danh sách DS GVNV chưa báo cáo ngày"> Ki</a></li>
+            <li id=li_report_2><a href="#" onclick="check_access('pages/internal/online_medical/report_2.php');" class=lang vi="DS KÊ KHAI Y TẾ CÁ NHÂN ">DS KÊ KHAI Y TẾ CÁ NHÂN </a></li>
 
+          </ul> -->
+        </li>
+
+        <li class="" id="li_report">
+          <a href="#" class=lang vi="Báo cáo">Kho đồ</a>
+          <ul>
+            <li id=li_report_1><a href="#" onclick="_loadPageContentURL('pages/MVC/View/asset-manage/sizes.admin.php');" class=lang vi="Kích cỡ đồng phục">Uniform sizes</a></li>
+            <li id=li_report_2><a href="#" onclick="check_access('pages/internal/online_medical/report_2.php');" class=lang vi="DS KÊ KHAI Y TẾ CÁ NHÂN ">DS KÊ KHAI Y TẾ CÁ NHÂN </a></li>
+
+          </ul>
+        </li>
 
       </ul>
     </div>
   </div>
 </div>
-<div id="divPageContent" >
+<div id="divPageContent">
 
 </div>
 
@@ -54,7 +62,6 @@ try {
 
 
 <script>
-
   getConfig();
   let config = 0;
 
@@ -65,16 +72,8 @@ try {
       url: origin + "/Route.php?controller=BaseController&action=getConfig&page=base",
       success: function(response) {
         config = response;
-      
-        // result = JSON.parse(response);
-        // let img_src = $("img").attr("src");
-        // $("img").attr("src", result.origin + "/" + img_src);
 
-        // var hrefArray = document.querySelectorAll("link");
-        // for (var i = 0; i < hrefArray.length; i++) {
-        //   if (hrefArray[i].getAttribute("href") != '#' || hrefArray[i].getAttribute("href").indexOf('http') != -1 )
-        //     hrefArray[i].setAttribute("href", result.origin + "/" + hrefArray[i].getAttribute("href"));
-        // }
+       
       },
 
       error: function(response) {
@@ -85,5 +84,6 @@ try {
 </script>
 <script type="text/javascript">
   setupMenuTab();
-  _loadPageContentURL('pages/MVC/View/asset-manage/admin.php');
+  window.onload = _loadPageContentURL('pages/MVC/View/asset-manage/admin.php');
+ 
 </script>

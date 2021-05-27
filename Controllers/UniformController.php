@@ -10,8 +10,13 @@ class UniformController extends BaseController
 {
   public function createSize()
   {
-    var_dump($_POST);
-    $this->response("data", 200, [], $_POST);
+    $result = $this->db->insertDB('uniform_size', 'name, type', "{$_POST['name']}, {$_POST['type']}");
+
+    if ($result > 0) {
+      $this->response('Cập nhật thành công');
+    } else {
+      $this->response('Cập nhật thất bại', 400);
+    }
   }
   public function getUniformType()
   {
@@ -20,7 +25,7 @@ class UniformController extends BaseController
   }
   public function updateStudentBill()
   {
-   
+
     $id = $_POST['id'];
     $result = $this->db->updateDB('student_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
     if ($result > 0) {
@@ -128,7 +133,7 @@ class UniformController extends BaseController
         'school_year,student_id, number_phone,class_id ,create_by, created_at',
         "{$_POST['school_year']}{$_POST['student_id']}, '{$_POST['number_phone']}','{$_POST['class']}'" . $create_info
       );
-    }else {
+    } else {
       $array = ['deleted_at' => 'NULL'];
       $this->db->updateDB('student_bills', $array, "WHERE student_id = {$_POST['student_id']}");
     }
@@ -156,5 +161,4 @@ class UniformController extends BaseController
       $this->response('Xóa thất bại', 400);
     }
   }
-  
 }

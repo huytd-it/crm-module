@@ -35,9 +35,9 @@ var save = function(url, form_data, callback = init()) {
         data: form_data,
         processData: false,
         contentType: false,
-        success: function(data) {
-            console.log(data);
-            Swal.fire("Successfull", "hello", "success");
+        success: function(response) {
+            var data = JSON.parse(response);
+            Swal.fire("Successfull", data.msg, "success");
 
             callback();
             $(".modal").modal("hide");

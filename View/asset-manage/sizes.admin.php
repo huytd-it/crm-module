@@ -106,6 +106,58 @@
     </div>
 
   </div>
+  <div class="modal fade" id="sizes_edit_modal" tabindex="-1">
+
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h3 class="modal-title" id="staticBackdropLabel">UNIFORM</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="sizes_edit_form">
+
+            <div class="row">
+              <div class="col-lg-6">
+
+                <div class="form-group">
+                  <label for="usr">Name:</label>
+                  <input type="text" class="form-control" name="id">
+                  <input type="text" class="form-control" name="name">
+                </div>
+
+
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="usr">Type:</label>
+                  <select name="type" style=" width:100%">
+                    <option value="0">Kiểu chữ</option>
+                    <option value="1">Kiểu số</option>
+                  </select>
+                </div>
+
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer text-center">
+          <div class=" text-center">
+            <button type="button" class="btn btn-primary" id="sizes_edit_btn">Duyệt</button>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
   <div class="modal fade" id="types_modal" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
     <div class="modal-dialog modal-lg">
@@ -332,47 +384,30 @@
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
       });
+
       $('#sizes_create_btn').click(function() {
 
         var data = new FormData(document.getElementById('sizes_form'));
         var url = origin + '/Route.php?page=uniform&action=createSize';
 
         save(url, data, function() {
-        
-          $('.modal').modal('hide');
-          $('body').removeClass('modal-open');
-          $('.modal-backdrop').remove();
+          var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getSize';
+          getData(uniformTypesUrl, function(response) {
+            console.log(response);
+            var data = JSON.parse(response).data;
+            showSize(data);
+          });
 
         });
       })
 
-      // function save(url, form_data, callback = init()) {
 
-      //   $.ajax({
-      //     method: "POST",
-      //     url: url,
-      //     data: form_data,
-      //     processData: false,
-      //     contentType: false,
-      //     success: function(data) {
-      //       Swal.fire("Successfull", 'hello', "success");
-         
-      //       callback();
-      //       $(".modal").modal("hide");
-      //       $("body").removeClass("modal-open");
-      //       $(".modal-backdrop").remove();
-      //     },
-      //     error: function(data) {
-      //       console.log(data);
-      //       response_error(data);
-      //     },
-      //   });
-      // }
+
       var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "pages/MVC";
       var url = origin + '/Route.php?page=uniform&action=getSize';
       window.onload = getData(url, function(response) {
         var data = JSON.parse(response).data;
-        showData(data);
+        showSize(data);
       });
       var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getUniformType';
       window.onload = getData(uniformTypesUrl, function(response) {
@@ -390,15 +425,20 @@
             out += '<td>' + data[i].name + '</td>';
             out += '<td>' + data[i].en_name + '</td>';
             out += '<td>' + data[i].price + '</td>';
-            out += '<td><button type="button" class="btn btn-warning">Edit</td>';
+            out += '<td><button type="button"  class="btn btn-warning ">Edit</td>';
             out += '</tr>'
           }
+          $(document).on('click', '.btn-edit-size', function() {
 
+            $('#sizes_edit_form input[name=name]').val($(this).attr('data-name'));
+            $('#sizes_edit_form select[name=type]').val($(this).attr('data-type'));
+            $('#sizes_edit_form input[name=id]').val($(this).attr('data-id'));
+          });
           setUpDataTable(out, '#uniform-type-id', '#uniform-type');
         }
       }
 
-      function showData(data) {
+      function showSize(data) {
 
         if (data) {
           let out = "";
@@ -407,7 +447,9 @@
             out += '<td>' + (i + 1) + '</td>';
             out += '<td>' + data[i].name + '</td>';
             out += '<td>' + printTypeName(data[i].type) + '</td>';
-            out += '<td><button type="button" class="btn btn-warning">Edit</td>';
+            out += '<td><button data-id="' + data[i].id + '" data-type="' +
+              data[i].type + '" data-name="' + data[i].name +
+              '" type="button" data-toggle="modal" data-target="#sizes_edit_modal" class="btn btn-edit-size btn-warning">Edit</td>';
             out += '</tr>'
           }
 
@@ -464,4 +506,3 @@
       }
     });
   </script>
- 

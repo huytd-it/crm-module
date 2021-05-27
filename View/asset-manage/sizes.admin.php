@@ -45,9 +45,103 @@
     .dataTables_wrapper .dataTables_paginate .paginate_button {
       padding: 0 !important;
     }
+    .dataTables_length select {
+      height: 30px !important;
+    }
+    .select2-container {
+      width: 100% !important;
+    }
   </style>
 
-  <div class="modal fade" id="hoa_don" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal fade" id="sizes_modal" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h3 class="modal-title" id="staticBackdropLabel">UNIFORM</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <table class="table table-border">
+            <thead>
+              <tr>
+                <th>Số thứ tự <br> No. </th>
+                <th>Tên hàng <br> Items</th>
+                <th>Số lượng <br> Quantity</th>
+                <th>Đơn giá <br> Unit price</th>
+                <th>Thành tiền<br> Amount</th>
+                <th>Size <br> Kích cỡ</th>
+              </tr>
+            </thead>
+            <tbody id="hoa_don_tbody">
+
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4" id="total"></td>
+                <td colspan="2"></td>
+              </tr>
+            </tfoot>
+          </table>
+          <form id="student_bills">
+            <hr>
+            <div class="row">
+              <div class="col-lg-6" style="margin:0 auto" id="student_bills_hell">
+
+                <div class="form-group">
+                  <label for="usr">From Deliver:</label>
+                  <input type="text" class="form-control" name="from_deliver">
+                </div>
+                <div class="form-group">
+                  <label for="usr">Deliver:</label>
+                  <input type="text" class="form-control" name="deliver">
+                </div>
+                <div class="form-group">
+                  <label for="pwd">Receiver:</label>
+                  <input type="text" class="form-control" name="receiver">
+                </div>
+                <div class="form-group">
+                  <label>Payment: </label>
+                  <span for="pwd">Cash</span>
+                  <input type="checkbox" class="form-control" name="payment" id="payment">
+                  <span for="pwd">Bank</span>
+                </div>
+                <div class="form-group" hidden>
+                  <label for="pwd">ID:</label>
+                  <input type="text" class="form-control" name="id">
+                </div>
+                <div class="form-group text-center">
+                  <button type="button" class="btn btn-primary" id="duyet-btn">Duyệt</button>
+
+                </div>
+
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+
+
+          <div class="row">
+
+            <div class="col-lg-12">
+
+              <button type="button" class="btn btn-secondary " data-dismiss="modal " id="close">Close</button>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal fade" id="types_modal" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
     <div class="modal-dialog modal-lg">
       <div class="modal-content ">
@@ -150,70 +244,91 @@
                 <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
               </svg> Export Excel</button>
 
+              <button class="btn btn-success" data-toggle="modal" data-target="#sizes_modal">Uniform Sizes</button>
+              <button class="btn btn-success" data-toggle="modal" data-target="#types_modal">Uniform Types</button>
+
           </div>
           <div class="card-body table-responsive-lg">
 
             <br>
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="table-responsive " style="overflow-x: scroll;min-width:800px; width:100%">
-                  <table class="table table-hover table-bordered" id="table" style="overflow:scroll;height:100px">
-                    <tfoot class="text-center">
-                      <tr>
-                        <th scope="col" style="visibility:hidden;">#</th>
-                        <th scope="col" style="visibility:hidden; width:100px">Họ và tên</th>
-                        <th scope="col">Số điện thoại</th>
-                        <th scope="col" style="visibility:hidden; width:100px">Họ và tên</th>
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#home">Kích cỡ</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#menu1">Loại đồng phục</a>
+              </li>
+
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div id="home" class="container tab-pane active"><br>
+                <div class="col-lg-12">
+                  <div class="table-responsive " style="overflow-x: scroll;min-width:800px; width:100%">
+                    <table class="table table-hover table-bordered" id="table" style="overflow:scroll;height:100px">
+                      <tfoot class="text-center">
+                        <tr>
+                          <th scope="col" style="visibility:hidden;">#</th>
+                          <th scope="col" style="visibility:hidden; width:100px">Họ và tên</th>
+                          <th scope="col">Số điện thoại</th>
+                          <th scope="col" style="visibility:hidden; width:100px">Họ và tên</th>
 
 
-                      </tr>
+                        </tr>
 
-                    </tfoot>
-                    <thead class="text-center">
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Tên size</th>
-                        <th scope="col">Kiểu size</th>
-                        <th scope="col">Feature</th>
+                      </tfoot>
+                      <thead class="text-center">
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Tên size</th>
+                          <th scope="col">Kiểu size</th>
+                          <th scope="col">Feature</th>
 
-                      </tr>
+                        </tr>
 
-                    </thead>
+                      </thead>
 
-                    <tbody id="row-id">
+                      <tbody id="row-id">
 
-                    </tbody>
-                  </table>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-              <div class="col-lg-12">
-                <div class="table-responsive " style="overflow-x: scroll;min-width:800px; width:100%">
-                  <table class="table table-hover table-bordered" id="uniform-type" style="overflow:scroll;height:100px">
-                    <tfoot class="text-center">
-                      <tr>
-                        <th scope="col" style="visibility:hidden;">#</th>
-                        <th scope="col" >Họ và tên</th>
-                        <th scope="col">Số điện thoại</th>
-                        <th scope="col">Giới tính</th>
-                        <th scope="col">Edit</th>
-                      </tr>
+              <div id="menu1" class="container tab-pane fade"><br>
 
-                    </tfoot>
-                    <thead class="text-center">
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Tên size</th>
-                        <th scope="col">Kiểu size</th>
-                        <th scope="col">Giới tính</th>
-                        <th scope="col">Edit</th>
-                      </tr>
-                    </thead>
-                    <tbody id="uniform-type-id">
-                    </tbody>
-                  </table>
+                <div class="col-lg-12">
+                  <div class="table-responsive " style="overflow-x: scroll;min-width:800px; width:100%">
+                    <table class="table table-hover table-bordered" id="uniform-type" style="overflow:scroll;height:100px">
+                      <tfoot class="text-center">
+                        <tr>
+                          <th scope="col" style="visibility:hidden;">#</th>
+                          <th scope="col">Họ và tên</th>
+                          <th scope="col">Số điện thoại</th>
+                          <th scope="col">Giới tính</th>
+                          <th scope="col">Edit</th>
+                        </tr>
+
+                      </tfoot>
+                      <thead class="text-center">
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Tên size</th>
+                          <th scope="col">Kiểu size</th>
+                          <th scope="col">Giới tính</th>
+                          <th scope="col">Edit</th>
+                        </tr>
+                      </thead>
+                      <tbody id="uniform-type-id">
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
+
             </div>
+
 
 
           </div>
@@ -242,6 +357,10 @@
   <script>
     $(document).ready(function() {
       $.fn.modal.Constructor.prototype._enforceFocus = function() {};
+      $('.nav-tabs a').click(function() {
+        $(this).tab('show');
+        $('.tab-pane').removeClass('active show in');
+      })
       var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
       var url = origin + '/Route.php?page=uniform&action=getSize';
       window.onload = getData(url, function(response) {
@@ -254,6 +373,7 @@
         var data = JSON.parse(response).data;
         showUniformType(data);
       });
+
       function showUniformType(data) {
         if (data) {
           let out = "";
@@ -270,6 +390,7 @@
           setUpDataTable(out, '#uniform-type-id', '#uniform-type');
         }
       }
+
       function showData(data) {
         console.log(data);
         if (data) {
@@ -279,7 +400,7 @@
             out += '<td>' + (i + 1) + '</td>';
             out += '<td>' + data[i].name + '</td>';
             out += '<td>' + printTypeName(data[i].type) + '</td>';
-            out += '<td><button type="button" class="btn btn-warning">Edit</td>'; 
+            out += '<td><button type="button" class="btn btn-warning">Edit</td>';
             out += '</tr>'
           }
 
@@ -302,11 +423,12 @@
       }
 
       function setUpDataTable(out, tbody_id = '#row-id', table_id = '#table') {
-       
+
         $(tbody_id).empty();
         $(tbody_id).append(out);
         $(table_id).DataTable({
           retrieve: true,
+          "pageLength": 25,
           initComplete: function() {
             this.api().columns().every(function() {
               var column = this;

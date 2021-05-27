@@ -8,6 +8,11 @@ use Models\Excel;
 
 class UniformController extends BaseController
 {
+  public function createSize()
+  {
+    var_dump($_POST);
+    $this->response("data", 200, [], $_POST);
+  }
   public function getUniformType()
   {
     $result = $this->db->fetchAll('uniform_types');

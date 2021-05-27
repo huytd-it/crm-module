@@ -45,15 +45,17 @@
     .dataTables_wrapper .dataTables_paginate .paginate_button {
       padding: 0 !important;
     }
+
     .dataTables_length select {
       height: 30px !important;
     }
+
     .select2-container {
       width: 100% !important;
     }
   </style>
 
-  <div class="modal fade" id="sizes_modal" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal fade" id="sizes_modal" tabindex="-1">
 
     <div class="modal-dialog modal-lg">
       <div class="modal-content ">
@@ -64,58 +66,25 @@
           </button>
         </div>
         <div class="modal-body">
+          <form id="sizes_form">
 
-          <table class="table table-border">
-            <thead>
-              <tr>
-                <th>Số thứ tự <br> No. </th>
-                <th>Tên hàng <br> Items</th>
-                <th>Số lượng <br> Quantity</th>
-                <th>Đơn giá <br> Unit price</th>
-                <th>Thành tiền<br> Amount</th>
-                <th>Size <br> Kích cỡ</th>
-              </tr>
-            </thead>
-            <tbody id="hoa_don_tbody">
-
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="4" id="total"></td>
-                <td colspan="2"></td>
-              </tr>
-            </tfoot>
-          </table>
-          <form id="student_bills">
-            <hr>
             <div class="row">
-              <div class="col-lg-6" style="margin:0 auto" id="student_bills_hell">
+              <div class="col-lg-6">
 
                 <div class="form-group">
-                  <label for="usr">From Deliver:</label>
-                  <input type="text" class="form-control" name="from_deliver">
+                  <label for="usr">Name:</label>
+                  <input type="text" class="form-control" name="name">
                 </div>
-                <div class="form-group">
-                  <label for="usr">Deliver:</label>
-                  <input type="text" class="form-control" name="deliver">
-                </div>
-                <div class="form-group">
-                  <label for="pwd">Receiver:</label>
-                  <input type="text" class="form-control" name="receiver">
-                </div>
-                <div class="form-group">
-                  <label>Payment: </label>
-                  <span for="pwd">Cash</span>
-                  <input type="checkbox" class="form-control" name="payment" id="payment">
-                  <span for="pwd">Bank</span>
-                </div>
-                <div class="form-group" hidden>
-                  <label for="pwd">ID:</label>
-                  <input type="text" class="form-control" name="id">
-                </div>
-                <div class="form-group text-center">
-                  <button type="button" class="btn btn-primary" id="duyet-btn">Duyệt</button>
 
+
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="usr">Type:</label>
+                  <select name="type" id="" style=" width:100%">
+                    <option value="0">Kiểu chữ</option>
+                    <option value="1">Kiểu số</option>
+                  </select>
                 </div>
 
               </div>
@@ -124,16 +93,12 @@
           </form>
 
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer text-center">
+          <div class=" text-center">
+            <button type="button" class="btn btn-primary" id="sizes_create_btn">Duyệt</button>
 
-
-          <div class="row">
-
-            <div class="col-lg-12">
-
-              <button type="button" class="btn btn-secondary " data-dismiss="modal " id="close">Close</button>
-            </div>
           </div>
+
 
 
         </div>
@@ -244,8 +209,8 @@
                 <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
               </svg> Export Excel</button>
 
-              <button class="btn btn-success" data-toggle="modal" data-target="#sizes_modal">Uniform Sizes</button>
-              <button class="btn btn-success" data-toggle="modal" data-target="#types_modal">Uniform Types</button>
+            <button class="btn btn-success" data-toggle="modal" data-target="#sizes_modal">Uniform Sizes</button>
+            <button class="btn btn-success" data-toggle="modal" data-target="#types_modal">Uniform Types</button>
 
           </div>
           <div class="card-body table-responsive-lg">
@@ -361,7 +326,49 @@
         $(this).tab('show');
         $('.tab-pane').removeClass('active show in');
       })
-      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
+      $('.close, #close').click(function() {
+
+        $('#hoa_don').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+      });
+      $('#sizes_create_btn').click(function() {
+
+        var data = new FormData(document.getElementById('sizes_form'));
+        var url = origin + '/Route.php?page=uniform&action=createSize';
+
+        save(url, data, function() {
+        
+          $('.modal').modal('hide');
+          $('body').removeClass('modal-open');
+          $('.modal-backdrop').remove();
+
+        });
+      })
+
+      // function save(url, form_data, callback = init()) {
+
+      //   $.ajax({
+      //     method: "POST",
+      //     url: url,
+      //     data: form_data,
+      //     processData: false,
+      //     contentType: false,
+      //     success: function(data) {
+      //       Swal.fire("Successfull", 'hello', "success");
+         
+      //       callback();
+      //       $(".modal").modal("hide");
+      //       $("body").removeClass("modal-open");
+      //       $(".modal-backdrop").remove();
+      //     },
+      //     error: function(data) {
+      //       console.log(data);
+      //       response_error(data);
+      //     },
+      //   });
+      // }
+      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "pages/MVC";
       var url = origin + '/Route.php?page=uniform&action=getSize';
       window.onload = getData(url, function(response) {
         var data = JSON.parse(response).data;
@@ -392,7 +399,7 @@
       }
 
       function showData(data) {
-        console.log(data);
+
         if (data) {
           let out = "";
           for (var i = 0; i < data.length; i++) {
@@ -457,3 +464,4 @@
       }
     });
   </script>
+ 

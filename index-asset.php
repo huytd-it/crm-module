@@ -54,34 +54,11 @@ try {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-<script src="pages/MVC/view/publish/plugin/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-
 <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+<script src="pages/MVC/View/publish/js/jquery.controller.js"></script>
 
 
-<script>
-  getConfig();
-  let config = 0;
-
-  function getConfig() {
-    var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
-    $.ajax({
-      method: "GET",
-      url: origin + "/Route.php?controller=BaseController&action=getConfig&page=base",
-      success: function(response) {
-        config = response;
-
-       
-      },
-
-      error: function(response) {
-        console.log(response);
-      }
-    });
-  }
-</script>
 <script type="text/javascript">
   setupMenuTab();
   window.onload = _loadPageContentURL('pages/MVC/View/asset-manage/admin.php');

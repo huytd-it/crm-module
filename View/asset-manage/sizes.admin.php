@@ -124,7 +124,7 @@
 
                 <div class="form-group">
                   <label for="usr">Name:</label>
-                  <input type="text" class="form-control" name="id">
+                  <input type="text" class="form-control" name="id" hidden>
                   <input type="text" class="form-control" name="name">
                 </div>
 
@@ -400,7 +400,19 @@
 
         });
       })
+      $('#sizes_edit_btn').click(function() {
+        var data = new FormData(document.getElementById('sizes_edit_form'));
+        var url = origin + '/Route.php?page=uniform&action=updateSize';
+        save(url, data, function() {
+          var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getSize';
+          getData(uniformTypesUrl, function(response) {
+           
+            var data = JSON.parse(response).data;
+            showSize(data);
+          });
 
+        });
+      })
 
 
       var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "pages/MVC";
@@ -473,7 +485,7 @@
 
       function setUpDataTable(out, tbody_id = '#row-id', table_id = '#table') {
 
-        $(tbody_id).empty();
+        $(table_id).DataTable().clear().destroy();
         $(tbody_id).append(out);
         $(table_id).DataTable({
           retrieve: true,

@@ -18,6 +18,16 @@ class UniformController extends BaseController
       $this->response('Cập nhật thất bại', 400);
     }
   }
+  public function updateSize()
+  {
+    $id = $_POST['id'];
+    $result = $this->db->updateDB('uniform_size', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
+    if ($result > 0) {
+      $this->response('Cập nhật thành công');
+    } else {
+      $this->response('Cập nhật thất bại', 400);
+    }
+  }
   public function getUniformType()
   {
     $result = $this->db->fetchAll('uniform_types');
@@ -25,9 +35,10 @@ class UniformController extends BaseController
   }
   public function updateStudentBill()
   {
-
+    
     $id = $_POST['id'];
     $result = $this->db->updateDB('student_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
+    
     if ($result > 0) {
       $this->response('Cập nhật thành công');
     } else {
@@ -65,7 +76,7 @@ class UniformController extends BaseController
   public function getAll()
   {
     $query = "SELECT student_bills.*, lsts_hr_student.student_fullname, lsts_hr_student.student_sex ";
-    $query .= "FROM student_bills INNER JOIN lsts_hr_student ON student_bills.student_id=lsts_hr_student.student_id WHERE student_bills.deleted_at is NULL ORDER BY student_bills.created_at ";
+    $query .= "FROM student_bills INNER JOIN lsts_hr_student ON student_bills.student_id=lsts_hr_student.student_id WHERE student_bills.deleted_at is NULL ORDER BY student_bills.created_at DESC";
     $this->response("data", 200, [], $this->db->getDataFromQuery($query));
   }
   public function get()

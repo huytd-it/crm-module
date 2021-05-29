@@ -30,6 +30,7 @@
       padding: 5px !important;
       min-width: 50px;
       font-size: 15px !important;
+      min-height: 30px;
     }
 
     table.dataTable thead th,
@@ -44,6 +45,10 @@
 
     .dataTables_wrapper .dataTables_paginate .paginate_button {
       padding: 0 !important;
+    }
+
+    .select2-container {
+      width: 100% !important;
     }
   </style>
 
@@ -257,55 +262,57 @@
       });
       var input = document.getElementById('input_excel')
 
-      input.addEventListener('change', function() {
+      // input.addEventListener('change', function() {
 
-        readXlsxFile(input.files[0]).then(function(rows) {
-          const data = Object.assign({}, rows);
+      //   readXlsxFile(input.files[0]).then(function(rows) {
+      //     const data = Object.assign({}, rows);
 
 
-          $.ajax({
-            method: "POST",
-            url: origin + "/Route.php?page=uniform&action=import",
-            data: {
-              h: 1222
-            },
-            contentType: false,
-            mimeType: "multipart/form-data",
-            processData: false,
-            cache: false,
-            success: function(response) {
+      //     $.ajax({
+      //       method: "POST",
+      //       url: origin + "/Route.php?page=uniform&action=import",
+      //       data: {
+      //         h: 1222
+      //       },
+      //       contentType: false,
+      //       mimeType: "multipart/form-data",
+      //       processData: false,
+      //       cache: false,
+      //       success: function(response) {
 
-              var data = JSON.parse(response);
-              if (data.status == 200)
-                Swal.fire({
-                  position: 'center',
-                  icon: 'success',
-                  title: data.msg,
-                  showConfirmButton: false,
-                  timer: 3000
-                });
-              else {
-                Swal.fire({
-                  position: 'center',
-                  icon: 'error',
-                  title: data.msg,
-                  showConfirmButton: false,
-                  timer: 3000
-                });
-              }
+      //         var data = JSON.parse(response);
+      //         if (data.status == 200)
+      //           Swal.fire({
+      //             position: 'center',
+      //             icon: 'success',
+      //             title: data.msg,
+      //             showConfirmButton: false,
+      //             timer: 3000
+      //           });
+      //         else {
+      //           Swal.fire({
+      //             position: 'center',
+      //             icon: 'error',
+      //             title: data.msg,
+      //             showConfirmButton: false,
+      //             timer: 3000
+      //           });
+      //         }
 
-            },
-            error: function(response) {
+      //       },
+      //       error: function(response) {
 
-            }
-          });
-        })
-      })
+      //       }
+      //     });
+      //   })
+      // })
 
 
       $('#duyet-btn').click(function() {
+
         var data = new FormData($('#student_bills')[0]);
         data.append('payment', $('#payment').prop('checked') ? 1 : 0);
+
         updateData(data);
 
       });
@@ -349,16 +356,17 @@
       }
 
       function updateData(data) {
-        
+
         $.ajax({
           type: "POST",
           url: origin + "/Route.php?page=uniform&action=updateStudentBill",
           data: data,
-       
+          processData: false,
+          contentType: false,
           success: function(response) {
-           console.log(response);
+           
             var data = JSON.parse(response);
-            if (data.status == 200){
+            if (data.status == 200) {
               Swal.fire({
                 position: 'center',
                 icon: 'success',
@@ -367,9 +375,7 @@
                 timer: 3000
               });
               fetchAll();
-            }
-              
-            else {
+            } else {
               Swal.fire({
                 position: 'center',
                 icon: 'error',
@@ -381,7 +387,26 @@
 
           },
           error: function(response) {
+            console.log(response);
+          }
+        });
+      }
+      function updateDataStatus(data) {
 
+        $.ajax({
+          type: "POST",
+          url: origin + "/Route.php?page=uniform&action=updateStudentBill",
+          data: data,
+
+          success: function(response) {
+           
+          
+              fetchAll();
+         
+
+          },
+          error: function(response) {
+            console.log(response);
           }
         });
       }
@@ -391,28 +416,25 @@
           method: "GET",
           url: origin + "/Route.php?controller=HocBongController&action=getAll&page=uniform",
           success: function(response) {
-
             let result = JSON.parse(response);
-
             let data = result.data;
             let config = result.config;
             showList(data, config);
 
-            $('.btn-print').click(function() {
+            $(document).on('click', '.btn-print', function() {
               window.open('pages/MVC/View/asset-manage/form-print.php?view&mode=view&id=' + $(this).attr('id'), 'width:1000',
                 'height:1000')
             });
 
-            $('.btn-warning').on('click', function() {
-              // window.open('?p=MVC.view.asset-manage.update-form/0/view&mode=view&id=' + $(this).attr('id'), 'width:1000',
-              //   'height:1000')
+            $(document).on('click', '.btn-warning', function() {
+
 
               $('#hoa_don').modal('show');
               getBill($(this).attr('id'), $(this).attr('data-id'))
 
 
             });
-            $('.btn-delete').on('click', function() {
+            $(document).on('click', '.btn-delete', function() {
 
               Swal.fire({
                 title: 'Bạn chắc chứ?',
@@ -435,16 +457,19 @@
 
 
             });
-            $('.btn-status').on('click', function() {
-             
-              var data = {
-                id: $(this).attr('data-id'),
-                status: parseInt($(this).attr('data-status')) + 1,
-                update_by:window.localStorage.getItem('_user_name'),
-                updated_at: (new Date()).toISOString(),
+            $(document).on('change', '.btn-status', function() {
+              if ($(this).val() > -1) {
+                const data = {
+                  id: $(this).attr('data-id'),
+                  status: $(this).val(),
+                  update_by: window.localStorage.getItem('_user_name'),
+                  updated_at: (new Date()).toISOString(),
 
+                }
+             
+                updateDataStatus(data);
               }
-              updateData(data);
+
 
             })
             $('table a').click(function() {
@@ -497,16 +522,17 @@
           success: function(response) {
 
             var result = JSON.parse(response).data;
+         
             var out = '';
+           
             result.forEach(el => {
               out += '<option value="' + el.id + '">' + el.name + '</option>';
             })
+           
             $('select[name="size"]').append(out);
 
 
             $('select[name="size"]').each(function(num, el) {
-
-
               $(el).val($(el).attr('data-value'));
             })
 
@@ -668,24 +694,26 @@
               '</svg> </button> </td>';
 
             out += '<td>';
-            if (data[i].status < 2)
-              out += '<button type="button" class="btn ' + btnStatusClass(data[i].status) +' btn-status" data-id="' + data[i].id +
-              '"  data-status="' + data[i].status + '"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">' +
-              '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>' +
-              '<path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>' +
-              '</svg> <br>' + btnStatus(data[i].status) + '</button> ';
+            // if (data[i].status < 2)
+            //   out += '<button type="button" class="btn ' + btnStatusClass(data[i].status) + ' btn-status" data-id="' + data[i].id +
+            //   '"  data-status="' + data[i].status + '"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">' +
+            //   '<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>' +
+            //   '<path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>' +
+            //   '</svg> <br>' + btnStatus(data[i].status) + '</button> ';
+            out += '<select class="btn-status" data-id="' + data[i].id +
+              '"  data-status="' + data[i].status + '"><option value="-1"> -- Chọn --</option><option value="0">Đăng ký</option><option value="1">Thanh toán</option><option value="2">Giao đồng phục</option></select>'
             out += '</td>';
             out += "</tr>";
 
 
 
           }
-          $('#row-id').empty();
+          $('#table').DataTable().clear().destroy();
           $('#row-id').append(out);
           $('#table').DataTable({
             retrieve: true,
             initComplete: function() {
-           
+
               this.api().columns().every(function() {
                 var column = this;
                 var select = $('<select><option value="">All</option></select>')
@@ -745,6 +773,7 @@
           return 'Đã nhận đồng phục';
         }
       }
+
       function btnStatusClass(status) {
         if (status == 0) {
           return 'btn-info';

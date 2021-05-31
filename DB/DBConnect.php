@@ -47,7 +47,7 @@ class DBConnect extends Dbconfig
     {
 
         $sql = "INSERT INTO {$table_name} ({$cols}) VALUES ({$values})";
-
+      
         $stmt = $this->connectString->prepare($sql);
 
         return  $stmt->execute();

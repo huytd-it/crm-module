@@ -262,50 +262,44 @@
       });
       var input = document.getElementById('input_excel')
 
-      // input.addEventListener('change', function() {
+      input.addEventListener('change', function() {
 
-      //   readXlsxFile(input.files[0]).then(function(rows) {
-      //     const data = Object.assign({}, rows);
+        readXlsxFile(input.files[0]).then(function(rows) {
+          const data = Object.assign({}, rows);
+          $.ajax({
+            method: "POST",
+            url: origin + "/Route.php?page=uniform&action=import",
+            data: {
+              h: 1222
+            },
+            success: function(response) {
 
+              var data = JSON.parse(response);
+              if (data.status == 200)
+                Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: data.msg,
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+              else {
+                Swal.fire({
+                  position: 'center',
+                  icon: 'error',
+                  title: data.msg,
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+              }
 
-      //     $.ajax({
-      //       method: "POST",
-      //       url: origin + "/Route.php?page=uniform&action=import",
-      //       data: {
-      //         h: 1222
-      //       },
-      //       contentType: false,
-      //       mimeType: "multipart/form-data",
-      //       processData: false,
-      //       cache: false,
-      //       success: function(response) {
+            },
+            error: function(response) {
 
-      //         var data = JSON.parse(response);
-      //         if (data.status == 200)
-      //           Swal.fire({
-      //             position: 'center',
-      //             icon: 'success',
-      //             title: data.msg,
-      //             showConfirmButton: false,
-      //             timer: 3000
-      //           });
-      //         else {
-      //           Swal.fire({
-      //             position: 'center',
-      //             icon: 'error',
-      //             title: data.msg,
-      //             showConfirmButton: false,
-      //             timer: 3000
-      //           });
-      //         }
-
-      //       },
-      //       error: function(response) {
-
-      //       }
-      //     });
-      //   })
-      // })
+            }
+          });
+        })
+      })
 
 
       $('#duyet-btn').click(function() {
@@ -397,13 +391,8 @@
           type: "POST",
           url: origin + "/Route.php?page=uniform&action=updateStudentBill",
           data: data,
-
           success: function(response) {
-           
-          
               fetchAll();
-         
-
           },
           error: function(response) {
             console.log(response);

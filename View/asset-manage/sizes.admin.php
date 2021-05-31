@@ -158,73 +158,47 @@
     </div>
 
   </div>
-  <div class="modal fade" id="types_modal" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal fade" id="types_modal">
 
     <div class="modal-dialog modal-lg">
       <div class="modal-content ">
         <div class="modal-header">
-          <h3 class="modal-title" id="staticBackdropLabel">UNIFORM</h3>
+          <h3 class="modal-title" id="staticBackdropLabel">Loại đồng phục</h3>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
 
-          <table class="table table-border">
-            <thead>
-              <tr>
-                <th>Số thứ tự <br> No. </th>
-                <th>Tên hàng <br> Items</th>
-                <th>Số lượng <br> Quantity</th>
-                <th>Đơn giá <br> Unit price</th>
-                <th>Thành tiền<br> Amount</th>
-                <th>Size <br> Kích cỡ</th>
-              </tr>
-            </thead>
-            <tbody id="hoa_don_tbody">
-
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="4" id="total"></td>
-                <td colspan="2"></td>
-              </tr>
-            </tfoot>
-          </table>
-          <form id="student_bills">
+          <form id="type_create_form">
             <hr>
             <div class="row">
-              <div class="col-lg-6" style="margin:0 auto" id="student_bills_hell">
+              <div class="col-lg-6">
 
                 <div class="form-group">
-                  <label for="usr">From Deliver:</label>
-                  <input type="text" class="form-control" name="from_deliver">
+                  <label for="usr">Tên đồng phục:</label>
+                  <input type="text" class="form-control" name="name">
                 </div>
                 <div class="form-group">
-                  <label for="usr">Deliver:</label>
-                  <input type="text" class="form-control" name="deliver">
+                  <label for="usr">Viết tắt:</label>
+                  <input type="text" class="form-control" name="short_name">
                 </div>
                 <div class="form-group">
-                  <label for="pwd">Receiver:</label>
-                  <input type="text" class="form-control" name="receiver">
-                </div>
-                <div class="form-group">
-                  <label>Payment: </label>
-                  <span for="pwd">Cash</span>
-                  <input type="checkbox" class="form-control" name="payment" id="payment">
-                  <span for="pwd">Bank</span>
-                </div>
-                <div class="form-group" hidden>
-                  <label for="pwd">ID:</label>
-                  <input type="text" class="form-control" name="id">
-                </div>
-                <div class="form-group text-center">
-                  <button type="button" class="btn btn-primary" id="duyet-btn">Duyệt</button>
-
+                  <label for="pwd">Tên tiếng anh:</label>
+                  <input type="text" class="form-control" name="en_name">
                 </div>
 
               </div>
-
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="pwd">Giá :</label>
+                  <input type="text" class="form-control" name="price">
+                </div>
+                <div class="form-group">
+                  <label for="pwd">Số lượng :</label>
+                  <input type="text" class="form-control" name="quantity">
+                </div>
+              </div>
             </div>
           </form>
 
@@ -232,12 +206,72 @@
         <div class="modal-footer">
 
 
-          <div class="row">
+          <div class="form-group text-center">
+            <button type="button" class="btn btn-primary" id="type-create-btn">Lưu</button>
 
-            <div class="col-lg-12">
+          </div>
 
-              <button type="button" class="btn btn-secondary " data-dismiss="modal " id="close">Close</button>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal fade" id="types_edit_modal" tabindex="-1">
+
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h3 class="modal-title" id="staticBackdropLabel">Loại đồng phục</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form id="type_edit_form">
+            <hr>
+            <div class="row">
+              <div class="col-lg-6">
+
+                <div class="form-group">
+                  <label for="usr">Tên đồng phục:</label>
+                  <input type="text" class="form-control" name="name">
+                </div>
+                <div class="form-group">
+                  <label for="usr">Viết tắt:</label>
+                  <input type="text" class="form-control" name="short_name">
+                </div>
+                <div class="form-group">
+                  <label for="pwd">Tên tiếng anh:</label>
+                  <input type="text" class="form-control" name="en_name">
+                </div>
+
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="pwd">Giá :</label>
+                  <input type="text" class="form-control" name="price">
+                </div>
+                <div class="form-group">
+                  <label for="pwd">Số lượng :</label>
+                  <input type="text" class="form-control" name="quantity">
+                </div>
+                <div class="form-group" hidden>
+                  <label for="pwd">Số lượng :</label>
+                  <input type="text" class="form-control" name="id">
+                </div>
+              </div>
             </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+
+
+          <div class="form-group text-center">
+            <button type="button" class="btn btn-primary" id="type-edit-btn">Lưu</button>
+
           </div>
 
 
@@ -323,7 +357,8 @@
                           <th scope="col" style="visibility:hidden;">#</th>
                           <th scope="col">Họ và tên</th>
                           <th scope="col">Số điện thoại</th>
-                          <th scope="col">Giới tính</th>
+                          <th scope="col">Giá</th>
+                          <th scope="col">Số lượng</th>
                           <th scope="col">Edit</th>
                         </tr>
 
@@ -333,7 +368,8 @@
                           <th scope="col">#</th>
                           <th scope="col">Tên size</th>
                           <th scope="col">Kiểu size</th>
-                          <th scope="col">Giới tính</th>
+                          <th scope="col">Giá</th>
+                          <th scope="col">Số lượng</th>
                           <th scope="col">Edit</th>
                         </tr>
                       </thead>
@@ -406,14 +442,35 @@
         save(url, data, function() {
           var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getSize';
           getData(uniformTypesUrl, function(response) {
-           
+
             var data = JSON.parse(response).data;
             showSize(data);
           });
 
         });
       })
-
+      $('#type-create-btn').click(function() {
+        var data = new FormData($('#type_create_form')[0]);
+        const url = origin + '/Route.php?page=uniform&action=createTypeUniform';
+        save(url, data, function() {
+          var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getUniformType';
+          window.onload = getData(uniformTypesUrl, function(response) {
+            var data = JSON.parse(response).data;
+            showUniformType(data);
+          });
+        })
+      })
+      $('#type-edit-btn').click(function() {
+        var data = new FormData($('#type_edit_form')[0]);
+        const url = origin + '/Route.php?page=uniform&action=updateType';
+        save(url, data, function() {
+          var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getUniformType';
+          window.onload = getData(uniformTypesUrl, function(response) {
+            var data = JSON.parse(response).data;
+            showUniformType(data);
+          });
+        })
+      })
 
       var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "pages/MVC";
       var url = origin + '/Route.php?page=uniform&action=getSize';
@@ -436,15 +493,23 @@
             out += '<td>' + (i + 1) + '</td>';
             out += '<td>' + data[i].name + '</td>';
             out += '<td>' + data[i].en_name + '</td>';
-            out += '<td>' + data[i].price + '</td>';
-            out += '<td><button type="button"  class="btn btn-warning ">Edit</td>';
+            out += '<td>' +formatPrice(data[i].price) + '</td>';
+            out += '<td>' + data[i].quantity + '</td>';
+            out += '<td><button type="button"  data-toggle="modal" data-target="#types_edit_modal" class="btn btn-warning btn-edit-type" ' +
+              'data-en_name="' +
+              data[i].en_name + '" data-name="' + data[i].name  + '" data-price="' + data[i].price + '" data-quantity="' + data[i].quantity +
+              '" data-id="' + data[i].id +
+              '" data-short_name="' + data[i].short_name +'">Edit</td>';
             out += '</tr>'
           }
-          $(document).on('click', '.btn-edit-size', function() {
-
-            $('#sizes_edit_form input[name=name]').val($(this).attr('data-name'));
-            $('#sizes_edit_form select[name=type]').val($(this).attr('data-type'));
-            $('#sizes_edit_form input[name=id]').val($(this).attr('data-id'));
+          $(document).on('click', '.btn-edit-type', function() {
+            const inputs = $('#type_edit_form :input');
+            const values = this;
+          
+            inputs.each(function() {
+              console.log($(this).attr('short_name'));
+              $(this).val($(values).attr('data-' + $(this).attr('name') ));
+            })
           });
           setUpDataTable(out, '#uniform-type-id', '#uniform-type');
         }
@@ -464,7 +529,12 @@
               '" type="button" data-toggle="modal" data-target="#sizes_edit_modal" class="btn btn-edit-size btn-warning">Edit</td>';
             out += '</tr>'
           }
+          $(document).on('click', '.btn-edit-size', function() {
 
+            $('#sizes_edit_form input[name=name]').val($(this).attr('data-name'));
+            $('#sizes_edit_form select[name=type]').val($(this).attr('data-type'));
+            $('#sizes_edit_form input[name=id]').val($(this).attr('data-id'));
+          });
           setUpDataTable(out);
         }
 

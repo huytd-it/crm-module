@@ -28,6 +28,38 @@ class UniformController extends BaseController
       $this->response('Cập nhật thất bại', 400);
     }
   }
+  public function updateType()
+  {
+    
+    $id = $_POST['id'];
+    $result = $this->db->updateDB('uniform_types', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
+    if ($result > 0) {
+      $this->response('Cập nhật thành công');
+    } else {
+      $this->response('Cập nhật thất bại', 400);
+    }
+  }
+  public function createTypeUniform()
+  {
+    $col = '';
+    $val = '';
+    foreach($_POST as $key => $value){
+      $col .= $key . ',';
+      $val .= "'$value'" . ',';
+
+    }
+    $val = trim($val, ',');
+    $col = trim($col, ' , ');
+
+   
+    $result = $this->db->insertDB('uniform_types', "{$col}", $val);
+
+    if ($result > 0) {
+      $this->response('Tạo thành công');
+    } else {
+      $this->response('Tạo thất bại', 400);
+    }
+  }
   public function getUniformType()
   {
     $result = $this->db->fetchAll('uniform_types');

@@ -11,6 +11,10 @@ function getData(url, callback) {
     });
 }
 
+function formatPrice(price) {
+    return Intl.NumberFormat('vn-VN').format(price);
+}
+
 function response_error(data) {
     var response = "";
 
@@ -36,6 +40,7 @@ var save = function(url, form_data, callback = init()) {
         processData: false,
         contentType: false,
         success: function(response) {
+            console.log(response);
             var data = JSON.parse(response);
             Swal.fire("Successfull", data.msg, "success");
 

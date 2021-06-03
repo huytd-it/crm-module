@@ -25,13 +25,17 @@ try {
       <ul class="no-bullets menuTab" id=ulList_2>
         <li class="active" id="li_online">
           <a href="#" class=lang vi="Kê khai hàng ngày(tại trường)" onclick="_loadPageContentURL('pages/MVC/View/asset-manage/admin.php');">
-            Đồng phục
+            Danh sách học sinh đăng ký
           </a>
  
         </li>
 
         <li class="" id="li_report">
-          <a href="#" class=lang vi="Báo cáo" onclick="_loadPageContentURL('pages/MVC/View/asset-manage/sizes.admin.php');" class=lang>Kho đồ</a>
+          <a href="#" class=lang vi="Báo cáo" onclick="_loadPageContentURL('pages/MVC/View/asset-manage/sizes.admin.php');" class=lang>Đồng phục</a>
+
+        </li>
+        <li class="" id="li_report">
+          <a href="#" class=lang vi="Báo cáo" onclick="_loadPageContentURL('pages/MVC/View/asset-manage/depot.admin.php');" class=lang>Kho đồ</a>
 
         </li>
 

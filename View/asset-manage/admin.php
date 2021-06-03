@@ -358,7 +358,7 @@
           processData: false,
           contentType: false,
           success: function(response) {
-           
+
             var data = JSON.parse(response);
             if (data.status == 200) {
               Swal.fire({
@@ -385,6 +385,7 @@
           }
         });
       }
+
       function updateDataStatus(data) {
 
         $.ajax({
@@ -392,7 +393,7 @@
           url: origin + "/Route.php?page=uniform&action=updateStudentBill",
           data: data,
           success: function(response) {
-              fetchAll();
+            fetchAll();
           },
           error: function(response) {
             console.log(response);
@@ -455,7 +456,7 @@
                   updated_at: (new Date()).toISOString(),
 
                 }
-             
+
                 updateDataStatus(data);
               }
 
@@ -511,17 +512,27 @@
           success: function(response) {
 
             var result = JSON.parse(response).data;
+
+          
+
+             var printSelectTag = function(type, result) {
+              var out = '';
+
+              result.forEach(el => {
+                if(el.type == type) {
+                  out += '<option value="' + el.id + '">' + el.name + '</option>';
+                }
+              })
+              return out;
+
+            }
+
          
-            var out = '';
-           
-            result.forEach(el => {
-              out += '<option value="' + el.id + '">' + el.name + '</option>';
-            })
-           
-            $('select[name="size"]').append(out);
 
 
             $('select[name="size"]').each(function(num, el) {
+              $(el).empty();
+              $(el).append(printSelectTag($(el).attr('data-type'), result));
               $(el).val($(el).attr('data-value'));
             })
 
@@ -580,7 +591,7 @@
               ' <td class="amount">' + formatPrice(calculateAmount(data[i].quantity, data[i].price)) + '</td>';
 
 
-            out += '<td><select data-value="' + data[i].size + '" name="size"></select></td>';
+            out += '<td><select data-value="' + data[i].size + '" data-type="' + data[i].size_type_id + '" name="size"></select></td>';
             out += '<td><button class="btn btn-primary uniform-save" type="button"  data-id="' + data[i].id + '">Save</button></td>'
 
             out += "</tr>";

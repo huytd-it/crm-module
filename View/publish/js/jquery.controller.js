@@ -12,7 +12,7 @@ function getData(url, callback) {
 }
 
 function formatPrice(price) {
-    return Intl.NumberFormat('vn-VN').format(price);
+    return Intl.NumberFormat("vn-VN").format(price);
 }
 
 function response_error(data) {
@@ -56,7 +56,7 @@ var save = function(url, form_data, callback = init()) {
     });
 };
 //note: api method is DELETE
-function deleteModel(url, id, category = "category") {
+function deleteModel(url, form_data, callback) {
     Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -68,12 +68,15 @@ function deleteModel(url, id, category = "category") {
     }).then((result) => {
         if (result.value) {
             $.ajax({
-                type: "DELETE",
+                method: "POST",
                 url: url,
+                data: form_data,
+                processData: false,
+                contentType: false,
                 success: function(data) {
                     console.log(data);
                     Swal.fire("Successfull", data.message, "success");
-                    $("#" + category + "-" + id).remove();
+                    callback();
                 },
                 error: function(data) {
                     response_error(data);

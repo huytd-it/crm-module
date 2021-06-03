@@ -74,7 +74,7 @@ class DBConnect extends Dbconfig
         if ($where != null)
             $sql .= " WHERE {$where}";
 
-     
+       
         return $this->connectString->exec($sql);
     }
     public function excuteSql($sql)

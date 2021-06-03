@@ -4,6 +4,7 @@ namespace Models;
 
 use Config\WebConfig;
 use Controllers\BaseController;
+use Controllers\DepotController;
 use Controllers\DuTuyenController;
 use Controllers\HocBongController;
 use Controllers\UniformController;
@@ -122,6 +123,17 @@ switch ($route->page) {
   case 'uniform': {
    
       $con = new UniformController();
+      if ($route->action) {
+        return $con->{$route->action}();
+      } else if ($route->page) {
+        return $route->view($link);
+      } else {
+        return $con->index();
+      }
+    }
+  case 'depot': {
+   
+      $con = new DepotController();
       if ($route->action) {
         return $con->{$route->action}();
       } else if ($route->page) {

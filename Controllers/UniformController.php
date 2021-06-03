@@ -20,8 +20,9 @@ class UniformController extends BaseController
   }
   public function updateSize()
   {
+   
     $id = $_POST['id'];
-    $result = $this->db->updateDB('uniform_size', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
+    $result = $this->db->updateDB('uniform_size', array_diff_key($this->request_post, array('id' => $id)), "id={$id}");
     if ($result > 0) {
       $this->response('Cập nhật thành công');
     } else {
@@ -32,7 +33,7 @@ class UniformController extends BaseController
   {
     
     $id = $_POST['id'];
-    $result = $this->db->updateDB('uniform_types', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
+    $result = $this->db->updateDB('uniform_types', array_diff_key($_POST,array('id' => $id)), "id={$id}");
     if ($result > 0) {
       $this->response('Cập nhật thành công');
     } else {
@@ -62,7 +63,7 @@ class UniformController extends BaseController
   }
   public function getUniformType()
   {
-    $result = $this->db->fetchAll('uniform_types');
+    $result = $this->db->fetchAll('uniform_types', '*','deleted_at is NULL' );
     $this->response("data", 200, [], $result);
   }
   public function updateStudentBill()
@@ -79,7 +80,7 @@ class UniformController extends BaseController
   }
   public function getSize()
   {
-    $result = $this->db->fetchAll('uniform_size');
+    $result = $this->db->fetchAll('uniform_size' ,'*','deleted_at is NULL');
     $this->response("data", 200, [], $result);
   }
   public function import()
@@ -120,7 +121,7 @@ class UniformController extends BaseController
   public function getBill()
   {
 
-    $query = "SELECT uniform_bills.*, uniform_types.name, uniform_types.en_name, uniform_types.price, uniform_size.name as size_name ";
+    $query = "SELECT uniform_bills.*, uniform_types.name, uniform_types.en_name, uniform_types.price,uniform_types.size_type_id, uniform_size.name as size_name ";
     $query .= "FROM uniform_bills INNER JOIN uniform_types ON uniform_bills.uniform_type_id=uniform_types.id INNER JOIN uniform_size ON uniform_bills.size=uniform_size.id  WHERE uniform_bills.student_id={$this->router->id} ORDER BY uniform_bills.id";
     $this->response("data", 200, [], $this->db->getDataFromQuery($query));
   }

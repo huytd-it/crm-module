@@ -195,8 +195,11 @@
                   <input type="text" class="form-control" name="price">
                 </div>
                 <div class="form-group">
-                  <label for="pwd">Số lượng :</label>
-                  <input type="text" class="form-control" name="quantity">
+                  <label for="pwd">Loại size :</label><br>
+                  <select type="text" name="size_type_id" style="width:100%">
+                    <option value="0">Kiểu chữ</option>
+                    <option value="1">Kiểu số</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -254,11 +257,14 @@
                   <input type="text" class="form-control" name="price">
                 </div>
                 <div class="form-group">
-                  <label for="pwd">Số lượng :</label>
-                  <input type="text" class="form-control" name="quantity">
+                  <label for="pwd">Loại</label>
+                  <select type="text" style="width:100%" name="size_type_id">
+                    <option value="0">Kiểu chữ</option>
+                    <option value="1">Kiểu số</option>
+                  </select>
                 </div>
                 <div class="form-group" hidden>
-                  <label for="pwd">Số lượng :</label>
+
                   <input type="text" class="form-control" name="id">
                 </div>
               </div>
@@ -369,7 +375,7 @@
                           <th scope="col">Tên size</th>
                           <th scope="col">Kiểu size</th>
                           <th scope="col">Giá</th>
-                          <th scope="col">Số lượng</th>
+                          <th scope="col">Loại size</th>
                           <th scope="col">Edit</th>
                         </tr>
                       </thead>
@@ -409,6 +415,7 @@
   <script src="pages/MVC/View/publish/js/jquery.controller.js"></script>
   <script>
     $(document).ready(function() {
+      const origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "pages/MVC";
       $.fn.modal.Constructor.prototype._enforceFocus = function() {};
       $('.nav-tabs a').click(function() {
         $(this).tab('show');
@@ -420,70 +427,53 @@
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
       });
-
+      initSize();
+      initType();
       $('#sizes_create_btn').click(function() {
-
         var data = new FormData(document.getElementById('sizes_form'));
         var url = origin + '/Route.php?page=uniform&action=createSize';
+        save(url, data, initSize);
 
-        save(url, data, function() {
-          var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getSize';
-          getData(uniformTypesUrl, function(response) {
-            console.log(response);
-            var data = JSON.parse(response).data;
-            showSize(data);
-          });
-
-        });
       })
       $('#sizes_edit_btn').click(function() {
         var data = new FormData(document.getElementById('sizes_edit_form'));
         var url = origin + '/Route.php?page=uniform&action=updateSize';
-        save(url, data, function() {
-          var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getSize';
-          getData(uniformTypesUrl, function(response) {
+        save(url, data, initSize);
 
-            var data = JSON.parse(response).data;
-            showSize(data);
-          });
-
-        });
       })
+
       $('#type-create-btn').click(function() {
         var data = new FormData($('#type_create_form')[0]);
         const url = origin + '/Route.php?page=uniform&action=createTypeUniform';
-        save(url, data, function() {
-          var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getUniformType';
-          window.onload = getData(uniformTypesUrl, function(response) {
-            var data = JSON.parse(response).data;
-            showUniformType(data);
-          });
-        })
+        save(url, data, initType);
+
       })
       $('#type-edit-btn').click(function() {
         var data = new FormData($('#type_edit_form')[0]);
         const url = origin + '/Route.php?page=uniform&action=updateType';
-        save(url, data, function() {
-          var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getUniformType';
-          window.onload = getData(uniformTypesUrl, function(response) {
-            var data = JSON.parse(response).data;
-            showUniformType(data);
-          });
-        })
+        save(url, data, initType)
       })
 
-      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "pages/MVC";
-      var url = origin + '/Route.php?page=uniform&action=getSize';
-      window.onload = getData(url, function(response) {
-        var data = JSON.parse(response).data;
-        showSize(data);
-      });
-      var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getUniformType';
-      window.onload = getData(uniformTypesUrl, function(response) {
+      
 
-        var data = JSON.parse(response).data;
-        showUniformType(data);
-      });
+
+      function initSize() {
+        var url = origin + '/Route.php?page=uniform&action=getSize';
+        window.onload = getData(url, function(response) {
+          var data = JSON.parse(response).data;
+          showSize(data);
+        });
+      }
+
+      function initType() {
+        var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getUniformType';
+        window.onload = getData(uniformTypesUrl, function(response) {
+
+          var data = JSON.parse(response).data;
+          showUniformType(data);
+        });
+
+      }
 
       function showUniformType(data) {
         if (data) {
@@ -493,22 +483,39 @@
             out += '<td>' + (i + 1) + '</td>';
             out += '<td>' + data[i].name + '</td>';
             out += '<td>' + data[i].en_name + '</td>';
-            out += '<td>' +formatPrice(data[i].price) + '</td>';
-            out += '<td>' + data[i].quantity + '</td>';
+            out += '<td>' + formatPrice(data[i].price) + '</td>';
+            out += '<td>' + data[i].size_type_id + '</td>';
             out += '<td><button type="button"  data-toggle="modal" data-target="#types_edit_modal" class="btn btn-warning btn-edit-type" ' +
               'data-en_name="' +
-              data[i].en_name + '" data-name="' + data[i].name  + '" data-price="' + data[i].price + '" data-quantity="' + data[i].quantity +
+              data[i].en_name + '" data-name="' + data[i].name + '" data-price="' + data[i].price + '" data-quantity="' + data[i].quantity +
               '" data-id="' + data[i].id +
-              '" data-short_name="' + data[i].short_name +'">Edit</td>';
+              '" data-short_name="' + data[i].short_name + '">Edit</button><button type="button"' +
+              ' data-id="' + data[i].id + '" class="btn btn-danger btn-delete-type" >Delete</button></td>';
+
             out += '</tr>'
           }
           $(document).on('click', '.btn-edit-type', function() {
             const inputs = $('#type_edit_form :input');
             const values = this;
-          
+
             inputs.each(function() {
               console.log($(this).attr('short_name'));
-              $(this).val($(values).attr('data-' + $(this).attr('name') ));
+              $(this).val($(values).attr('data-' + $(this).attr('name')));
+            })
+          });
+          $(document).on('click', '.btn-delete-type', function() {
+
+            var data = new FormData();
+            data.append('id', $(this).attr('data-id'));
+            data.append('deleted_at', (new Date()).toISOString());
+            const url = origin + '/Route.php?page=uniform&action=updateType';
+
+            deleteModel(url, data, function() {
+              var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getUniformType';
+              window.onload = getData(uniformTypesUrl, function(response) {
+                var data = JSON.parse(response).data;
+                showUniformType(data);
+              });
             })
           });
           setUpDataTable(out, '#uniform-type-id', '#uniform-type');
@@ -526,7 +533,9 @@
             out += '<td>' + printTypeName(data[i].type) + '</td>';
             out += '<td><button data-id="' + data[i].id + '" data-type="' +
               data[i].type + '" data-name="' + data[i].name +
-              '" type="button" data-toggle="modal" data-target="#sizes_edit_modal" class="btn btn-edit-size btn-warning">Edit</td>';
+              '" type="button" data-toggle="modal" data-target="#sizes_edit_modal" class="btn btn-edit-size btn-warning">Edit</button>' +
+              '<button type="button" class="btn btn-danger btn-delete-size"  data-id="' + data[i].id + '"> Delete</button></td>';
+
             out += '</tr>'
           }
           $(document).on('click', '.btn-edit-size', function() {
@@ -534,6 +543,21 @@
             $('#sizes_edit_form input[name=name]').val($(this).attr('data-name'));
             $('#sizes_edit_form select[name=type]').val($(this).attr('data-type'));
             $('#sizes_edit_form input[name=id]').val($(this).attr('data-id'));
+          });
+          $(document).on('click', '.btn-delete-size', function() {
+            var data = new FormData();
+            data.append('id', $(this).attr('data-id'));
+            data.append('deleted_at', (new Date()).toISOString());
+            const url = origin + '/Route.php?page=uniform&action=updateSize';
+
+            deleteModel(url, data, function() {
+              var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getSize';
+              window.onload = getData(uniformTypesUrl, function(response) {
+                console.log(response);
+                var data = JSON.parse(response).data;
+                showSize(data);
+              });
+            })
           });
           setUpDataTable(out);
         }

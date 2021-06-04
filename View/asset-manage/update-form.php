@@ -143,19 +143,27 @@
           success: function(response) {
 
             var result = JSON.parse(response).data;
-            var out = '';
-            result.forEach(el => {
-              out += '<option value="' + el.id + '">' + el.name + '</option>';
-            })
-            $('select[name="size"]').append(out);
+           
+            var printSelectTag = function(type, result) {
+              var out = '';
 
-            console.log($('select[name="size"]'));
+              result.forEach(el => {
+                if(el.type == type) {
+                  out += '<option value="' + el.id + '">' + el.name + '</option>';
+                }
+              })
+              return out;
+
+            }
+
+         
+
+
             $('select[name="size"]').each(function(num, el) {
-
-              console.log($(el).attr('data-value'));
+              $(el).empty();
+              $(el).append(printSelectTag($(el).attr('data-type'), result));
               $(el).val($(el).attr('data-value'));
             })
-
 
           },
           error: function(response) {
@@ -190,7 +198,7 @@
               ' <td class="amount">' + formatPrice(calculateAmount(data[i].quantity, data[i].price)) + '</td>';
 
 
-            out += '<td><select data-value="' + data[i].size + '" name="size"></select></td>';
+            out += '<td><select data-value="' + data[i].size + '" data-type="' + data[i].size_type_id + '" name="size"></select></td>';
             out += '<td><button class="btn btn-primary uniform-save" type="button"  data-id="' + data[i].id + '">Save</button></td>'
 
             out += "</tr>";

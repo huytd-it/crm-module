@@ -49,7 +49,7 @@ class DBConnect extends Dbconfig
         $sql = "INSERT INTO {$table_name} ({$cols}) VALUES ({$values})";
       
         $stmt = $this->connectString->prepare($sql);
-
+      
         return  $stmt->execute();
     }
     public function insertMultipleDB($table_name, $cols, $values_array)
@@ -74,7 +74,7 @@ class DBConnect extends Dbconfig
         if ($where != null)
             $sql .= " WHERE {$where}";
 
-       
+      
         return $this->connectString->exec($sql);
     }
     public function excuteSql($sql)

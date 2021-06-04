@@ -404,7 +404,7 @@
       function fetchAll() {
         $.ajax({
           method: "GET",
-          url: origin + "/Route.php?controller=HocBongController&action=getAll&page=uniform",
+          url: origin + "/Route.php?action=getAll&page=uniform",
           success: function(response) {
             let result = JSON.parse(response);
             let data = result.data;

@@ -20,7 +20,7 @@ class UniformController extends BaseController
   }
   public function updateSize()
   {
-   
+
     $id = $_POST['id'];
     $result = $this->db->updateDB('uniform_size', array_diff_key($this->request_post, array('id' => $id)), "id={$id}");
     if ($result > 0) {
@@ -31,9 +31,9 @@ class UniformController extends BaseController
   }
   public function updateType()
   {
-    
+
     $id = $_POST['id'];
-    $result = $this->db->updateDB('uniform_types', array_diff_key($_POST,array('id' => $id)), "id={$id}");
+    $result = $this->db->updateDB('uniform_types', array_diff_key($_POST, array('id' => $id)), "id={$id}");
     if ($result > 0) {
       $this->response('Cập nhật thành công');
     } else {
@@ -44,15 +44,14 @@ class UniformController extends BaseController
   {
     $col = '';
     $val = '';
-    foreach($_POST as $key => $value){
+    foreach ($_POST as $key => $value) {
       $col .= $key . ',';
       $val .= "'$value'" . ',';
-
     }
     $val = trim($val, ',');
     $col = trim($col, ' , ');
 
-   
+
     $result = $this->db->insertDB('uniform_types', "{$col}", $val);
 
     if ($result > 0) {
@@ -63,15 +62,15 @@ class UniformController extends BaseController
   }
   public function getUniformType()
   {
-    $result = $this->db->fetchAll('uniform_types', '*','deleted_at is NULL' );
+    $result = $this->db->fetchAll('uniform_types', '*', 'deleted_at is NULL');
     $this->response("data", 200, [], $result);
   }
   public function updateStudentBill()
   {
-    
+
     $id = $_POST['id'];
     $result = $this->db->updateDB('student_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
-    
+
     if ($result > 0) {
       $this->response('Cập nhật thành công');
     } else {
@@ -80,7 +79,7 @@ class UniformController extends BaseController
   }
   public function getSize()
   {
-    $result = $this->db->fetchAll('uniform_size' ,'*','deleted_at is NULL');
+    $result = $this->db->fetchAll('uniform_size', '*', 'deleted_at is NULL');
     $this->response("data", 200, [], $result);
   }
   public function import()
@@ -128,6 +127,7 @@ class UniformController extends BaseController
   public function create()
   {
 
+
     $create_at = (new DateTime())->format('Y-m-d H:i:s');
     $create_info = ",{$_POST['student_id']}, '{$create_at}'";
 
@@ -168,28 +168,32 @@ class UniformController extends BaseController
       $this->response('Thiếu thông tin', 400, $error);
 
 
-    // $this->db->insertMultipleDB('uniform_bills', "uniform_type_id,amount,size,note, student_id, create_by, created_at", $values);
-    $search = $this->db->fetchAll('student_bills', 'student_id', "student_id = {$_POST['student_id']}");
+    $kq = 0;
+    $search = $this->db->fetchAll('student_bills', 'student_id', "student_id = '{$_POST['student_id']}' ");
     if (count($search) == 0) {
-      $this->db->insertMultipleDB('uniform_bills', "uniform_type_id,quantity,size,note, student_id, create_by, created_at", $values);
-      $this->db->insertDB(
+      $student = $this->db->insertDB(
         'student_bills',
-        'school_year,student_id, number_phone,class_id ,create_by, created_at',
-        "{$_POST['school_year']}{$_POST['student_id']}, '{$_POST['number_phone']}','{$_POST['class']}'" . $create_info
+        'school_year,student_id, number_phone,class_id,create_by, created_at',
+        "{$_POST['school_year']},{$_POST['student_id']}, '{$_POST['number_phone']}','{$_POST['class']}'" . $create_info
       );
+      if ($student > 0)
+        $kq = $this->db->insertMultipleDB('uniform_bills', "uniform_type_id,quantity,size,note, student_id , create_by, created_at", $values);
     } else {
       $array = ['deleted_at' => 'NULL'];
-      $this->db->updateDB('student_bills', $array, "WHERE student_id = {$_POST['student_id']}");
+      $kq = $this->db->updateDB('student_bills', $array, " student_id = '{$_POST['student_id']}'");
+      return parent::response('Đăng ký thất bại', 400, ['error' => 'Học sinh đã tồn tại']);
     }
 
-
-    $myJson = json_encode(["msg" => "Đăng ký thành công", "status" => 200]);
-    echo $myJson;
+    if ($kq > 0) {
+      parent::response('Đăng ký thành công');
+    } else {
+      parent::response('Đăng ký thất bại', 400, ['error' => 'Học sinh đã tồn tại']);
+    }
   }
   public function export()
   {
     $query = "SELECT  lsts_hr_student.student_fullname, lsts_hr_student.student_sex, student_bills.*";
-    $query .= "FROM student_bills INNER JOIN lsts_hr_student ON student_bills.student_id=lsts_hr_student.student_id";
+    $query .= "FROM student_bills INNER JOIN lsts_hr_student ON student_bills.student_id=lsts_hr_student.student_id ORDER BY student_bills.created_at DESC";
     $excel = new Excel();
     $excel->export($this->db->getDataFromQuery($query));
     die();

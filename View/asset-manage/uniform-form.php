@@ -54,7 +54,7 @@
                     <option value="2021-2022">2021-2022</option>
                     <option value="2022-2023">2022-2023</option>
                     <option value="2023-2024">2023-2024</option>
-                   
+
                   </select>
                 </div>
                 <div class="form-group col-lg-12">
@@ -67,7 +67,7 @@
                   <input type="checkbox" id="switch1" name="gender">
                   Nam
                 </div>
-        
+
               </div>
             </div>
           </div>
@@ -195,11 +195,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.7/dist/sweetalert2.all.min.js"></script>
 
   <script>
-    // document.getElementById('divLoading').remove();
-    // document.getElementById('divToast').remove();
-    // document.getElementById('frmPrint').remove();
-    // document.getElementById('divPopup').remove();
-    // document.getElementsByTagName('head')[0].remove();
+    let origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
 
     var elem = document.querySelector('#switch1');
     var init = new Switchery(elem, {
@@ -207,51 +203,46 @@
       color: '#007bff',
       secondaryColor: '#e83e8c'
     });
-    // document.getElementById('class').addEventListener('input', function() {
-    //   var uniform_card = document.getElementById('uniform_card');
 
-    //   if (document.getElementById('class').value.indexOf('9') != -1)
-    //     uniform_card.style.display = "block";
-    //   else
-    //     uniform_card.style.display = "none";
-
-    // });
     document.getElementById('submit').addEventListener('click', function() {
       var formData = new FormData(document.getElementById('form'));
 
 
-      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
       $.ajax({
         method: "POST",
-        url: origin + "/Route.php?controller=UniformController&action=create&page=uniform&student_id=" + window.localStorage.getItem('_student_id'),
+        url: origin + "/Route.php?controller=UniformController&action=create&page=uniform",
         data: formData,
         contentType: false,
         mimeType: "multipart/form-data",
         processData: false,
         cache: false,
         success: function(response) {
-         
-          
+
+          console.log(response);
           var data = JSON.parse(response);
-          var out_html = data.error.number_phone;
-          
+          var out_html = '';
+         
+          for (const [key, value] of Object.entries(data.error)) {
+           out_html += value + '<br>';
+          }
+
           if (data.status == 200)
             Swal.fire({
               position: 'center',
               icon: 'success',
               title: data.msg,
-             
+
               showConfirmButton: false,
-              
+
             });
           else {
             Swal.fire({
               position: 'center',
               icon: 'error',
               title: data.msg,
-              html:out_html,
+              html: out_html,
               showConfirmButton: false,
-              
+
             });
           }
 
@@ -272,7 +263,7 @@
     getConfig();
 
     function getConfig() {
-      var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
+     
       $.ajax({
         method: "GET",
         url: origin + "/Route.php?controller=UniformController&action=studentInformation&page=uniform&student_id=" + window.localStorage.getItem('_student_id'),

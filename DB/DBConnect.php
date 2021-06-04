@@ -60,7 +60,7 @@ class DBConnect extends Dbconfig
         }
         $sql = "INSERT INTO {$table_name} ({$cols}) VALUES {$list}";
         $sql = trim($sql,',');
-     
+        var_dump($sql);
         $stmt = $this->connectString->prepare($sql);
         return  $stmt->execute();
     }

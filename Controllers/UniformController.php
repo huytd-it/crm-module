@@ -96,8 +96,8 @@ class UniformController extends BaseController
   public function updateUniform()
   {
     $id = $_POST['id'];
-    $this->request_post['update_by'] =
-      $result = $this->db->updateDB('uniform_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
+
+    $result = $this->db->updateDB('uniform_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
 
     if ($result > 0) {
       $this->response('Cập nhật thành công');
@@ -147,7 +147,18 @@ class UniformController extends BaseController
       "13,{$_POST['notebooks_80_page']},0,'',{$_POST['student_id']}" . $create_info,
 
     ];
-
+    if (!isset($_POST['gender'])) {
+      $values[2] = "3, 0,0,'',{$_POST['student_id']}" . $create_info;
+      $values[3] = "4, 0,0,'',{$_POST['student_id']}" . $create_info;
+      $values[6] = "7, 0,0,'',{$_POST['student_id']}" . $create_info;
+      $values[7] = "8, 0,0,'',{$_POST['student_id']}" . $create_info;
+    }
+    if (isset($_POST['gender'])) {
+      $values[4] = "5, 0,0,'',{$_POST['student_id']}" . $create_info;
+      $values[5] = "6, 0,0,'',{$_POST['student_id']}" . $create_info;
+      $values[8] = "9, 0,0,'',{$_POST['student_id']}" . $create_info;
+      $values[9] = "10, 0,0,'',{$_POST['student_id']}" . $create_info;
+    }
     preg_match_all('!\d+!', $_POST['class'], $grade); //get grade form class_id
     if (isset($grade[0][0])) {
       if ((int)$grade[0][0] < 9) {
@@ -156,6 +167,7 @@ class UniformController extends BaseController
         $values[8] = "9,0,0,'',{$_POST['student_id']}" . $create_info;
         $values[9] = "10, 0,0,'',{$_POST['student_id']}" . $create_info;
       } else {
+
         $values[2] = "3, 0,0,'',{$_POST['student_id']}" . $create_info;
         $values[3] = "4, 0,0,'',{$_POST['student_id']}" . $create_info;
         $values[4] = "5,0,0,'',{$_POST['student_id']}" . $create_info;
@@ -174,18 +186,21 @@ class UniformController extends BaseController
       $student = $this->db->insertDB(
         'student_bills',
         'school_year,student_id, number_phone,class_id,create_by, created_at',
-        "{$_POST['school_year']},{$_POST['student_id']}, '{$_POST['number_phone']}','{$_POST['class']}'" . $create_info
+        "'{$_POST['school_year']}','{$_POST['student_id']}', '{$_POST['number_phone']}','{$_POST['class']}'" . $create_info
       );
-      if ($student > 0)
+      if ($student > 0) {
+        $delete_query = "DELETE FROM uniform_bills WHERE student_id = '{$_POST['student_id']}'";
+        $this->db->excuteSql($delete_query);
         $kq = $this->db->insertMultipleDB('uniform_bills', "uniform_type_id,quantity,size,note, student_id , create_by, created_at", $values);
+      }
     } else {
-      $array = ['deleted_at' => 'NULL'];
+      $array = ['deleted_at' => 'NULL', 'school_year' => $_POST['school_year'], 'class_id' => $_POST['class']];
       $kq = $this->db->updateDB('student_bills', $array, " student_id = '{$_POST['student_id']}'");
-      return parent::response('Đăng ký thất bại', 400, ['error' => 'Học sinh đã tồn tại']);
+      return parent::response('Đăng ký thành công', 200, ['error' => 'Thông tin học sinh đã được cập nhật']);
     }
 
     if ($kq > 0) {
-      parent::response('Đăng ký thành công');
+      return  parent::response('Đăng ký thành công');
     } else {
       parent::response('Đăng ký thất bại', 400, ['error' => 'Học sinh đã tồn tại']);
     }

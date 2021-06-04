@@ -221,10 +221,8 @@
           console.log(response);
           var data = JSON.parse(response);
           var out_html = '';
-         
-          for (const [key, value] of Object.entries(data.error)) {
-           out_html += value + '<br>';
-          }
+
+
 
           if (data.status == 200)
             Swal.fire({
@@ -236,6 +234,9 @@
 
             });
           else {
+            for (const [key, value] of Object.entries(data.error)) {
+              out_html += value + '<br>';
+            }
             Swal.fire({
               position: 'center',
               icon: 'error',
@@ -263,7 +264,7 @@
     getConfig();
 
     function getConfig() {
-     
+
       $.ajax({
         method: "GET",
         url: origin + "/Route.php?controller=UniformController&action=studentInformation&page=uniform&student_id=" + window.localStorage.getItem('_student_id'),

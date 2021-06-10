@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Controllers\BaseController;
 use DateTime;
+use Exception;
 use Models\Excel;
 
 class UniformController extends BaseController
@@ -95,15 +96,20 @@ class UniformController extends BaseController
   }
   public function updateUniform()
   {
-    $id = $_POST['id'];
+    try {
+      $id = $_POST['id'];
 
-    $result = $this->db->updateDB('uniform_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
-
-    if ($result > 0) {
-      $this->response('Cập nhật thành công');
-    } else {
-      $this->response('Cập nhật thất bại', 400);
+      $result = $this->db->updateDB('uniform_bills', array_diff($this->request_post, array($this->request_post['id'])), "id={$id}");
+  
+      if ($result > 0) {
+        $this->response('Cập nhật thành công');
+      } else {
+        $this->response('Cập nhật thất bại', 400);
+      }
+    } catch (Exception $e) {
+      parent::response('Server không sử lý được', 400, ['error' => $e]);
     }
+
   }
   public function getAll()
   {
@@ -127,91 +133,99 @@ class UniformController extends BaseController
   public function create()
   {
 
+    try {
+      $create_at = (new DateTime())->format('Y-m-d H:i:s');
+      $create_info = ",{$_POST['student_id']}, '{$create_at}'";
 
-    $create_at = (new DateTime())->format('Y-m-d H:i:s');
-    $create_info = ",{$_POST['student_id']}, '{$create_at}'";
+      $values = [
+        "1, {$_POST['fitness_number']},0,'',{$_POST['student_id']}" . $create_info,
+        "2, {$_POST['fitness_pants_number']},0,'',{$_POST['student_id']}" . $create_info,
+        "3, {$_POST['uniform_number']},0,'',{$_POST['student_id']}" . $create_info,
+        "4, {$_POST['uniform_pants_number']},0,'',{$_POST['student_id']}" . $create_info,
+        "5, {$_POST['uniform_number']},0,'',{$_POST['student_id']}" . $create_info,
+        "6, {$_POST['uniform_pants_number']},0,'',{$_POST['student_id']}" . $create_info,
+        "7, {$_POST['uniform_number']},0,'',{$_POST['student_id']}" . $create_info,
+        "8, {$_POST['uniform_pants_number']},0,'',{$_POST['student_id']}" . $create_info,
+        "9, {$_POST['uniform_number']},0,'',{$_POST['student_id']}" . $create_info,
+        "10, {$_POST['uniform_pants_number']},0,'',{$_POST['student_id']}" . $create_info,
+        "11,1,{$_POST['blouse_size']},'',{$_POST['student_id']}" . $create_info,
+        "12,{$_POST['notebooks_52_page']},0,'',{$_POST['student_id']}" . $create_info,
+        "13,{$_POST['notebooks_80_page']},0,'',{$_POST['student_id']}" . $create_info,
 
-    $values = [
-      "1, {$_POST['fitness_number']},0,'',{$_POST['student_id']}" . $create_info,
-      "2, {$_POST['fitness_pants_number']},0,'',{$_POST['student_id']}" . $create_info,
-      "3, {$_POST['uniform_number']},0,'',{$_POST['student_id']}" . $create_info,
-      "4, {$_POST['uniform_pants_number']},0,'',{$_POST['student_id']}" . $create_info,
-      "5, {$_POST['uniform_number']},0,'',{$_POST['student_id']}" . $create_info,
-      "6, {$_POST['uniform_pants_number']},0,'',{$_POST['student_id']}" . $create_info,
-      "7, {$_POST['uniform_number']},0,'',{$_POST['student_id']}" . $create_info,
-      "8, {$_POST['uniform_pants_number']},0,'',{$_POST['student_id']}" . $create_info,
-      "9, {$_POST['uniform_number']},0,'',{$_POST['student_id']}" . $create_info,
-      "10, {$_POST['uniform_pants_number']},0,'',{$_POST['student_id']}" . $create_info,
-      "11,1,{$_POST['blouse_size']},'',{$_POST['student_id']}" . $create_info,
-      "12,{$_POST['notebooks_52_page']},0,'',{$_POST['student_id']}" . $create_info,
-      "13,{$_POST['notebooks_80_page']},0,'',{$_POST['student_id']}" . $create_info,
-
-    ];
-    if (!isset($_POST['gender'])) {
-      $values[2] = "3, 0,0,'',{$_POST['student_id']}" . $create_info;
-      $values[3] = "4, 0,0,'',{$_POST['student_id']}" . $create_info;
-      $values[6] = "7, 0,0,'',{$_POST['student_id']}" . $create_info;
-      $values[7] = "8, 0,0,'',{$_POST['student_id']}" . $create_info;
-    }
-    if (isset($_POST['gender'])) {
-      $values[4] = "5, 0,0,'',{$_POST['student_id']}" . $create_info;
-      $values[5] = "6, 0,0,'',{$_POST['student_id']}" . $create_info;
-      $values[8] = "9, 0,0,'',{$_POST['student_id']}" . $create_info;
-      $values[9] = "10, 0,0,'',{$_POST['student_id']}" . $create_info;
-    }
-    preg_match_all('!\d+!', $_POST['class'], $grade); //get grade form class_id
-    if (isset($grade[0][0])) {
-      if ((int)$grade[0][0] < 9) {
-        $values[6] = "7, 0,0,'',{$_POST['student_id']}" . $create_info;
-        $values[7] = "8, 0,0,'',{$_POST['student_id']}" . $create_info;
-        $values[8] = "9,0,0,'',{$_POST['student_id']}" . $create_info;
-        $values[9] = "10, 0,0,'',{$_POST['student_id']}" . $create_info;
-      } else {
-
+      ];
+      if (!isset($_POST['gender'])) {
         $values[2] = "3, 0,0,'',{$_POST['student_id']}" . $create_info;
         $values[3] = "4, 0,0,'',{$_POST['student_id']}" . $create_info;
-        $values[4] = "5,0,0,'',{$_POST['student_id']}" . $create_info;
+        $values[6] = "7, 0,0,'',{$_POST['student_id']}" . $create_info;
+        $values[7] = "8, 0,0,'',{$_POST['student_id']}" . $create_info;
+      }
+      if (isset($_POST['gender'])) {
+        $values[4] = "5, 0,0,'',{$_POST['student_id']}" . $create_info;
         $values[5] = "6, 0,0,'',{$_POST['student_id']}" . $create_info;
+        $values[8] = "9, 0,0,'',{$_POST['student_id']}" . $create_info;
+        $values[9] = "10, 0,0,'',{$_POST['student_id']}" . $create_info;
       }
-    }
+      preg_match_all('!\d+!', $_POST['class'], $grade); //get grade form class_id
+      if (isset($grade[0][0])) {
+        if ((int)$grade[0][0] < 9) {
+          $values[6] = "7, 0,0,'',{$_POST['student_id']}" . $create_info;
+          $values[7] = "8, 0,0,'',{$_POST['student_id']}" . $create_info;
+          $values[8] = "9,0,0,'',{$_POST['student_id']}" . $create_info;
+          $values[9] = "10, 0,0,'',{$_POST['student_id']}" . $create_info;
+        } else {
 
-    $error = $this->validateEmpty(['number_phone' => 'Số điện thoại'], $_POST);
-    if (count($error) > 0)
-      $this->response('Thiếu thông tin', 400, $error);
-
-
-    $kq = 0;
-    $search = $this->db->fetchAll('student_bills', 'student_id', "student_id = '{$_POST['student_id']}' ");
-    if (count($search) == 0) {
-      $student = $this->db->insertDB(
-        'student_bills',
-        'school_year,student_id, number_phone,class_id,create_by, created_at',
-        "'{$_POST['school_year']}','{$_POST['student_id']}', '{$_POST['number_phone']}','{$_POST['class']}'" . $create_info
-      );
-      if ($student > 0) {
-        $delete_query = "DELETE FROM uniform_bills WHERE student_id = '{$_POST['student_id']}'";
-        $this->db->excuteSql($delete_query);
-        $kq = $this->db->insertMultipleDB('uniform_bills', "uniform_type_id,quantity,size,note, student_id , create_by, created_at", $values);
+          $values[2] = "3, 0,0,'',{$_POST['student_id']}" . $create_info;
+          $values[3] = "4, 0,0,'',{$_POST['student_id']}" . $create_info;
+          $values[4] = "5,0,0,'',{$_POST['student_id']}" . $create_info;
+          $values[5] = "6, 0,0,'',{$_POST['student_id']}" . $create_info;
+        }
       }
-    } else {
-      $array = ['deleted_at' => 'NULL', 'school_year' => $_POST['school_year'], 'class_id' => $_POST['class']];
-      $kq = $this->db->updateDB('student_bills', $array, " student_id = '{$_POST['student_id']}'");
-      return parent::response('Đăng ký thành công', 200, ['error' => 'Thông tin học sinh đã được cập nhật']);
-    }
 
-    if ($kq > 0) {
-      return  parent::response('Đăng ký thành công');
-    } else {
-      parent::response('Đăng ký thất bại', 400, ['error' => 'Học sinh đã tồn tại']);
+      $error = $this->validateEmpty(['number_phone' => 'Số điện thoại'], $_POST);
+      if (count($error) > 0)
+        $this->response('Thiếu thông tin', 400, $error);
+
+
+      $kq = 0;
+      $search = $this->db->fetchAll('student_bills', 'student_id', "student_id = '{$_POST['student_id']}' ");
+      if (count($search) == 0) {
+        $student = $this->db->insertDB(
+          'student_bills',
+          'school_year,student_id, number_phone,class_id,create_by, created_at',
+          "'{$_POST['school_year']}','{$_POST['student_id']}', '{$_POST['number_phone']}','{$_POST['class']}'" . $create_info
+        );
+        if ($student > 0) {
+          $delete_query = "DELETE FROM uniform_bills WHERE student_id = '{$_POST['student_id']}'";
+          $this->db->excuteSql($delete_query);
+          $kq = $this->db->insertMultipleDB('uniform_bills', "uniform_type_id,quantity,size,note, student_id , create_by, created_at", $values);
+        }
+      } else {
+        $array = ['deleted_at' => 'NULL', 'school_year' => $_POST['school_year'], 'class_id' => $_POST['class']];
+        $kq = $this->db->updateDB('student_bills', $array, " student_id = '{$_POST['student_id']}'");
+        return parent::response('Đăng ký thành công', 200, ['error' => 'Thông tin học sinh đã được cập nhật']);
+      }
+
+      if ($kq > 0) {
+        return  parent::response('Đăng ký thành công');
+      } else {
+        return parent::response('Đăng ký thất bại', 400, ['error' => 'Học sinh đã tồn tại']);
+      }
+    } catch (Exception $e) {
+      return parent::response('Server không sử lý được', 400);
     }
   }
   public function export()
   {
-    $query = "SELECT  lsts_hr_student.student_fullname, lsts_hr_student.student_sex, student_bills.*";
-    $query .= "FROM student_bills INNER JOIN lsts_hr_student ON student_bills.student_id=lsts_hr_student.student_id ORDER BY student_bills.created_at DESC";
-    $excel = new Excel();
-    $excel->export($this->db->getDataFromQuery($query));
-    die();
+    try {
+      $query = "SELECT  lsts_hr_student.student_fullname, lsts_hr_student.student_sex, student_bills.*";
+      $query .= "FROM student_bills INNER JOIN lsts_hr_student ON student_bills.student_id=lsts_hr_student.student_id ORDER BY student_bills.created_at DESC";
+      $excel = new Excel();
+      $excel->export($this->db->getDataFromQuery($query));
+      die();
+    } catch (\Throwable $th) {
+      parent::response('Server không sử lý được');
+    }
+
   }
   public function delete()
   {

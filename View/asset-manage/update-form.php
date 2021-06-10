@@ -47,29 +47,29 @@
   </style>
 
 <body>
-  <div class="container-fluid" >
+  <div class="container-fluid">
 
-  <table class="table table-border">
-              <thead>
-                <tr>
-                  <th>Số thứ tự <br> No. </th>
-                  <th>Tên hàng <br> Items</th>
-                  <th>Số lượng <br> Quantity</th>
-                  <th>Đơn giá <br> Unit price</th>
-                  <th>Thành tiền<br> Amount</th>
-                  <th>Size <br> Kích cỡ</th>
-                </tr>
-              </thead>
-              <tbody id="hoa_don_tbody">
+    <table class="table table-border">
+      <thead>
+        <tr>
+          <th>Số thứ tự <br> No. </th>
+          <th>Tên hàng <br> Items</th>
+          <th>Số lượng <br> Quantity</th>
+          <th>Đơn giá <br> Unit price</th>
+          <th>Thành tiền<br> Amount</th>
+          <th>Size <br> Kích cỡ</th>
+        </tr>
+      </thead>
+      <tbody id="hoa_don_tbody">
 
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="4" id="total"></td>
-                  <td colspan="2"></td>
-                </tr>
-              </tfoot>
-            </table>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" id="total"></td>
+          <td colspan="2"></td>
+        </tr>
+      </tfoot>
+    </table>
 
   </div>
 
@@ -83,7 +83,7 @@
   <script>
     $(document).ready(function() {
       var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
-     
+
 
       $('.close, #close').click(function() {
 
@@ -114,6 +114,7 @@
         });
       }
       getBill(window.localStorage.getItem('_student_id'));
+
       function getBill(id) {
 
         $.ajax({
@@ -143,12 +144,12 @@
           success: function(response) {
 
             var result = JSON.parse(response).data;
-           
+
             var printSelectTag = function(type, result) {
               var out = '';
 
               result.forEach(el => {
-                if(el.type == type) {
+                if (el.type == type) {
                   out += '<option value="' + el.id + '">' + el.name + '</option>';
                 }
               })
@@ -156,7 +157,7 @@
 
             }
 
-         
+
 
 
             $('select[name="size"]').each(function(num, el) {
@@ -180,11 +181,11 @@
       }
 
       function calculateAmount(quantity, price) {
-        return quantity * price;
+        return Number.parseInt(quantity) * Number.parseInt(price);
       }
 
       function addBill(data) {
-       
+
         var total = 0;
         $('#hoa_don_tbody').empty();
         $('#total').empty();
@@ -194,13 +195,11 @@
             total += calculateAmount(data[i].quantity, data[i].price);
             out += ' <tr id="uniform-' + data[i].id + '" ><th scope="row">' + (i + 1) + '</th>' +
               ' <td> ' + data[i].name + '<br>' + data[i].en_name + '</td>' +
-              ' <td><input type="number" name="quantity" value="' + data[i].quantity + '"></td>' + ' <td class="price">' + formatPrice(data[i].price) + '</td>' +
-              ' <td class="amount">' + formatPrice(calculateAmount(data[i].quantity, data[i].price)) + '</td>';
-
-
+              ' <td><input min="0" type="number" name="quantity" value="' + data[i].quantity + '"></td>' +
+              ' <td data-price=" ' + data[i].price + '" class="price">' + formatPrice(data[i].price) + '</td>' +
+              ' <td data-amount= "' + calculateAmount(data[i].quantity, data[i].price) + '" class="amount">' + formatPrice(calculateAmount(data[i].quantity, data[i].price)) + '</td>';
             out += '<td><select data-value="' + data[i].size + '" data-type="' + data[i].size_type_id + '" name="size"></select></td>';
             out += '<td><button class="btn btn-primary uniform-save" type="button"  data-id="' + data[i].id + '">Save</button></td>'
-
             out += "</tr>";
 
 
@@ -210,8 +209,21 @@
 
           $('#total').append('Tổng cộng/Total: ' + formatPrice(total));
           $('#hoa_don_tbody').append(out);
+          $('input[name=quantity]').on('input', function() {
+            var parent = $(this).parent().parent();
+            var amount = calculateAmount($(this).val(), parent.children('.price').attr('data-price'));
+            parent.children('.amount').text(formatPrice(amount));
+            parent.children('.amount').attr('data-amount', amount);
+            calTotalAmount();
+          });
 
-
+          function calTotalAmount() {
+            var total = 0;
+            $('.amount').each(function() {
+             total += Number.parseInt($(this).attr('data-amount'));
+            });
+            $('#total').text('Tổng cộng/Total: ' + formatPrice(total));
+          }
           $('.uniform-save').click(function() {
             var uniform = $("#uniform-" + $(this).attr('data-id')).children('td');
 
@@ -257,12 +269,5 @@
 
 
 
-
-      $("#search_table").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#table tr").filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-      });
     });
   </script>

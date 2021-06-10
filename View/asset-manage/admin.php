@@ -262,51 +262,51 @@
       });
       var input = document.getElementById('input_excel')
 
-      input.addEventListener('change', function() {
+      // input.addEventListener('change', function() {
 
-        readXlsxFile(input.files[0]).then(function(rows) {
-          const data = Object.assign({}, rows);
-          $.ajax({
-            method: "POST",
-            url: origin + "/Route.php?page=uniform&action=import",
-            data: {
-              h: 1222
-            },
-            success: function(response) {
+      //   readXlsxFile(input.files[0]).then(function(rows) {
+      //     const data = Object.assign({}, rows);
+      //     $.ajax({
+      //       method: "POST",
+      //       url: origin + "/Route.php?page=uniform&action=import",
+      //       data: {
+      //         h: 1222
+      //       },
+      //       success: function(response) {
 
-              var data = JSON.parse(response);
-              if (data.status == 200)
-                Swal.fire({
-                  position: 'center',
-                  icon: 'success',
-                  title: data.msg,
-                  showConfirmButton: false,
-                  timer: 3000
-                });
-              else {
-                Swal.fire({
-                  position: 'center',
-                  icon: 'error',
-                  title: data.msg,
-                  showConfirmButton: false,
-                  timer: 3000
-                });
-              }
+      //         var data = JSON.parse(response);
+      //         if (data.status == 200)
+      //           Swal.fire({
+      //             position: 'center',
+      //             icon: 'success',
+      //             title: data.msg,
+      //             showConfirmButton: false,
+      //             timer: 3000
+      //           });
+      //         else {
+      //           Swal.fire({
+      //             position: 'center',
+      //             icon: 'error',
+      //             title: data.msg,
+      //             showConfirmButton: false,
+      //             timer: 3000
+      //           });
+      //         }
 
-            },
-            error: function(response) {
+      //       },
+      //       error: function(response) {
 
-            }
-          });
-        })
-      })
+      //       }
+      //     });
+      //   })
+      // })
 
-
+      
       $('#duyet-btn').click(function() {
-
+       
         var data = new FormData($('#student_bills')[0]);
         data.append('payment', $('#payment').prop('checked') ? 1 : 0);
-
+        console.log(data);
         updateData(data);
 
       });
@@ -350,7 +350,7 @@
       }
 
       function updateData(data) {
-
+        console.log(data);
         $.ajax({
           type: "POST",
           url: origin + "/Route.php?page=uniform&action=updateStudentBill",
@@ -358,7 +358,7 @@
           processData: false,
           contentType: false,
           success: function(response) {
-
+            console.log(response);
             var data = JSON.parse(response);
             if (data.status == 200) {
               Swal.fire({
@@ -513,13 +513,13 @@
 
             var result = JSON.parse(response).data;
 
-          
 
-             var printSelectTag = function(type, result) {
+
+            var printSelectTag = function(type, result) {
               var out = '';
 
               result.forEach(el => {
-                if(el.type == type) {
+                if (el.type == type) {
                   out += '<option value="' + el.id + '">' + el.name + '</option>';
                 }
               })
@@ -527,7 +527,7 @@
 
             }
 
-         
+
 
 
             $('select[name="size"]').each(function(num, el) {
@@ -585,15 +585,13 @@
           let out = "";
           for (var i = 0; i < data.length; i++) {
             total += calculateAmount(data[i].quantity, data[i].price);
-            out += ' <tr id="uniform-' + data[i].id + '"><th scope="row">' + (i + 1) + '</th>' +
+            out += ' <tr id="uniform-' + data[i].id + '" ><th scope="row">' + (i + 1) + '</th>' +
               ' <td> ' + data[i].name + '<br>' + data[i].en_name + '</td>' +
-              ' <td><input type="number" name="quantity" value="' + data[i].quantity + '"></td>' + ' <td class="price">' + formatPrice(data[i].price) + '</td>' +
-              ' <td class="amount">' + formatPrice(calculateAmount(data[i].quantity, data[i].price)) + '</td>';
-
-
+              ' <td><input min="0" type="number" name="quantity" value="' + data[i].quantity + '"></td>' +
+              ' <td data-price=" ' + data[i].price + '" class="price">' + formatPrice(data[i].price) + '</td>' +
+              ' <td data-amount= "' + calculateAmount(data[i].quantity, data[i].price) + '" class="amount">' + formatPrice(calculateAmount(data[i].quantity, data[i].price)) + '</td>';
             out += '<td><select data-value="' + data[i].size + '" data-type="' + data[i].size_type_id + '" name="size"></select></td>';
             out += '<td><button class="btn btn-primary uniform-save" type="button"  data-id="' + data[i].id + '">Save</button></td>'
-
             out += "</tr>";
 
 
@@ -603,7 +601,21 @@
 
           $('#total').append('Tổng cộng/Total: ' + formatPrice(total));
           $('#hoa_don_tbody').append(out);
+          $('input[name=quantity]').on('input', function() {
+            var parent = $(this).parent().parent();
+            var amount = calculateAmount($(this).val(), parent.children('.price').attr('data-price'));
+            parent.children('.amount').text(formatPrice(amount));
+            parent.children('.amount').attr('data-amount', amount);
+            calTotalAmount();
+          });
 
+          function calTotalAmount() {
+            var total = 0;
+            $('.amount').each(function() {
+             total += Number.parseInt($(this).attr('data-amount'));
+            });
+            $('#total').text('Tổng cộng/Total: ' + formatPrice(total));
+          }
 
 
 

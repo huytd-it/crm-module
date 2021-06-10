@@ -35,11 +35,11 @@
               <div class="form-row">
                 <div class="form-group col-lg-12">
                   <label for="inputEmail4">Họ và tên/Full name</label>
-                  <input type="text" class="form-control" id="full_name" name="full_name" placeholder="">
+                  <input type="text" class="form-control" id="full_name" name="full_name" placeholder="" readonly>
                 </div>
                 <div class="form-group col-lg-12">
                   <label for="inputPassword4">Mã học sinh/Std. Code</label>
-                  <input type="text" class="form-control" id="std_code" name="student_id" placeholder="">
+                  <input type="text" class="form-control" id="std_code" name="student_id" placeholder="" readonly>
                 </div>
 
                 <div class="form-group col-lg-6">
@@ -72,7 +72,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-5" id="uniform_card">
+        <div class="col-lg-5" id="uniform_card" style="display:none">
           <div class="card">
 
             <div class="card-body">

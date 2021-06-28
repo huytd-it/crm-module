@@ -145,15 +145,15 @@ class BaseController
   public function unsetKeyFromArray($data = [], $unset_keys = [])
   {
     if (is_array($data) || is_object($data))
-    foreach ($data as $index => $array) {
-      foreach ($array as $key) {
-        foreach ($unset_keys as $key_delete) {
-          if ($key == $key_delete) {
-            unset($data[$index][$key]);
+      foreach ($data as $index => $array) {
+        foreach ($array as $key) {
+          foreach ($unset_keys as $key_delete) {
+            if ($key == $key_delete) {
+              unset($data[$index][$key]);
+            }
           }
         }
       }
-    }
     return $data;
   }
 
@@ -233,18 +233,18 @@ class BaseController
 
     return $array;
   }
- 
+
   public function response($msg, $status = 200, $error = [], $data = [])
   {
     $response = ['msg' => $msg, 'status' => $status];
     if (count($error) > 0)
       $response['error'] = $error;
-    if (count($data) > 0)
-      $response['data'] = $data;
+
+    $response['data'] = $data;
     echo json_encode($response);
     exit();
   }
-  
+
   protected static function validateFileEmpty($indispensables)
   {
     foreach ($_FILES as $key => $value) {

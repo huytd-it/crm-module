@@ -9,12 +9,12 @@ use Models\Excel;
 class DepotController extends BaseController
 {
 
-  
+
   public function update()
   {
-    
+
     $id = $_POST['id'];
-    $result = $this->db->updateDB('uniform_depot', array_diff_key($_POST,array('id' => $id)), "id={$id}");
+    $result = $this->db->updateDB('uniform_depot', array_diff_key($_POST, array('id' => $id)), "id={$id}");
     if ($result > 0) {
       $this->response('Cập nhật thành công');
     } else {
@@ -31,11 +31,38 @@ class DepotController extends BaseController
 
   public function getAll()
   {
-    $query = "SELECT uniform_depot.*, uniform_types.name as type_name , uniform_types.price, uniform_size.name as size_name ";
-    $query .= " FROM uniform_depot INNER JOIN uniform_types ON uniform_depot.uniform_type_id=uniform_types.id";
-    $query .= " INNER JOIN uniform_size ON uniform_depot.uniform_size_id = uniform_size.id";
-    $query .= " WHERE uniform_depot.deleted_at is NULL ORDER BY uniform_depot.created_at DESC";
-    $this->response("data", 200, [], $this->db->getDataFromQuery($query));
+    $month = $_GET['month'];
+    $before_month = $month - 1;
+    $year = $_GET['year'];
+
+    //nhap kho
+    $query = "SELECT T.*, D.*, S.name as size_name, MONTH(D.created_at) as month FROM uniform_depot D";
+    $query .= " INNER JOIN uniform_types T ON T.id = D.uniform_type_id";
+    $query .= " INNER JOIN uniform_size S ON D.uniform_size_id = S.id";
+    $query .= " WHERE year(D.created_at) = $year and month(D.created_at) = $month";
+    $depots = $this->db->getDataFromQuery($query);
+    // giao thanh cong (xuat kho)
+    $query = "SELECT B.uniform_type_id, B.size , sum(B.quantity) as total FROM uniform_bills B ";
+    $query .= " INNER JOIN student_bills SB ON B.student_id = SB.student_id Where SB.status = 2 and year(SB.created_at) = $year and month(SB.created_at) = $month";
+    $query .= " Group by  B.uniform_type_id, B.size";
+    $bills = $this->db->getDataFromQuery($query);
+    $i = 0;
+ 
+    foreach ($depots as $depot) {
+    
+      $depots[$i]['xuat_kho'] = 0;
+     
+      foreach ($bills as $bill) {
+        if ($bill['uniform_type_id'] == $depot['uniform_type_id'] && $bill['size'] == $depot['uniform_size_id']) {
+          $depots[$i]['xuat_kho'] = $bill['total'];
+        } 
+       
+      }
+     
+      $i++;
+    }
+
+    return $this->response("data", 200, [], $depots);
   }
 
 
@@ -43,16 +70,15 @@ class DepotController extends BaseController
   {
     $col = '';
     $val = '';
-    foreach($_POST as $key => $value){
+    foreach ($_POST as $key => $value) {
       $col .= $key . ',';
       $val .= "'$value'" . ',';
-
     }
     $val = trim($val, ',');
     $col = trim($col, ' , ');
 
-   
-   
+
+
     $result = $this->db->insertDB('uniform_depot', "{$col}", $val);
     if ($result > 0) {
       $this->response('Tạo thành công');

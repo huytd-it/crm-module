@@ -90,6 +90,10 @@
                   <label for="pwd">Quantity :</label>
                   <input type="text" class="form-control" name="quantity">
                 </div>
+                <div class="form-group">
+                  <label for="pwd">Previous Month Quantity :</label>
+                  <input type="text" class="form-control" name="prev_quantity">
+                </div>
 
               </div>
             </div>
@@ -144,6 +148,10 @@
                   <label for="pwd">Quantity :</label>
                   <input type="text" class="form-control" name="quantity">
                 </div>
+                <div class="form-group">
+                  <label for="pwd">Previous Month Quantity :</label>
+                  <input type="text" class="form-control" name="prev_quantity">
+                </div>
                 <div class="form-group" hidden>
                   <input type="text" class="form-control" name="id">
                 </div>
@@ -183,7 +191,8 @@
 
 
             <button class="btn btn-success" data-toggle="modal" data-target="#types_modal">Item</button>
-
+            Chọn tháng: 
+            <input type="month" id="month">
           </div>
           <div class="card-body table-responsive-lg">
 
@@ -194,25 +203,46 @@
               <div class="table-responsive " style="overflow-x: scroll;min-width:800px; width:100%">
                 <table class="table table-hover table-bordered" id="uniform-type" style="overflow:scroll;height:100px">
                   <tfoot class="text-center">
+
                     <tr>
                       <th scope="col" style="visibility:hidden;">#</th>
                       <th scope="col">Họ và tên</th>
+                      <th scope="col">Họ và tên</th>
                       <th scope="col">Số điện thoại</th>
                       <th scope="col">Giá</th>
-                      <th scope="col">Số lượng</th>
-                      <th scope="col">Số lượng</th>
+                      <th scope="col" style="visibility:hidden;">Số lượng</th>
+                      <th scope="col" style="visibility:hidden;">Số lượng</th>
                       <th scope="col" style="visibility:hidden;">Edit</th>
                     </tr>
 
                   </tfoot>
                   <thead class="text-center">
                     <tr>
+                      <th scope="col" style="visibility:hidden;">#</th>
+                      <th scope="col" style="visibility:hidden;">Mã số</th>
+                      <th scope="col" style="visibility:hidden;">Tên hàng hóa</th>
+                      <th scope="col" style="visibility:hidden;">Size</th>
+                      <th scope="col" style="visibility:hidden;">Giá</th>
+                      <th scope="col" colspan="2">Tổn đầu</th>
+                      <th scope="col" colspan="2">Nhập kho</th>
+                      <th scope="col" colspan="2">Xuất kho</th>
+                      <th scope="col" colspan="2">Tổn cuối</th>
+                      <th scope="col">Tính năng</th>
+                    </tr>
+                    <tr>
                       <th scope="col">#</th>
+                      <th scope="col">Mã số</th>
                       <th scope="col">Tên hàng hóa</th>
                       <th scope="col">Size</th>
-                      <th scope="col">Số lượng</th>
                       <th scope="col">Giá</th>
-                      <th scope="col">Ngày tạo</th>
+                      <th scope="col">Số lượng</th>
+                      <th scope="col">Thành tiền</th>
+                      <th scope="col">Số lượng</th>
+                      <th scope="col">Thành tiền</th>
+                      <th scope="col">Số lượng</th>
+                      <th scope="col">Thành tiền</th>
+                      <th scope="col">Số lượng</th>
+                      <th scope="col">Thành tiền</th>
                       <th scope="col">Tính năng</th>
                     </tr>
                   </thead>
@@ -284,14 +314,32 @@
       })
 
 
+      $('#month').on('input',function() {
+        var date = new Date($(this).val());
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+      
+        var uniformTypesUrl = origin + '/Route.php?page=depot&action=getAll&month=' + month + '&year=' + year;
+        window.onload = getData(uniformTypesUrl, function(response) {
+         
+          
+          var data = JSON.parse(response).data;
 
+          showUniformType(data);
+        });
+      })
 
 
 
       function initType() {
-        var uniformTypesUrl = origin + '/Route.php?page=depot&action=getAll';
+        var date = new Date();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        var uniformTypesUrl = origin + '/Route.php?page=depot&action=getAll&month=' + month + '&year=' + year;
         window.onload = getData(uniformTypesUrl, function(response) {
+         
           var data = JSON.parse(response).data;
+
           showUniformType(data);
         });
         var printSelectTag = function(result) {
@@ -308,9 +356,9 @@
 
 
           $('select[name="uniform_size_id"]').each(function(num, el) {
-            // $(el).empty();
+
             $(el).append(printSelectTag(data));
-            // $(el).val($(el).attr('data-value'));
+
           })
         });
         var uniformTypesUrl = origin + '/Route.php?page=uniform&action=getUniformType';
@@ -318,30 +366,46 @@
 
           var data = JSON.parse(response).data;
           $('select[name="uniform_type_id"]').each(function(num, el) {
-            // $(el).empty();
+
             $(el).append(printSelectTag(data));
-            // $(el).val($(el).attr('data-value'));
+
           })
 
         });
 
       }
 
+      function calAmount(price, quantity) {
+        return formatPrice(Number.parseInt(price) * Number.parseInt(quantity));
+      }
+
+      function calTonCuoi(ton_dau, nhap, xuat) {
+        return Number.parseInt(ton_dau) + Number.parseInt(nhap) - Number.parseInt(xuat);
+      }
+
       function showUniformType(data) {
         if (data) {
           let out = "";
           for (var i = 0; i < data.length; i++) {
+            var ton_cuoi = calTonCuoi(data[i].prev_quantity, data[i].quantity, data[i].xuat_kho);
             out += '<tr>'
             out += '<td>' + (i + 1) + '</td>';
-            out += '<td>' + data[i].type_name + '</td>';
+            out += '<td>' + data[i].short_name + '-' + data[i].size_name + '</td>';
+            out += '<td>' + data[i].name + '</td>';
             out += '<td>' + data[i].size_name + '</td>';
-            out += '<td>' + data[i].quantity + '</td>';
             out += '<td>' + formatPrice(data[i].price) + '</td>';
-            out += '<td>' + data[i].created_at + '</td>';
+            out += '<td>' + data[i].prev_quantity + '</td>';
+            out += '<td>' + calAmount(data[i].price, data[i].prev_quantity) + '</td>';
+            out += '<td>' + data[i].quantity + '</td>';
+            out += '<td>' + calAmount(data[i].price, data[i].quantity) + '</td>';
+            out += '<td>' + data[i].xuat_kho + '</td>';
+            out += '<td>' + calAmount(data[i].price, data[i].xuat_kho) + '</td>';
+            out += '<td>' + ton_cuoi + '</td>';
+            out += '<td>' + calAmount(data[i].price, ton_cuoi) + '</td>';
             out += '<td><button type="button"  data-toggle="modal" data-target="#types_edit_modal" class="btn btn-warning btn-edit-type" ' +
               'data-price="' +
               data[i].price + '" data-type="' + data[i].uniform_type_id + '" data-size="' + data[i].uniform_size_id + '" data-quantity="' + data[i].quantity +
-              '" data-id="' + data[i].id +
+              '" data-id="' + data[i].id +  '" data-prev_quantity="' + data[i].prev_quantity +
               '" data-short_name="' + data[i].short_name + '">Edit</button><button type="button"' +
               ' data-id="' + data[i].id + '" class="btn btn-danger btn-delete-type" >Delete</button></td>';
 
@@ -354,13 +418,13 @@
               id: $(this).attr('data-id'),
               quantity: $(this).attr('data-quantity')
             }
-          
+
             const inputs = $('#type_edit_form :input ');
-    
+
             const values = this;
 
             inputs.each(function() {
-            
+
               $(this).val($(values).attr('data-' + $(this).attr('name')));
             })
             $('#type_edit_form select[name=uniform_size_id]').val(data.size_id);
@@ -373,7 +437,7 @@
             data.append('deleted_at', (new Date()).toISOString());
             const url = origin + '/Route.php?page=depot&action=update';
             deleteModel(url, data, initType);
-            
+
           });
           setUpDataTable(out, '#uniform-type-id', '#uniform-type');
         }
@@ -386,6 +450,7 @@
 
       function setUpDataTable(out, tbody_id = '#row-id', table_id = '#table') {
 
+       
         $(table_id).DataTable().clear().destroy();
         $(tbody_id).append(out);
         $(table_id).DataTable({

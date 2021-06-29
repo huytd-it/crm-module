@@ -181,7 +181,7 @@
             <br>
             <div class="table-responsive " style="overflow-x: scroll;min-width:800px; width:100%">
               <table class="table table-hover table-bordered" id="table" style="overflow:scroll;height:100px">
-                <tfoot class="text-center">
+                <!-- <thead class="text-center">
                   <tr>
                     <th scope="col" style="visibility:hidden;">#</th>
                     <th scope="col" style="visibility:hidden; width:100px">Họ và tên</th>
@@ -197,7 +197,7 @@
 
                   </tr>
 
-                </tfoot>
+                </thead> -->
                 <thead class="text-center">
                   <tr>
                     <th scope="col">#</th>
@@ -214,11 +214,29 @@
 
                   </tr>
 
+
+
                 </thead>
 
                 <tbody id="row-id">
 
                 </tbody>
+                <tfoot>
+                  <tr>
+                    <th scope="col" style="visibility:hidden;">#</th>
+                    <th scope="col" style="visibility:hidden; width:100px">Họ và tên</th>
+
+                    <th scope="col" style="visibility:hidden;">Số điện thoại</th>
+                    <th scope="col">Giới tính</th>
+                    <th scope="col">Lớp</th>
+                    <th scope="col">Thanh toán</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col" style="visibility:hidden;">Edit - Print - Delete</th>
+                    <th scope="col" style="visibility:hidden;">Xác nhận</th>
+
+
+                  </tr>
+                </tfoot>
               </table>
             </div>
 
@@ -235,7 +253,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.7/dist/sweetalert2.all.min.js"></script>
   <script src="pages/MVC/view/publish/plugin/switchery/dist/switchery.js"></script>
@@ -301,9 +319,9 @@
       //   })
       // })
 
-      
+
       $('#duyet-btn').click(function() {
-       
+
         var data = new FormData($('#student_bills')[0]);
         data.append('payment', $('#payment').prop('checked') ? 1 : 0);
         console.log(data);
@@ -311,7 +329,7 @@
 
       });
 
-      function deleteData(data) {
+      function deleteData(data, table) {
         var id = data.id;
         $.ajax({
           method: "POST",
@@ -329,8 +347,7 @@
                 showConfirmButton: false,
                 timer: 3000
               });
-              $("#student-" + id).remove();
-            } else {
+              table.ajax.reload();
               Swal.fire({
                 position: 'center',
                 icon: 'error',
@@ -358,7 +375,7 @@
           processData: false,
           contentType: false,
           success: function(response) {
-            console.log(response);
+
             var data = JSON.parse(response);
             if (data.status == 200) {
               Swal.fire({
@@ -368,7 +385,7 @@
                 showConfirmButton: false,
                 timer: 3000
               });
-              fetchAll();
+
             } else {
               Swal.fire({
                 position: 'center',
@@ -386,14 +403,15 @@
         });
       }
 
-      function updateDataStatus(data) {
+      function updateDataStatus(data, table) {
 
         $.ajax({
           type: "POST",
           url: origin + "/Route.php?page=uniform&action=updateStudentBill",
           data: data,
           success: function(response) {
-            fetchAll();
+            table.ajax.reload();
+            // fetchAll();
           },
           error: function(response) {
             console.log(response);
@@ -402,84 +420,170 @@
       }
 
       function fetchAll() {
-        $.ajax({
-          method: "GET",
-          url: origin + "/Route.php?action=getAll&page=uniform",
-          success: function(response) {
-            let result = JSON.parse(response);
-            let data = result.data;
-            let config = result.config;
-            showList(data, config);
-
-            $(document).on('click', '.btn-print', function() {
-              window.open('pages/MVC/View/asset-manage/form-print.php?view&mode=view&id=' + $(this).attr('id'), 'width:1000',
-                'height:1000')
-            });
-
-            $(document).on('click', '.btn-warning', function() {
-
-
-              $('#hoa_don').modal('show');
-              getBill($(this).attr('id'), $(this).attr('data-id'))
-
-
-            });
-            $(document).on('click', '.btn-delete', function() {
-
-              Swal.fire({
-                title: 'Bạn chắc chứ?',
-                text: "Khi bạn xóa sẽ ko khôi phục lại được dữ liệu",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Đồng ý, xóa đi!'
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  var data = {
-                    id: $(this).attr('data-id'),
-                    update_by: window.localStorage.getItem('_user_name'),
-                    deleted_at: (new Date()).toISOString(),
-                  };
-                  deleteData(data);
-                }
-              })
-
-
-            });
-            $(document).on('change', '.btn-status', function() {
-              if ($(this).val() > -1) {
-                const data = {
-                  id: $(this).attr('data-id'),
-                  status: $(this).val(),
-                  update_by: window.localStorage.getItem('_user_name'),
-                  updated_at: (new Date()).toISOString(),
-
-                }
-
-                updateDataStatus(data);
-              }
-
-
-            })
-            $('table a').click(function() {
-              if ($(this).attr('id') != " ")
-                window.open(config.origin + "/" + $(this).attr('id'), 'width:1000', 'height:1000');
-              else {
-                alert('File không tồn tại');
-              }
-
-            })
-
-
+        $('#table').DataTable().destroy();
+        var table = $('#table').DataTable({
+          "processing": true,
+          "serverSide": true,
+          "ajax": {
+            "url": origin + "/Route.php?action=getAll&page=uniform",
+            "dataSrc": function(json) {
+              console.log(json);
+              return json.data;
+            },
+            "data": function(d) {
+              console.log(d);
+              return d;
+            }
           },
-          error: function(response) {
-            $('.alert h3').text("Errors");
-            $('.alert').css("color", "red");
-            $('.alert i').removeClass('far fa-check-circle').addClass('fas fa-exclamation-circle');
-            $('.alert').toggleClass("hide");
+          "columns": [{
+              "data": "student_id",
+              "name": 'student_id'
+            }, {
+              "data": "student_fullname",
+              "name": 'student_fullname'
+            },
+            {
+              "data": "number_phone",
+              "name": "number_phone"
+            },
+            {
+              "data": "student_sex",
+              "name": "student_sex"
+            },
+            {
+              "data": "class_id",
+              "name": "class_id"
+            },
+            {
+              "data": "payment",
+              "name": "payment",
+              "render": function(data, type, row) {
+                return data == 0 ? "Cash" : "Bank";
+              }
+            },
+            {
+              "data": "status",
+              "name": "status",
+              "render": function(data, type, row) {
+                return printStatusSpan(data);
+              }
+            },
+            {
+              "data": "button",
+              "name": "button"
+            },
+            {
+              "data": "select",
+              "name": "select"
+            },
+
+
+          ],
+          aaSorting: [
+            [0, 'desc']
+          ],
+          drawCallback: function() {
+            $('select').select2();
+          },
+          initComplete: function() {
+
+            this.api().columns().every(function() {
+              var column = this;
+
+              var select = $('<select><option value="">All</option></select>')
+                .appendTo($(column.footer()).empty())
+                .on('change', function() {
+                  var val = $.fn.dataTable.util.escapeRegex(
+                    $(this).val()
+                  );
+
+                  column
+                    .search(val ? '^' + val + '$' : '', true, false)
+                    .draw();
+                });
+
+              column.data().unique().sort().each(function(d, j) {
+                console.log(column[0][0]);
+                if (column[0][0] == 6)
+                  select.append('<option value="' + d + '">' + printStatusText(d) +
+                    '</option>')
+                else if (column[0][0] == 5) {
+                  select.append('<option value="' + d + '">' + (d == 0 ? "Cash" : "Bank") +
+                    '</option>')
+                } else {
+                  select.append('<option value="' + d + '">' + d +
+                    '</option>')
+                }
+              });
+            });
           }
         });
+
+     
+
+
+        $(document).on('click', '.btn-print', function() {
+          window.open('pages/MVC/View/asset-manage/form-print.php?view&mode=view&id=' + $(this).attr('data-id'), 'width:1000',
+            'height:1000')
+        });
+
+        $(document).on('click', '.btn-warning', function() {
+
+
+          $('#hoa_don').modal('show');
+          getBill($(this).attr('data-student_id'), $(this).attr('data-id'))
+
+
+        });
+        $(document).on('click', '.btn-delete', function() {
+
+          Swal.fire({
+            title: 'Bạn chắc chứ?',
+            text: "Khi bạn xóa sẽ ko khôi phục lại được dữ liệu",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý, xóa đi!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              var data = {
+                id: $(this).attr('data-id'),
+                update_by: window.localStorage.getItem('_user_name'),
+                deleted_at: (new Date()).toISOString(),
+              };
+              deleteData(data, table);
+            }
+          })
+
+
+        });
+        $(document).on('change', '.btn-status', function() {
+          if ($(this).val() > -1) {
+            const data = {
+              id: $(this).attr('data-id'),
+              status: $(this).val(),
+              update_by: window.localStorage.getItem('_user_name'),
+              updated_at: (new Date()).toISOString(),
+
+            }
+
+            updateDataStatus(data, table);
+          }
+
+
+        })
+        $('table a').click(function() {
+          if ($(this).attr('id') != " ")
+            window.open(config.origin + "/" + $(this).attr('id'), 'width:1000', 'height:1000');
+          else {
+            alert('File không tồn tại');
+          }
+
+        })
+
+
+
       }
 
       function getBill(student_id, id) {
@@ -612,7 +716,7 @@
           function calTotalAmount() {
             var total = 0;
             $('.amount').each(function() {
-             total += Number.parseInt($(this).attr('data-amount'));
+              total += Number.parseInt($(this).attr('data-amount'));
             });
             $('#total').text('Tổng cộng/Total: ' + formatPrice(total));
           }
@@ -716,9 +820,35 @@
 
           }
           $('#table').DataTable().clear().destroy();
-          $('#row-id').append(out);
-          $('#table').DataTable({
-            retrieve: true,
+          // $('#row-id').append(out);
+          var table = $('#table').DataTable({
+            // retrieve: true,
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+              "url": "{{ route('tong_hop') }}",
+              "dataSrc": function(json) {
+
+                return json.data;
+              }
+            },
+            "columns": [{
+                "data": "link",
+                "name": 'link'
+              },
+              {
+                "data": "new_date_format",
+                "name": "new_date_format"
+              },
+              {
+                "data": "group_name",
+                "name": "group_name"
+              },
+
+            ],
+            aaSorting: [
+              [1, 'desc']
+            ],
             initComplete: function() {
 
               this.api().columns().every(function() {
@@ -781,15 +911,6 @@
         }
       }
 
-      function btnStatusClass(status) {
-        if (status == 0) {
-          return 'btn-info';
-        } else if (status == 1) {
-          return 'btn-success';
-        } else {
-          return 'Đã nhận đồng phục';
-        }
-      }
 
 
       $('#btn_excel').click(function() {

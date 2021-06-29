@@ -185,17 +185,14 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-  <!-- <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">
-  </script> -->
   <script src="pages/MVC/view/publish/plugin/switchery/dist/switchery.js"></script>
   <script src="pages/MVC/view/publish/plugin/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.7/dist/sweetalert2.all.min.js"></script>
 
   <script>
-    let origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
+    var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
 
     var elem = document.querySelector('#switch1');
     var init = new Switchery(elem, {
@@ -256,9 +253,6 @@
       });
 
 
-      // for (var pair of formData.entries()) {
-      //   console.log(pair[0] + ', ' + pair[1]);
-      // }
     });
 
     getConfig();
@@ -269,22 +263,19 @@
         method: "GET",
         url: origin + "/Route.php?controller=UniformController&action=studentInformation&page=uniform&student_id=" + window.localStorage.getItem('_student_id'),
         success: function(response) {
-
+          console.log(response);
           var data = JSON.parse(response).data;
-
+          console.log(data);
           $('input[name=full_name').val(data['student_fullname']);
           $('input[name=student_id').val(data['student_id']);
-          $('input[name=class').val(window.localStorage.getItem('_class_id'));
+          $('input[name=class').val(data.class_id);
+          $('input[name=number_phone').val(data.number_phone);
           if (data.student_sex = 'NAM') {
             $('input[name=gender').click();
 
 
           }
-
-          // if (document.getElementById('class').value.indexOf('9') != -1)
-          //   uniform_card.style.display = "block";
-          // else
-          //   uniform_card.style.display = "none";
+          $('select[name=school_year]').val(data.school_year);
 
 
         },

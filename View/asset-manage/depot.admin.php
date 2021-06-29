@@ -190,7 +190,7 @@
               </svg> Export Excel</button>
 
 
-            <button class="btn btn-success" data-toggle="modal" data-target="#types_modal">Item</button>
+            <button class="btn btn-success" data-toggle="modal" data-target="#types_modal">Thêm hàng hóa</button>
             Chọn tháng: 
             <input type="month" id="month">
           </div>

@@ -205,6 +205,7 @@
       var formData = new FormData(document.getElementById('form'));
 
 
+ 
       $.ajax({
         method: "POST",
         url: origin + "/Route.php?controller=UniformController&action=create&page=uniform",
@@ -225,11 +226,11 @@
             Swal.fire({
               position: 'center',
               icon: 'success',
+              text:' Mời kiểm tra lại số lượng và size',
               title: data.msg,
+              showConfirmButton: true,
 
-              showConfirmButton: false,
-
-            });
+            }).th;
           else {
             for (const [key, value] of Object.entries(data.error)) {
               out_html += value + '<br>';
@@ -258,7 +259,14 @@
     getConfig();
 
     function getConfig() {
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'Lưu ý  ',
+        text: 'Hiện tại là  thử nghiệm cho tới khi có thông báo chính thức hoặc thông báo này được ẩn',
+        showConfirmButton: true,
 
+      });
       $.ajax({
         method: "GET",
         url: origin + "/Route.php?controller=UniformController&action=studentInformation&page=uniform&student_id=" + window.localStorage.getItem('_student_id'),

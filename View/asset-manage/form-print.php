@@ -590,7 +590,7 @@
       $('#send').click(function() {
         $(".modal-mail").toggleClass("hide");
       });
-      var origin = window.location.origin + "/pages/MVC";
+      const origin = window.location.origin + "/" + window.location.pathname.split('/')[1].trim('/') + "/pages/MVC";
 
   
 

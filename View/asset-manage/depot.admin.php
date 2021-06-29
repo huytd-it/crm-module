@@ -280,7 +280,7 @@
   <script src="pages/MVC/View/publish/js/jquery.controller.js"></script>
   <script>
     $(document).ready(function() {
-      const origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "pages/MVC";
+      const origin = window.location.origin + "/" + window.location.pathname.split('/')[1].trim('/') + "/pages/MVC";
       $.fn.modal.Constructor.prototype._enforceFocus = function() {};
       $('.nav-tabs a').click(function() {
         $(this).tab('show');
@@ -321,7 +321,7 @@
       
         var uniformTypesUrl = origin + '/Route.php?page=depot&action=getAll&month=' + month + '&year=' + year;
         window.onload = getData(uniformTypesUrl, function(response) {
-         
+          console.log(response);
           
           var data = JSON.parse(response).data;
 

@@ -205,7 +205,7 @@
       var formData = new FormData(document.getElementById('form'));
 
 
- 
+
       $.ajax({
         method: "POST",
         url: origin + "/Route.php?controller=UniformController&action=create&page=uniform",
@@ -226,11 +226,12 @@
             Swal.fire({
               position: 'center',
               icon: 'success',
-              text:' Mời kiểm tra lại số lượng và size',
+              text: ' Mời kiểm tra lại số lượng và size',
               title: data.msg,
               showConfirmButton: true,
-
-            }).th;
+            }).then(function(result) {
+              _loadPageContentURL('pages/MVC/View/asset-manage/update-form.php');
+            });
           else {
             for (const [key, value] of Object.entries(data.error)) {
               out_html += value + '<br>';
@@ -266,14 +267,14 @@
         text: 'Hiện tại là  thử nghiệm cho tới khi có thông báo chính thức hoặc thông báo này được ẩn',
         showConfirmButton: true,
 
-      });
+      })
       $.ajax({
         method: "GET",
         url: origin + "/Route.php?controller=UniformController&action=studentInformation&page=uniform&student_id=" + window.localStorage.getItem('_student_id'),
         success: function(response) {
-          console.log(response);
+
           var data = JSON.parse(response).data;
-          console.log(data);
+
           $('input[name=full_name').val(data['student_fullname']);
           $('input[name=student_id').val(data['student_id']);
           $('input[name=class').val(data.class_id);

@@ -415,7 +415,7 @@ class UniformController extends BaseController
         return parent::response('Đăng ký thất bại', 400, ['error' => 'Học sinh đã tồn tại']);
       }
     } catch (Exception $e) {
-      return parent::response('Server không sử lý được', 400);
+      return parent::response('Lỗi', 400, ['server' => 'Server không sử lý được']);
     }
   }
   public function export()

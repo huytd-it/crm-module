@@ -10,6 +10,7 @@ use PDO;
 
 class UniformController extends BaseController
 {
+  private  $subject = 'ĐĂNG KÝ ĐỒNG PHỤC ';
   public function createSize()
   {
     $result = $this->db->insertDB('uniform_size', 'name, type', "{$_POST['name']}, {$_POST['type']}");
@@ -90,7 +91,7 @@ class UniformController extends BaseController
   }
   public function studentInformation()
   {
-    $query = "SELECT S.student_fullname, S.student_id, B.* from lsts_hr_student S INNER JOIN student_bills B ON S.student_id = B.student_id WHERE S.student_id = {$_GET['student_id']} ";
+    $query = "SELECT S.student_fullname, S.student_id, S.student_email, B.* from lsts_hr_student S INNER JOIN student_bills B ON S.student_id = B.student_id WHERE S.student_id = {$_GET['student_id']} ";
     $result = $this->db->getDataFromQuery($query);
     $myJson = json_encode(["msg" => "Signed Successful", "status" => 200, "data" => $result[0]]);
     echo $myJson;
@@ -323,7 +324,7 @@ class UniformController extends BaseController
   }
   public function get()
   {
-    $query = "SELECT student_bills.*, lsts_hr_student.student_fullname, lsts_hr_student.student_sex ";
+    $query = "SELECT student_bills.*, lsts_hr_student.student_fullname, lsts_hr_student.student_sex";
     $query .= "FROM student_bills INNER JOIN lsts_hr_student ON student_bills.student_id=lsts_hr_student.student_id WHERE id={$this->router->id}";
     $this->response("data", 200, [], $this->db->getDataFromQuery($query)[0]);
   }
@@ -406,10 +407,12 @@ class UniformController extends BaseController
       } else {
         $array = ['deleted_at' => 'NULL', 'school_year' => $_POST['school_year'], 'class_id' => $_POST['class']];
         $kq = $this->db->updateDB('student_bills', $array, " student_id = '{$_POST['student_id']}'");
-        return parent::response('Đăng ký thành công', 200, ['error' => 'Thông tin học sinh đã được cập nhật']);
+        $this->sendMail('Đăng ký thành công', $this->subject, $_POST['email']);
+        return parent::response('Cập nhật thông tin thành công', 200, ['error' => 'Thông tin học sinh đã được cập nhật']);
       }
 
       if ($kq > 0) {
+        $this->sendMail('Đăng ký thành công', $this->subject, $_POST['email']);
         return  parent::response('Đăng ký thành công');
       } else {
         return parent::response('Đăng ký thất bại', 400, ['error' => 'Học sinh đã tồn tại']);

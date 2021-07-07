@@ -23,7 +23,7 @@ class BaseController
   public $config;
   public $table = "thong_tin_hoc_sinh";
   public $requestMethod;
-
+  
 
 
   public function __construct()

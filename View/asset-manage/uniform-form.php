@@ -65,10 +65,10 @@
                   <label for="inputAddress">Email</label>
                   <input type="tel" class="form-control" id="email" name="email" placeholder="" readonly>
                 </div>
-                <div class="form-group col-lg-12" >
+                <div class="form-group col-lg-12">
                   <label> Giới tính: </label><br>
                   Nữ
-                  <input type="checkbox" id="switch1" name="gender"  >
+                  <input type="checkbox" id="switch1" name="gender">
                   Nam
                 </div>
 
@@ -198,13 +198,8 @@
   <script>
     var origin = window.location.origin + "/" + window.location.pathname.split('/')[1] + "/pages/MVC";
 
-    var elem = document.querySelector('#switch1');
-    var init = new Switchery(elem, {
-      size: 'small',
-      color: '#007bff',
-      secondaryColor: '#e83e8c'
-    });
- 
+
+
     document.getElementById('submit').addEventListener('click', function() {
       var formData = new FormData(document.getElementById('form'));
 
@@ -284,12 +279,17 @@
           $('input[name=class').val(data.class_id);
           $('input[name=number_phone').val(data.number_phone);
           $('input[name=email').val(data.student_email);
+          var elem = document.querySelector('#switch1');
+          var init = new Switchery(elem, {
+            size: 'small',
+            color: '#007bff',
+            secondaryColor: '#e83e8c'
+          });
           if (data.student_sex = 'NAM') {
             $('input[name=gender').click();
 
           }
-
-          $('input[name=gender').attr('readonly',true);
+          init.disable();
           $('select[name=school_year]').val(data.school_year);
 
 

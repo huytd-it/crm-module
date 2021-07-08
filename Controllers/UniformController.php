@@ -390,7 +390,13 @@ class UniformController extends BaseController
       if (count($error) > 0)
         $this->response('Thiếu thông tin', 400, $error);
 
-
+      $query = "SELECT uniform_bills.*, uniform_types.name, uniform_types.en_name, uniform_types.price,uniform_types.size_type_id, uniform_size.name as size_name ";
+      $query .= "FROM uniform_bills INNER JOIN uniform_types ON uniform_bills.uniform_type_id=uniform_types.id INNER JOIN uniform_size ON uniform_bills.size=uniform_size.id ";
+      $query .= " WHERE uniform_bills.student_id={$_REQUEST['student_id']} ORDER BY uniform_bills.id";
+     
+      $content = $this->createContentMail($this->db->getDataFromQuery($query),$_REQUEST );
+      // echo $content;
+      // exit();
       $kq = 0;
       $search = $this->db->fetchAll('student_bills', 'student_id', "student_id = '{$_POST['student_id']}' ");
       if (count($search) == 0) {
@@ -407,7 +413,7 @@ class UniformController extends BaseController
       } else {
         $array = ['deleted_at' => 'NULL', 'school_year' => $_POST['school_year'], 'class_id' => $_POST['class']];
         $kq = $this->db->updateDB('student_bills', $array, " student_id = '{$_POST['student_id']}'");
-        $this->sendMail('Đăng ký thành công', $this->subject, $_POST['email']);
+        $this->sendMail($content, $this->subject, $_POST['email']);
         return parent::response('Cập nhật thông tin thành công', 200, ['error' => 'Thông tin học sinh đã được cập nhật']);
       }
 
@@ -420,6 +426,84 @@ class UniformController extends BaseController
     } catch (Exception $e) {
       return parent::response('Lỗi', 400, ['server' => 'Server không sử lý được']);
     }
+  }
+  public function createContentMail($data, $info)
+  {
+    $total = 0;
+    if ($data) {
+      $table = ' <h5>XÁC NHẬN ĐĂNG KÍ ĐỒNG PHỤC <br> </h5>
+
+       <div  style="margin:15px 0;">
+       <strong>Thông tin học sinh: </strong>
+          <ul style="list-style-type:none">
+            <li> <strong>Họ và tên: </strong>
+             '.$info['full_name'].'
+            </li>
+
+            <li > <strong>Mã học sinh:</strong>
+     
+            '.$info['student_id'].'
+            </li>
+
+            <li> <strong> Lớp:  </strong>
+            '.$info['class'].'
+            </li>
+          </tr>
+    </div>
+       <table style ="border-collapse: collapse;text-algin:center;">
+      <thead>
+        <tr class="text-center" style="background-color:lightblue">
+
+          <th style="border:1px solid black">Số thứ tự <br> No. </th>
+          <th style="border:1px solid black">Tên hàng<br>Items</th>
+          <th style="border:1px solid black">Số lượng<br>Quantity</th>
+          <th style="border:1px solid black">Đơn giá<br>Unit price</th>
+          <th style="border:1px solid black">Thành tiền<br>Ammount</th>
+          <th style="border:1px solid black">Size<br>Kích thước</th>
+          <th style="border:1px solid black">Ghi chú<br>Remarks</th>
+        </tr>
+      </thead>
+      <tbody id="hoa_don_tbody">';
+      $out = "";
+      $i = 0;
+      foreach ($data as $row) {
+
+        $total += $this->calculateAmount($row['quantity'], $row['price']);
+        $out .= ' <tr style="padding:15px"><th style="border:1px solid black" scope="row">' . ($i + 1) . '</th>' .
+          ' <td style="border:1px solid black"> ' . $row['name'] . '<br>' . $row['en_name'] . '</td>' .
+          ' <td style="border:1px solid black;text-algin:center">' . $row['quantity'] . ' </td>' .
+          ' <td  style="border:1px solid black">' . $this->formatPrice($row['price']) . '</td>' .
+          ' <td style="border:1px solid black">' . $this->formatPrice($this->calculateAmount($row['quantity'], $row['price'])) . '</td>';
+        $out .= '<td style="border:1px solid black ;text-algin:center">' . $row['size_name'] . '</td>';
+        $out .= '<td style="border:1px solid black">' . $row['note'] . '</td>';
+        $out .= "</tr>";
+        $i++;
+      }
+      $table .= $out;
+      $table .= '</tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" id="total">
+            <b> Tổng cộng/Total:'.$this->formatPrice($total).' </b>
+
+          </td>
+  
+
+        </tr>
+      </tfoot>
+
+
+    </table>';
+      return $table;
+    }
+  }
+  public function calculateAmount($quantity, $price)
+  {
+    return $quantity * $price;
+  }
+  public function formatPrice($price)
+  {
+    return number_format($price, 0, '', ',');
   }
   public function export()
   {

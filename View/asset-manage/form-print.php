@@ -438,8 +438,7 @@
             <div style="margin: 0 auto;">
               <div class="text_header">
                 PHIẾU NHẬN ĐỒNG PHỤC VÀ VỞ TẬP <br>
-                UNIFORM AND NOTERBOOK RECEIPT FORM
-  </div>
+                UNIFORM AND NOTERBOOK RECEIPT FORM  </div>
             </div>
           </div>
 
@@ -698,20 +697,6 @@
         }
       }
 
-      function addRow() {
-        if (lop != undefined) {
-          $('input[name=lop]').val(lop);
-
-        }
-        if (Number.parseInt($('input[name=lop]').val()) == 10) {
-
-          $('#ket_qua_hoc_tap_table_2').hide();
-          $('#ket_qua_hoc_tap_table').show();
-        } else {
-          $('#ket_qua_hoc_tap_table_2').show();
-          $('#ket_qua_hoc_tap_table').hide();
-        }
-      }
 
 
 

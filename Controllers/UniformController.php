@@ -418,7 +418,7 @@ class UniformController extends BaseController
       }
 
       if ($kq > 0) {
-        $this->sendMail('Đăng ký thành công', $this->subject, $_POST['email']);
+        $this->sendMail($content, $this->subject, $_POST['email']);
         return  parent::response('Đăng ký thành công');
       } else {
         return parent::response('Đăng ký thất bại', 400, ['error' => 'Học sinh đã tồn tại']);
@@ -431,9 +431,8 @@ class UniformController extends BaseController
   {
     $total = 0;
     if ($data) {
-      $table = ' <h5>XÁC NHẬN ĐĂNG KÍ ĐỒNG PHỤC <br> </h5>
-
-       <div  style="margin:15px 0;">
+      $table = ' <h3 style="text-align:center" >XÁC NHẬN ĐĂNG KÍ ĐỒNG PHỤC</h3>
+       <div  style="margin-right:5px 0;">
        <strong>Thông tin học sinh: </strong>
           <ul style="list-style-type:none">
             <li> <strong>Họ và tên: </strong>
@@ -467,15 +466,14 @@ class UniformController extends BaseController
       $out = "";
       $i = 0;
       foreach ($data as $row) {
-
         $total += $this->calculateAmount($row['quantity'], $row['price']);
-        $out .= ' <tr style="padding:15px"><th style="border:1px solid black" scope="row">' . ($i + 1) . '</th>' .
-          ' <td style="border:1px solid black"> ' . $row['name'] . '<br>' . $row['en_name'] . '</td>' .
-          ' <td style="border:1px solid black;text-algin:center">' . $row['quantity'] . ' </td>' .
-          ' <td  style="border:1px solid black">' . $this->formatPrice($row['price']) . '</td>' .
-          ' <td style="border:1px solid black">' . $this->formatPrice($this->calculateAmount($row['quantity'], $row['price'])) . '</td>';
-        $out .= '<td style="border:1px solid black ;text-algin:center">' . $row['size_name'] . '</td>';
-        $out .= '<td style="border:1px solid black">' . $row['note'] . '</td>';
+        $out .= ' <tr style="padding:15px"><th style="border:1px solid black;padding:2px;" scope="row">' . ($i + 1) . '</th>' .
+          ' <td style="border:1px solid black;padding:2px;"> ' . $row['name'] . '<br>' . $row['en_name'] . '</td>' .
+          ' <td style="border:1px solid black;text-align:center;padding:2px;">' . $row['quantity'] . ' </td>' .
+          ' <td  style="border:1px solid black;padding:2px;">' . $this->formatPrice($row['price']) . '</td>' .
+          ' <td style="border:1px solid black;padding:2px;">' . $this->formatPrice($this->calculateAmount($row['quantity'], $row['price'])) . '</td>';
+        $out .= '<td style="border:1px solid black;text-align:center;padding:2px;">' . $row['size_name'] . '</td>';
+        $out .= '<td style="border:1px solid black;padding:2px;">' . $row['note'] . '</td>';
         $out .= "</tr>";
         $i++;
       }

@@ -203,7 +203,16 @@
     document.getElementById('submit').addEventListener('click', function() {
       var formData = new FormData(document.getElementById('form'));
 
-
+      Swal.fire({
+                title: 'Vui lòng đợi !',
+                html: 'Hệ thống đang xử lý',// add html attribute if you want or remove
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                },
+            });
+      
 
       $.ajax({
         method: "POST",
